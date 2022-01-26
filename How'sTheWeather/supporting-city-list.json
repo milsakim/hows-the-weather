@@ -1,0 +1,204 @@
+{
+    "data": [
+        {
+            "id": 1842616,
+            "name": "Gongju",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.124718,
+                "lat": 36.455559
+            }
+        },
+        {
+            "id": 1841808,
+            "name": "Gwangju",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 126.916672,
+                "lat": 35.166672
+            }
+        },
+        {
+            "id": 1842225,
+            "name": "Gumi",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 128.335999,
+                "lat": 36.113602
+            }
+        },
+        {
+            "id": 1842025,
+            "name": "Gunsan",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 126.711388,
+                "lat": 35.978611
+            }
+        },
+        {
+            "id": 1835327,
+            "name": "Daegu",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 128.550003,
+                "lat": 35.799999
+            }
+        },
+        {
+            "id": 1835224,
+            "name": "Daejeon",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.416672,
+                "lat": 36.333328
+            }
+        },
+        {
+            "id": 1841066,
+            "name": "Mokpo",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 126.388611,
+                "lat": 34.79361
+            }
+        },
+        {
+            "id": 1838524,
+            "name": "Busan",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 129.040283,
+                "lat": 35.102779
+            }
+        },
+        {
+            "id": 1835895,
+            "name": "Seosan",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 126.452217,
+                "lat": 36.78167
+            }
+        },
+        {
+            "id": 1835847,
+            "name": "Seoul",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127,
+                "lat": 37.583328
+            }
+        },
+        {
+            "id": 1836553,
+            "name": "Sokcho",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 128.59111,
+                "lat": 38.208328
+            }
+        },
+        {
+            "id": 1835553,
+            "name": "Suwon",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.008888,
+                "lat": 37.291111
+            }
+        },
+        {
+            "id": 1835648,
+            "name": "Suncheon",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.489471,
+                "lat": 34.948078
+            }
+        },
+        {
+            "id": 1833742,
+            "name": "Ulsan",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 129.266663,
+                "lat": 35.566669
+            }
+        },
+        {
+            "id": 1843491,
+            "name": "Iksan",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 126.954437,
+                "lat": 35.94389
+            }
+        },
+        {
+            "id": 1845457,
+            "name": "Jeonju",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.148888,
+                "lat": 35.821941
+            }
+        },
+        {
+            "id": 1846266,
+            "name": "Jeju City",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 126.521942,
+                "lat": 33.50972
+            }
+        },
+        {
+            "id": 1845759,
+            "name": "Cheonan",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.152199,
+                "lat": 36.806499
+            }
+        },
+        {
+            "id": 1845604,
+            "name": "Cheongju-si",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.489723,
+                "lat": 36.637218
+            }
+        },
+        {
+            "id": 1845136,
+            "name": "Chuncheon",
+            "state": "",
+            "country": "KR",
+            "coord": {
+                "lon": 127.734169,
+                "lat": 37.874722
+            }
+        }
+    ]
+}
