@@ -9,21 +9,31 @@ import UIKit
 
 class ForecastViewController: UIViewController {
 
+    @IBOutlet weak var lineGraphView: LineChartView!
+    
+    var viewModel: ForecastViewModel?
+    var cityID: Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        commonInit()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func commonInit() {
+        setupViewModel()
     }
-    */
+    
+}
 
+extension ForecastViewController: ViewModelDelegate {
+    
+    func fetchCompleted(_ indexPaths: [IndexPath]?) {
+        print(#function)
+        lineGraphView.data = viewModel?.graphPointEntryData
+    }
+    
+    func fetchFailed(error: APIResponseError) {
+        print("fetch failed")
+    }
+    
 }

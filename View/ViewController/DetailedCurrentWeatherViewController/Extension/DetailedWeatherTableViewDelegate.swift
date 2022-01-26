@@ -24,6 +24,7 @@ extension DetailedWeatherViewController: UITableViewDelegate {
             print("Fail to cast ForecastViewController")
             return
         }
+        forecastViewController.cityID = city?.id
         navigationController?.pushViewController(forecastViewController, animated: true)
         tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
     }

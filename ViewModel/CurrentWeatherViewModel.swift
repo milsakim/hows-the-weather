@@ -32,7 +32,7 @@ final class CurrentWeatherViewModel {
     }
     
     var supportingCities: [City] = []
-    var currentWeather: [Double: CurrentWeatherResponse] = [:]
+    var currentWeather: [String: CurrentWeatherResponse] = [:]
     var iconCache: NSCache<NSString, UIImage> = NSCache()
     
     // MARK: - Initializer
@@ -74,7 +74,7 @@ final class CurrentWeatherViewModel {
                 case .success(let data):
                     print("\(self.supportingCities[cityIndex].name) fetch success")
                     
-                    self.currentWeather[self.supportingCities[cityIndex].id] = data
+                    self.currentWeather[String(self.supportingCities[cityIndex].id)] = data
                     
                     DispatchQueue.main.async {
                         self.delegate?.fetchCompleted([IndexPath(row: cityIndex, section: 0)])
