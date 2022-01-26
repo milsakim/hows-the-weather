@@ -33,3 +33,7 @@ struct Wind: Codable {
     let deg: Double
 }
 
+struct ErrorMessage: Codable {
+    let cod: String
+    let message: String
+}
