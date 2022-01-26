@@ -26,14 +26,15 @@ class LineChartView: UIView {
     
     let lineGap: CGFloat = 60.0
     
-    let topSpace: CGFloat = 40.0
-    let bottomSpace: CGFloat = 40.0
+    let topSpace: CGFloat = 60.0
+    let bottomSpace: CGFloat = 60.0
+    let leadingSpace: CGFloat = 20.0
+    let trailingSpace: CGFloat = 20.0
     
     let topHorizontalLine: CGFloat = 110.0 / 100.0
     
     var data: [PointEntry]? {
         didSet {
-            print("didSet")
             setNeedsLayout()
         }
     }
@@ -47,12 +48,12 @@ class LineChartView: UIView {
     private let gridLayer: CALayer = CALayer()
     
     private var dataPoints: [CGPoint]?
+    private var humidityDataPoints: [CGPoint]?
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
-        print(#function)
     }
     
     convenience init() {
@@ -63,8 +64,6 @@ class LineChartView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
-        print("coder")
-        print(#function)
     }
     
     private func setupView() {
@@ -78,12 +77,10 @@ class LineChartView: UIView {
     }
     
     override func layoutSubviews() {
-        print("\(#function): \(frame.size)") // 이때 이미
-        print("\(#function): \(mainLayer.frame.size)")
         scrollView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
         
         if let data = data {
-            let contentSize: CGSize = CGSize(width: CGFloat(data.count) * lineGap, height: frame.size.height)
+            let contentSize: CGSize = CGSize(width: CGFloat(data.count) * lineGap + leadingSpace + trailingSpace, height: frame.size.height)
             scrollView.contentSize = contentSize
             mainLayer.frame = CGRect(origin: .zero, size: contentSize)
             dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
@@ -92,7 +89,9 @@ class LineChartView: UIView {
             dataPoints = convertDataEntriesToPoints(data: data)
             clean()
             drawHorizontalLines()
+            drawVerticalLines()
             drawChart()
+            drawLabels()
         }
     }
     
@@ -103,7 +102,7 @@ class LineChartView: UIView {
             
             for index in 0..<data.count {
                 let height = dataLayer.frame.height * (1 - ((CGFloat(data[index].value) - CGFloat(minValue)) / minMaxRange))
-                let point = CGPoint(x: CGFloat(index) * lineGap + 40, y: height)
+                let point = CGPoint(x: CGFloat(index) * lineGap + lineGap / 2 + leadingSpace, y: height)
                 result.append(point)
             }
             
@@ -190,6 +189,41 @@ class LineChartView: UIView {
                 textLayer.string = "\(lineValue)"
                 
                 gridLayer.addSublayer(textLayer)
+            }
+        }
+    }
+    
+    private func drawVerticalLines() {
+        guard let data = data else { return }
+        
+        for index in 0..<(data.count - 1) {
+            let path: UIBezierPath = UIBezierPath()
+            path.move(to: CGPoint(x: lineGap * CGFloat(index + 1) + leadingSpace, y: topSpace))
+            path.addLine(to: CGPoint(x: lineGap * CGFloat(index + 1) + leadingSpace, y: mainLayer.frame.size.height - bottomSpace))
+            
+            let lineLayer = CAShapeLayer()
+            lineLayer.path = path.cgPath
+            lineLayer.fillColor = UIColor.clear.cgColor
+            lineLayer.strokeColor = UIColor.magenta.cgColor
+            lineLayer.lineWidth = 0.5
+            
+            mainLayer.addSublayer(lineLayer)
+        }
+    }
+    
+    private func drawLabels() {
+        if let data = data, data.count > 0 {
+            for index in 0..<data.count {
+                let textLayer: CATextLayer = CATextLayer()
+                textLayer.frame = CGRect(x: lineGap * CGFloat(index) + leadingSpace, y: mainLayer.frame.size.height - bottomSpace/2 - 8, width: lineGap, height: 30)
+                textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
+                textLayer.backgroundColor = UIColor.black.cgColor
+                textLayer.alignmentMode = CATextLayerAlignmentMode.center
+                textLayer.contentsScale = UIScreen.main.scale
+                textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+                textLayer.fontSize = 11
+                textLayer.string = "\(index)\ntest"
+                mainLayer.addSublayer(textLayer)
             }
         }
     }
