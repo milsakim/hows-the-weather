@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Current Weather Related Models
+
 struct CurrentWeatherResponse: Codable {
     let weather: [Weather]
     let main: Main
@@ -36,4 +38,10 @@ struct Wind: Codable {
 struct ErrorMessage: Codable {
     let cod: String
     let message: String
+}
+
+// MARK: - Forecast Related Models
+
+struct ForecastResponse: Codable {
+    
 }

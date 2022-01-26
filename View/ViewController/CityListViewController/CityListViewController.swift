@@ -13,6 +13,11 @@ class CityListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
+    // table view의 header
+    @IBOutlet var headerView: UIView!
+    @IBOutlet weak var sortButton: UIButton!
+    @IBOutlet weak var ascendingButton: UIButton!
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
