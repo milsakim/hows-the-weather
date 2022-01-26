@@ -9,10 +9,14 @@ import UIKit
 
 class CityListViewController: UIViewController {
 
+    // MARK: - Property
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
     }
     
 }
