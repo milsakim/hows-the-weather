@@ -12,7 +12,7 @@ final class OpenWeatherAPIClient {
     private let baseURLString: String = "https://api.openweathermap.org/data/2.5/weather?"
     private let appID: String = "35ec455f68e67138f01a758d471cf357"
     
-    func fetchCurrentWeatherData(city id: String, unit: String, language: String) {
+    func fetchCurrentWeatherData(city id: Int, unit: String, language: String, completion handler: @escaping (Result<CurrentWeatherResponse, APIResponseError>) -> Void) {
         let urlString = baseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=\(unit)" + "&" + "lang=\(language)"
         guard let url: URL = URL(string: urlString) else {
             print("Fail to create URL: \(urlString)")
@@ -28,20 +28,21 @@ final class OpenWeatherAPIClient {
                         print(decodedData)
                     }
                 }
+                handler(Result.failure(.network))
                 return
             }
             guard let data = data else {
-                print("data is nil")
+                handler(Result.failure(.network))
                 return
             }
             guard let decodedData: CurrentWeatherResponse = try? JSONDecoder().decode(CurrentWeatherResponse.self, from: data) else {
-                print("fail to decode data")
+                handler(.failure(.decoding))
                 return
             }
             
-            print(decodedData)
+            handler(.success(decodedData))
         }
         task.resume()
     }
-    
+
 }
