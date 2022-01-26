@@ -42,6 +42,7 @@
 			children = (
 				16D6535A27A0EB7500716509 /* AppDelegate */,
 				16D6535B27A0EF2100716509 /* CityListViewController */,
+				16D6535F27A0F60200716509 /* Model */,
 				16D6534527A0E83900716509 /* How'sTheWeather */,
 				16D6534427A0E83900716509 /* Products */,
 			);
@@ -81,6 +82,13 @@
 				16D6535D27A0EFA500716509 /* CityListViewController.swift */,
 			);
 			path = CityListViewController;
+			sourceTree = "<group>";
+		};
+		16D6535F27A0F60200716509 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
