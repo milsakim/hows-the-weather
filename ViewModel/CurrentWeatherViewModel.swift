@@ -31,6 +31,7 @@ final class CurrentWeatherViewModel {
     
     var supportingCities: [City] = []
     var currentWeather: [String: CurrentWeatherResponse] = [:]
+    var iconCache: NSCache<NSString, UIImage> = NSCache()
     
     // MARK: - Initializer
     

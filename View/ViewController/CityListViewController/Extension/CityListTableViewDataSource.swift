@@ -29,18 +29,26 @@ extension CityListViewController: UITableViewDataSource {
                 cell.currentTempLabel.text = "\(currentWeather.main.temp)"
                 cell.currentHumidityLabel.text = "\(currentWeather.main.humidity)"
                 
-                if let thumbnailURL: URL = URL(string: "https://openweathermap.org/img/wn/" + currentWeather.weather[0].icon + "@2x.png") {
-                    
-                    URLSession.shared.downloadTask(with: thumbnailURL) { (url, response, Error) in
-                        guard let url = url else { return }
-                        guard let data = try? Data(contentsOf: url) else { return }
-                        
-                        DispatchQueue.main.async {
-                            if let cellToUpdate = self.tableView.cellForRow(at: indexPath) as? CityListTableViewCell {
-                                cellToUpdate.weatherIconView.image = UIImage(data: data)
+                if let icon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
+                    cell.weatherIconView.image = icon
+                }
+                else {
+                    if let thumbnailURL: URL = URL(string: "https://openweathermap.org/img/wn/" + currentWeather.weather[0].icon + "@2x.png") {
+
+                        URLSession.shared.downloadTask(with: thumbnailURL) { (url, response, Error) in
+                            guard let url = url else { return }
+                            guard let data = try? Data(contentsOf: url) else { return }
+                            guard let image = UIImage(data: data) else {
+                                return
                             }
-                        }
-                    }.resume()
+                            viewModel.iconCache.setObject(image, forKey: currentWeather.weather[0].icon as NSString)
+                            DispatchQueue.main.async {
+                                if let cellToUpdate = self.tableView.cellForRow(at: indexPath) as? CityListTableViewCell {
+                                    cellToUpdate.weatherIconView.image = image
+                                }
+                            }
+                        }.resume()
+                    }
                 }
             }
             else {
