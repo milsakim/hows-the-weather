@@ -17,6 +17,11 @@ class CityListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        commonIni()
+    }
+    
+    private func commonIni() {
+        setupTableView()
     }
     
 }
