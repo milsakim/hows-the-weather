@@ -9,6 +9,10 @@ import UIKit
 
 extension CityListViewController {
     
+    func setupNavigation() {
+        
+    }
+    
     func setupTableView() {
         // table view의 data source와 delegate 설정
         tableView.dataSource = self
@@ -20,6 +24,13 @@ extension CityListViewController {
     }
     
     func setupTableHeaderView() {
+        
+    }
+    
+    func setupViewModel() {
+        viewModel = CurrentWeatherViewModel()
+        viewModel?.delegate = self
+        viewModel?.fetchCurrentWeathers()
     }
     
 }

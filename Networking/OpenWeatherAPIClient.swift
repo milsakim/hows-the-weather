@@ -19,7 +19,7 @@ final class OpenWeatherAPIClient {
             return
         }
         
-        var urlRequest: URLRequest = URLRequest(url: url)
+        let urlRequest: URLRequest = URLRequest(url: url)
         let task: URLSessionDataTask = URLSession.shared.dataTask(with: urlRequest) { (data, urlResponse, error) in
             guard let httpResponse: HTTPURLResponse = urlResponse as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
                 print("url response: \(urlResponse as! HTTPURLResponse)")
