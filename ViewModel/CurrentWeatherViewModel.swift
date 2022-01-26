@@ -27,10 +27,12 @@ final class CurrentWeatherViewModel {
     
     private let client: OpenWeatherAPIClient = OpenWeatherAPIClient()
     
-    var isFetchInProgress: Bool = false
+    var isFetchInProgress: Bool {
+        return supportingCities.count != currentWeather.count
+    }
     
     var supportingCities: [City] = []
-    var currentWeather: [String: CurrentWeatherResponse] = [:]
+    var currentWeather: [Double: CurrentWeatherResponse] = [:]
     var iconCache: NSCache<NSString, UIImage> = NSCache()
     
     // MARK: - Initializer
@@ -60,14 +62,11 @@ final class CurrentWeatherViewModel {
     // MARK: -
     
     func fetchCurrentWeathers() {
-        isFetchInProgress = true
-        
         for cityIndex in 0..<supportingCities.count {
             client.fetchCurrentWeatherData(city: Int(supportingCities[cityIndex].id), unit: "metric", language: "kr") { result in
                 switch result {
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self.isFetchInProgress = false
                         print("failure: \(error.localizedDescription)")
                         // 에러 처리
                         self.delegate?.fetchFailed(error: error)
@@ -75,7 +74,7 @@ final class CurrentWeatherViewModel {
                 case .success(let data):
                     print("\(self.supportingCities[cityIndex].name) fetch success")
                     
-                    self.currentWeather["\(Int(self.supportingCities[cityIndex].id))"] = data
+                    self.currentWeather[self.supportingCities[cityIndex].id] = data
                     
                     DispatchQueue.main.async {
                         self.delegate?.fetchCompleted([IndexPath(row: cityIndex, section: 0)])
