@@ -10,6 +10,7 @@ import UIKit
 final class OpenWeatherAPIClient {
     
     private let baseURLString: String = "https://api.openweathermap.org/data/2.5/weather?"
+    private let forecastBaseURLString: String = "https://api.openweathermap.org/data/2.5/forecast?"
     private let appID: String = "35ec455f68e67138f01a758d471cf357"
     
     func fetchCurrentWeatherData(city id: Int, unit: String, language: String, completion handler: @escaping (Result<CurrentWeatherResponse, APIResponseError>) -> Void) {
@@ -42,6 +43,10 @@ final class OpenWeatherAPIClient {
             handler(.success(decodedData))
         }
         task.resume()
+    }
+    
+    func fetchForecastData(city id: Int, completion handler: @escaping (Result<CurrentWeatherResponse, APIResponseError>) -> Void) {
+        
     }
 
 }
