@@ -13,6 +13,7 @@
 		16D6535027A0E83A00716509 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16D6534F27A0E83A00716509 /* Assets.xcassets */; };
 		16D6535327A0E83A00716509 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16D6535127A0E83A00716509 /* LaunchScreen.storyboard */; };
 		16D6535E27A0EFA500716509 /* CityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D6535D27A0EFA500716509 /* CityListViewController.swift */; };
+		16D6536127A0F87100716509 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D6536027A0F87100716509 /* APIResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		16D6535227A0E83A00716509 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		16D6535427A0E83A00716509 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16D6535D27A0EFA500716509 /* CityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityListViewController.swift; sourceTree = "<group>"; };
+		16D6536027A0F87100716509 /* APIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +42,7 @@
 		16D6533A27A0E83900716509 = {
 			isa = PBXGroup;
 			children = (
+				16D6536227A10D0E00716509 /* New Group */,
 				16D6535A27A0EB7500716509 /* AppDelegate */,
 				16D6535B27A0EF2100716509 /* CityListViewController */,
 				16D6535F27A0F60200716509 /* Model */,
@@ -87,8 +90,16 @@
 		16D6535F27A0F60200716509 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				16D6536027A0F87100716509 /* APIResponse.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		16D6536227A10D0E00716509 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16D6534727A0E83900716509 /* AppDelegate.swift in Sources */,
+				16D6536127A0F87100716509 /* APIResponse.swift in Sources */,
 				16D6534927A0E83900716509 /* SceneDelegate.swift in Sources */,
 				16D6535E27A0EFA500716509 /* CityListViewController.swift in Sources */,
 			);
