@@ -21,6 +21,8 @@ extension CityListViewController {
         // table view의 header 설정
         tableView.tableHeaderView = headerView
         setupTableHeaderView()
+        
+        tableView.refreshControl = UIRefreshControl()
     }
     
     func setupTableHeaderView() {

@@ -10,11 +10,26 @@ import UIKit
 class DetailedWeatherViewController: UIViewController {
     
     // MARK: - Property
+    
+    var city: City?
+    var currentWeather: CurrentWeatherResponse?
+    var iconImage: UIImage?
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    // MARK: - Deinitializer
+    
+    deinit {
+        iconImage = nil
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        commonInit()
+    }
+    
+    private func commonInit() {
+        setupTableView()
     }
 
 }

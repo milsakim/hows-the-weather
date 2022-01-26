@@ -22,19 +22,16 @@ extension CityListViewController: UITableViewDataSource {
         }
         
         if let viewModel = viewModel {
-            let cityID: String = "\(Int(viewModel.supportingCities[indexPath.row].id))"
-            
-            if let currentWeather = viewModel.currentWeather[cityID] {
+            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id] {
                 cell.cityLabel.text = currentWeather.name
-                cell.currentTempLabel.text = "\(currentWeather.main.temp)"
-                cell.currentHumidityLabel.text = "\(currentWeather.main.humidity)"
+                cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
                 
                 if let icon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
                     cell.weatherIconView.image = icon
                 }
                 else {
                     if let thumbnailURL: URL = URL(string: "https://openweathermap.org/img/wn/" + currentWeather.weather[0].icon + "@2x.png") {
-
+                        
                         URLSession.shared.downloadTask(with: thumbnailURL) { (url, response, Error) in
                             guard let url = url else { return }
                             guard let data = try? Data(contentsOf: url) else { return }
@@ -53,8 +50,7 @@ extension CityListViewController: UITableViewDataSource {
             }
             else {
                 cell.cityLabel.text = viewModel.supportingCities[indexPath.row].name
-                cell.currentTempLabel.text = "Loading..."
-                cell.currentHumidityLabel.text = "Loading..."
+                cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
             }
         }
         

@@ -30,12 +30,21 @@ extension CityListViewController: UITableViewDelegate {
             }
             
             detailedWeatherViewController.city = viewModel.supportingCities[indexPath.row]
+            
+            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id] {
+                detailedWeatherViewController.currentWeather = currentWeather
+                
+                if let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
+                    detailedWeatherViewController.iconImage = cachedIcon
+                }
+            }
+            
             detailedWeatherViewController.title = viewModel.supportingCities[indexPath.row].name
             
             navigationController?.pushViewController(detailedWeatherViewController, animated: true)
-            
-            tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
         }
+        
+        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
     }
     
 }

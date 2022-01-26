@@ -14,13 +14,14 @@ class CityListTableViewCell: UITableViewCell {
     static let reuseID: String = "CityListTableViewCell"
     
     @IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var currentTempLabel: UILabel!
-    @IBOutlet weak var currentHumidityLabel: UILabel!
+    @IBOutlet weak var tempAndHumidityLabel: UILabel!
     @IBOutlet weak var weatherIconView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        weatherIconView.backgroundColor = .gray
+        weatherIconView.layer.cornerRadius = weatherIconView.frame.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
