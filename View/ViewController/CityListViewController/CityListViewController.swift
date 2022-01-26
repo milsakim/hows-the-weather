@@ -17,10 +17,11 @@ class CityListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        commonIni()
+        commonInit()
+        OpenWeatherAPIClient().fetchCurrentWeatherData(city: "", unit: "metric", language: "kr")
     }
     
-    private func commonIni() {
+    private func commonInit() {
         setupTableView()
     }
     

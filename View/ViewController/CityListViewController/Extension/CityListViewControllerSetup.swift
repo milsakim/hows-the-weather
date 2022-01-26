@@ -13,9 +13,6 @@ extension CityListViewController {
         // table view의 data source와 delegate 설정
         tableView.dataSource = self
         tableView.delegate = self
-        
-        // table view cell registration
-        tableView.register(CityListTableViewCell.self, forCellReuseIdentifier: CityListTableViewCell.reuseID)
     }
     
 }
