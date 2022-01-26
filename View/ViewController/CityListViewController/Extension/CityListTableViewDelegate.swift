@@ -15,36 +15,38 @@ extension CityListViewController: UITableViewDelegate {
         }
         
         if viewModel.isFetchInProgress {
-            let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            
-            let alertController: UIAlertController = UIAlertController(title: "Loading Weather Data", message: "Please try in few seconds", preferredStyle: .alert)
-            alertController.addAction(okAction)
-            
-            present(alertController, animated: true, completion: nil)
+            showAlertController()
         }
         else {
-            let storyboard: UIStoryboard = UIStoryboard(name: "DetailedWeatherViewController", bundle: .main)
-            guard let detailedWeatherViewController: DetailedWeatherViewController = storyboard.instantiateViewController(withIdentifier: "DetailedWeatherViewController") as? DetailedWeatherViewController else {
-                print("Fail to cast DetailedWeatherViewController")
-                return
-            }
-            
-            detailedWeatherViewController.city = viewModel.supportingCities[indexPath.row]
-            
-            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id] {
+            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id], let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
+                let storyboard: UIStoryboard = UIStoryboard(name: "DetailedWeatherViewController", bundle: .main)
+                guard let detailedWeatherViewController: DetailedWeatherViewController = storyboard.instantiateViewController(withIdentifier: "DetailedWeatherViewController") as? DetailedWeatherViewController else {
+                    print("Fail to cast DetailedWeatherViewController")
+                    return
+                }
+                
+                detailedWeatherViewController.city = viewModel.supportingCities[indexPath.row]
+                
+                detailedWeatherViewController.title = viewModel.supportingCities[indexPath.row].name
+                
+                navigationController?.pushViewController(detailedWeatherViewController, animated: true)
+                
                 detailedWeatherViewController.currentWeather = currentWeather
                 
                 if let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
                     detailedWeatherViewController.iconImage = cachedIcon
                 }
             }
-            
-            detailedWeatherViewController.title = viewModel.supportingCities[indexPath.row].name
-            
-            navigationController?.pushViewController(detailedWeatherViewController, animated: true)
+            else {
+                showAlertController()
+            }
         }
         
         tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
     }
+    
+}
+
+extension CityListViewController {
     
 }
