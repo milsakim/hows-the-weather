@@ -9,7 +9,8 @@ import Foundation
 
 struct ForeCastData {
     let date: Int
-    let temperature: Double
+    let minTemperature: Double
+    let maxTemperature: Double
     let humidity: Double
 }
 
@@ -22,7 +23,7 @@ final class ForecastViewModel {
     private var foreCastData: [ForeCastData] = []
     
     var graphPointEntryData: [PointEntry] {
-        foreCastData.compactMap { PointEntry(value: $0.temperature, humidityValue: $0.humidity, label: String($0.date)) }
+        foreCastData.compactMap { PointEntry(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, label: String($0.date)) }
     }
     
     weak var delegate: ViewModelDelegate?
@@ -41,7 +42,7 @@ final class ForecastViewModel {
                 self.delegate?.fetchFailed(error: error)
             case .success(let data):
                 data.list.forEach {
-                    self.foreCastData.append(ForeCastData(date: $0.dt, temperature: ($0.main.temp_min + $0.main.temp_max) / 2, humidity: $0.main.humidity))
+                    self.foreCastData.append(ForeCastData(date: $0.dt, minTemperature: $0.main.temp_min, maxTemperature: $0.main.temp_max, humidity: $0.main.humidity))
                 }
                 
                 DispatchQueue.main.async {

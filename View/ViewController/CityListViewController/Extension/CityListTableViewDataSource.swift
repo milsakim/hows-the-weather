@@ -17,6 +17,7 @@ extension CityListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("\(#function): \(indexPath.row)")
         guard let cell: CityListTableViewCell = tableView.dequeueReusableCell(withIdentifier: CityListTableViewCell.reuseID, for: indexPath) as? CityListTableViewCell else {
             fatalError("Fail to cast cell")
         }
@@ -52,6 +53,10 @@ extension CityListViewController: UITableViewDataSource {
                 cell.cityLabel.text = viewModel.supportingCities[indexPath.row].name
                 cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
             }
+        }
+        else {
+            cell.cityLabel.text = "---"
+            cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
         }
         
         return cell

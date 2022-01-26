@@ -8,18 +8,10 @@
 import UIKit
 
 struct PointEntry {
-    let value: Double
+    let minTempValue: Double
+    let maxTempValue: Double
     let humidityValue: Double
     let label: String
-}
-
-extension PointEntry: Comparable {
-    static func <(lhs: PointEntry, rhs: PointEntry) -> Bool {
-        return lhs.value < rhs.value
-    }
-    static func ==(lhs: PointEntry, rhs: PointEntry) -> Bool {
-        return lhs.value == rhs.value
-    }
 }
 
 class LineChartView: UIView {
@@ -48,6 +40,8 @@ class LineChartView: UIView {
     private let gridLayer: CALayer = CALayer()
     
     private var dataPoints: [CGPoint]?
+    private var minTempDataPoints: [CGPoint]?
+    private var maxTempDataPoints: [CGPoint]?
     private var humidityDataPoints: [CGPoint]?
     
     
@@ -86,8 +80,12 @@ class LineChartView: UIView {
             dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
             gridLayer.frame = CGRect(x: 0, y: topSpace, width: self.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
             
-            dataPoints = convertDataEntriesToPoints(data: data)
+            minTempDataPoints = convertDataEntriesToPoints(data: data.compactMap({ $0.minTempValue }))
+            maxTempDataPoints = convertDataEntriesToPoints(data: data.compactMap({ $0.maxTempValue }))
+            humidityDataPoints = convertDataEntriesToPoints(data: data.compactMap({ $0.humidityValue }))
+            
             clean()
+            
             drawHorizontalLines()
             drawVerticalLines()
             drawChart()
@@ -95,13 +93,13 @@ class LineChartView: UIView {
         }
     }
     
-    private func convertDataEntriesToPoints(data: [PointEntry]) -> [CGPoint] {
-        if let maxValue = data.max()?.value, let minValue = data.min()?.value {
+    private func convertDataEntriesToPoints(data: [Double]) -> [CGPoint] {
+        if let maxValue = data.max(), let minValue = data.min() {
             var result: [CGPoint] = []
             let minMaxRange: CGFloat = CGFloat(maxValue - minValue) * topHorizontalLine
             
             for index in 0..<data.count {
-                let height = dataLayer.frame.height * (1 - ((CGFloat(data[index].value) - CGFloat(minValue)) / minMaxRange))
+                let height = dataLayer.frame.height * (1 - ((CGFloat(data[index]) - CGFloat(minValue)) / minMaxRange))
                 let point = CGPoint(x: CGFloat(index) * lineGap + lineGap / 2 + leadingSpace, y: height)
                 result.append(point)
             }
@@ -113,9 +111,23 @@ class LineChartView: UIView {
     }
     
     private func drawChart() {
-        if let dataPoints = dataPoints,
-            dataPoints.count > 0,
-            let path = createPath() {
+        if let minTempDataPoints = minTempDataPoints, minTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: minTempDataPoints) {
+            let lineLayer = CAShapeLayer()
+            lineLayer.path = path.cgPath
+            lineLayer.strokeColor = UIColor.blue.cgColor
+            lineLayer.fillColor = UIColor.clear.cgColor
+            dataLayer.addSublayer(lineLayer)
+        }
+        
+        if let maxTempDataPoints = maxTempDataPoints, maxTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: maxTempDataPoints) {
+            let lineLayer = CAShapeLayer()
+            lineLayer.path = path.cgPath
+            lineLayer.strokeColor = UIColor.red.cgColor
+            lineLayer.fillColor = UIColor.clear.cgColor
+            dataLayer.addSublayer(lineLayer)
+        }
+        
+        if let humidityDataPoints = humidityDataPoints, humidityDataPoints.count > 0, let path = createPath(from: humidityDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.strokeColor = UIColor.black.cgColor
@@ -124,23 +136,31 @@ class LineChartView: UIView {
         }
     }
     
-    private func createPath() -> UIBezierPath? {
-        guard let dataPoints = dataPoints, dataPoints.count > 0 else {
+    private func drawHumidityChart() {
+        if let humidityDataPoints = humidityDataPoints,
+           humidityDataPoints.count > 0,
+            let path = createPath(from: humidityDataPoints) {
+            let lineLayer = CAShapeLayer()
+            lineLayer.path = path.cgPath
+            lineLayer.strokeColor = UIColor.blue.cgColor
+            lineLayer.fillColor = UIColor.clear.cgColor
+            dataLayer.addSublayer(lineLayer)
+        }
+    }
+    
+    private func createPath(from points: [CGPoint]) -> UIBezierPath? {
+        guard points.count > 0 else {
             return nil
         }
         let path = UIBezierPath()
-        path.move(to: dataPoints[0])
+        path.move(to: points[0])
         
-        for i in 1..<dataPoints.count {
-            path.addLine(to: dataPoints[i])
+        for i in 1..<points.count {
+            path.addLine(to: points[i])
         }
         return path
     }
-    
-    private func drawHumidityHorizontalLines() {
-        
-    }
-    
+
     private func drawHorizontalLines() {
         guard let data = data else {
             return
@@ -173,12 +193,13 @@ class LineChartView: UIView {
                 
                 var minMaxGap:CGFloat = 0
                 var lineValue:Int = 0
+                /*
                 if let max = data.max()?.value,
                     let min = data.min()?.value {
                     minMaxGap = CGFloat(max - min) * topHorizontalLine
                     lineValue = Int((1-value) * minMaxGap) + Int(min)
                 }
-                
+                */
                 let textLayer = CATextLayer()
                 textLayer.frame = CGRect(x: 4, y: height, width: 50, height: 16)
                 textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
@@ -230,12 +251,14 @@ class LineChartView: UIView {
     
     private func clean() {
         mainLayer.sublayers?.forEach({
-            if $0 is CATextLayer {
+            if $0 is CATextLayer || $0 is CAShapeLayer {
                 $0.removeFromSuperlayer()
             }
         })
         dataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
-        gridLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
+        gridLayer.sublayers?.forEach({
+            $0.removeFromSuperlayer()
+        })
     }
     
     /*
