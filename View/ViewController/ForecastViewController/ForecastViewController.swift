@@ -27,9 +27,13 @@ class ForecastViewController: UIViewController {
 
 extension ForecastViewController: ViewModelDelegate {
     
-    func fetchCompleted(_ indexPaths: [IndexPath]?) {
+    func fetchCompleted(for indexPaths: [IndexPath]?) {
         print(#function)
         lineGraphView.data = viewModel?.graphPointEntryData
+    }
+    
+    func allSupportedCitiesAreFetched() {
+        print(#function)
     }
     
     func fetchFailed(error: APIResponseError) {

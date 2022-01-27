@@ -13,7 +13,9 @@ extension CityListViewController: UITableViewDataSource {
         guard let viewModel = viewModel else {
             return 0
         }
-        return viewModel.supportingCities.count
+        
+//        return viewModel.supportingCities.count
+        return viewModel.targetCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

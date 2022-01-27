@@ -33,10 +33,17 @@ class CityListViewController: UIViewController {
 
 extension CityListViewController: ViewModelDelegate {
     
-    func fetchCompleted(_ indexPaths: [IndexPath]?) {
+    func fetchCompleted(for indexPaths: [IndexPath]?) {
         if let indexPaths = indexPaths {
             tableView.reloadRows(at: indexPaths, with: .none)
         }
+    }
+    
+    func allSupportedCitiesAreFetched() {
+        print("--- \(#function): \(viewModel?.currentWeather.count)")
+        
+        // 정렬 버튼 활성화 시키기
+        navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
     func fetchFailed(error: APIResponseError) {

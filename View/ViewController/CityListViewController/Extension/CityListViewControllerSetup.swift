@@ -47,9 +47,9 @@ extension CityListViewController {
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
-        let sortByTemp: UIAction = UIAction(title: "Temperature", attributes: .disabled, state: sortByTempActionState) { action in
+        let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
         }
-        let sortByDistance: UIAction = UIAction(title: "Distance", attributes: .disabled, state: sortByDistanceActionState) { action in
+        let sortByDistance: UIAction = UIAction(title: "Distance", state: sortByDistanceActionState) { action in
 
         }
         let sortingStandardMenu: UIMenu = UIMenu(title: "Sort by", options: [.singleSelection, .displayInline], children: [sortByCityName, sortByTemp, sortByDistance])
@@ -85,6 +85,7 @@ extension CityListViewController {
         sortingButton.menu = sortingMenu
     
         navigationItem.setRightBarButton(sortingButton, animated: false)
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     func setupTableView() {

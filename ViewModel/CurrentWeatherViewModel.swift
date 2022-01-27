@@ -15,7 +15,8 @@ enum DownloadError: Error {
 }
 
 protocol ViewModelDelegate: AnyObject {
-    func fetchCompleted(_ indexPaths: [IndexPath]?)
+    func fetchCompleted(for indexPaths: [IndexPath]?)
+    func allSupportedCitiesAreFetched()
     func fetchFailed(error: APIResponseError)
 }
 
@@ -25,12 +26,32 @@ final class CurrentWeatherViewModel {
     
     weak var delegate: ViewModelDelegate?
     
+    private let loadSize: Int = 20
+    private var startIndex: Int = 0 {
+        didSet {
+            print("--- startIndex: \(startIndex) ---")
+            if startIndex == supportingCities.count {
+                DispatchQueue.main.async {
+                    self.delegate?.allSupportedCitiesAreFetched()
+                }
+                isFetchInProgress = false
+            }
+            
+            if startIndex % loadSize == 0 {
+                isFetchInProgress = false
+            }
+        }
+    }
+    var targetCount: Int = 0
+    
     private let client: OpenWeatherAPIClient = OpenWeatherAPIClient()
     
-    var isFetchInProgress: Bool {
-        return supportingCities.count != currentWeather.count
+    var isFetchInProgress: Bool = false {
+        didSet {
+            print("--- isFetchInProgress: \(isFetchInProgress) ---")
+        }
     }
-    
+
     var supportingCities: [City] = []
     var currentWeather: [String: CurrentWeatherResponse] = [:]
     var iconCache: NSCache<NSString, UIImage> = NSCache()
@@ -48,7 +69,7 @@ final class CurrentWeatherViewModel {
             return
         }
         
-        print("file read fin")
+        print("file read fin: \(json.data.count)")
         
         supportingCities = json.data
         sortSupportingCityList()
@@ -57,13 +78,40 @@ final class CurrentWeatherViewModel {
     // MARK: - Deinitializer
     
     deinit {
+        print("--- CurrentWeatherViewModel deinit ---")
         supportingCities.removeAll()
     }
     
     // MARK: -
     
     func fetchCurrentWeathers() {
-        print(#function)
+        // startIndex..<endIndex에 해당하는 도시의 날씨 정보를 fetch
+        let endIndex: Int = (startIndex + loadSize) < supportingCities.count ? startIndex + loadSize : supportingCities.count
+        
+        isFetchInProgress = true
+        targetCount += (endIndex - startIndex)
+        
+        for cityIndex in startIndex..<endIndex {
+            client.fetchCurrentWeatherData(city: Int(supportingCities[cityIndex].id), unit: "metric", language: "kr") { result in
+                switch result {
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        print("failure: \(error.localizedDescription)")
+                        // 에러 처리
+                        self.delegate?.fetchFailed(error: error)
+                    }
+                case .success(let data):
+                    self.currentWeather[String(self.supportingCities[cityIndex].id)] = data
+                    
+                    DispatchQueue.main.async {
+                        self.delegate?.fetchCompleted(for: [IndexPath(row: cityIndex, section: 0)])
+                    }
+                }
+                self.startIndex += 1
+            }
+        }
+        
+        /*
         for cityIndex in 0..<supportingCities.count {
             client.fetchCurrentWeatherData(city: Int(supportingCities[cityIndex].id), unit: "metric", language: "kr") { result in
                 switch result {
@@ -82,6 +130,14 @@ final class CurrentWeatherViewModel {
                 }
             }
         }
+        */
+    }
+    
+    func clear() {
+        startIndex = 0
+        targetCount = 0
+        currentWeather.removeAll()
+        iconCache.removeAllObjects()
     }
     
     // MARK: -
