@@ -11,7 +11,7 @@ struct PointEntry {
     let minTempValue: Double
     let maxTempValue: Double
     let humidityValue: Double
-    let label: String
+    let timeStamp: Int
 }
 
 class WeatherGraphView: UIView {
@@ -120,7 +120,7 @@ class WeatherGraphView: UIView {
                 let yPos: CGFloat = (data[index] - minValue) * ratio
                 result.append(CGPoint(x: xPos, y: yPos))
             }
-
+            
             return result
         }
         
@@ -196,7 +196,12 @@ class WeatherGraphView: UIView {
                 textLayer.contentsScale = UIScreen.main.scale
                 textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
                 textLayer.fontSize = 11
-                textLayer.string = "\(index)\ntest"
+                
+                let date: Date = Date(timeIntervalSince1970: TimeInterval(data[index].timeStamp))
+                let dateFormatter: DateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM-dd\nhh:mm a"
+                textLayer.string = dateFormatter.string(from: date)
+                
                 mainLayer.addSublayer(textLayer)
             }
         }
@@ -213,14 +218,6 @@ class WeatherGraphView: UIView {
             $0.removeFromSuperlayer()
         })
     }
-    
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
     
 }
 
