@@ -100,6 +100,9 @@ extension CityListViewController {
         
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+        
+        tableView.tableFooterView = tableViewFooter
+        tableViewFooter.isHidden = true
     }
 
     func setupViewModel() {
@@ -109,9 +112,18 @@ extension CityListViewController {
     }
     
     @objc func reloadAllData() {
-        viewModel?.clear()
-        viewModel?.fetchCurrentWeathers()
+        guard let viewModel = viewModel, !viewModel.isFetchInProgress else {
+            tableView.refreshControl?.endRefreshing()
+            return
+        }
+        
+        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
+        setupSortingButton()
+        viewModel.sortSupportingCityList()
+        viewModel.clear()
         tableView.reloadData()
+        viewModel.fetchCurrentWeathers()
         tableView.refreshControl?.endRefreshing()
     }
 

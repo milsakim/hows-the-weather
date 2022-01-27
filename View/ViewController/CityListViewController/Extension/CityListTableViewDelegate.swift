@@ -8,7 +8,7 @@
 import UIKit
 
 extension CityListViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else {
             return
@@ -48,5 +48,14 @@ extension CityListViewController: UITableViewDelegate {
 }
 
 extension CityListViewController {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let viewModel = viewModel, viewModel.supportingCities.count != viewModel.currentWeather.count else { return }
+        if tableView.contentOffset.y + tableView.frame.size.height >= (tableView.contentSize.height - 50.0) {
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel.fetchCurrentWeathers()
+        }
+    }
     
 }

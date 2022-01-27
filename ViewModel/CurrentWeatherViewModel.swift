@@ -27,26 +27,31 @@ final class CurrentWeatherViewModel {
     
     weak var delegate: ViewModelDelegate?
     
-    private let loadSize: Int = 10
-    private var startIndex: Int = 0 {
+    private let loadSize: Int = 9
+    var startIndex: Int = 0 {
         didSet {
-            if startIndex == supportingCities.count {
-                DispatchQueue.main.async {
-                    self.delegate?.allSupportedCitiesAreFetched()
-                }
-                isFetchInProgress = false
-            }
-            
-            if startIndex % loadSize == 0 {
-                isFetchInProgress = false
+            print("--- startIndex: \(startIndex) ---")
+            if startIndex >= supportingCities.count {
+                delegate?.allSupportedCitiesAreFetched()
             }
         }
     }
-    var targetCount: Int = 0
-    
+    /*
+    var fetchedCount: Int = 0 {
+        didSet {
+            if fetchedCount == supportingCities.count {
+                delegate?.allSupportedCitiesAreFetched()
+            }
+        }
+    }
+    */
     private let client: OpenWeatherAPIClient = OpenWeatherAPIClient()
     
-    var isFetchInProgress: Bool = false
+    var isFetchInProgress: Bool = false {
+        didSet {
+           print("--- isFetchInProgress: \(isFetchInProgress) ---")
+        }
+    }
 
     var supportingCities: [City] = []
     var currentWeather: [String: CurrentWeatherResponse] = [:]
@@ -68,6 +73,7 @@ final class CurrentWeatherViewModel {
         print("file read fin: \(json.data.count)")
         
         supportingCities = json.data
+        sortSupportingCityList()
     }
     
     // MARK: - Deinitializer
@@ -80,38 +86,41 @@ final class CurrentWeatherViewModel {
     // MARK: -
     
     func fetchCurrentWeathers() {
+        print("--- \(#function) ---")
+        
+        guard !isFetchInProgress else {
+            print("--- \(#function): fetch is on progress ---")
+            return
+        }
+        
         delegate?.fetchStarted()
         
         // startIndex..<endIndex에 해당하는 도시의 날씨 정보를 fetch
-        let endIndex: Int = (startIndex + loadSize) < supportingCities.count ? startIndex + loadSize : supportingCities.count
+        let endIndex: Int = (startIndex + loadSize) <= supportingCities.count ? startIndex + loadSize : supportingCities.count
         
         isFetchInProgress = true
-        targetCount += (endIndex - startIndex)
         
-        for cityIndex in startIndex..<endIndex {
-            client.fetchCurrentWeatherData(city: Int(supportingCities[cityIndex].id), unit: "metric", language: "kr") { result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        print("failure: \(error.localizedDescription)")
-                        // 에러 처리
-                        self.delegate?.fetchFailed(error: error)
-                    }
-                case .success(let data):
-                    self.currentWeather[String(self.supportingCities[cityIndex].id)] = data
-                    
-                    DispatchQueue.main.async {
-                        self.delegate?.fetchCompleted(for: [IndexPath(row: cityIndex, section: 0)])
-                    }
+        client.fetchCurrentWeatherData(cities: supportingCities[startIndex..<endIndex].compactMap({ $0.id }), unit: "metric", language: "kr", completion: { result in
+            switch result {
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    print("failure: \(error.localizedDescription)")
+                    // 에러 처리
+                    self.delegate?.fetchFailed(error: error)
                 }
-                self.startIndex += 1
+            case .success(let data):
+                self.currentWeather[String(data.id)] = data
             }
-        }
+        }, finishHandler: {
+            self.isFetchInProgress = false
+            self.delegate?.fetchCompleted(for: (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0) }))
+            self.startIndex = endIndex
+        })
     }
     
     func clear() {
+        print("--- \(#function) ---")
         startIndex = 0
-        targetCount = 0
         currentWeather.removeAll()
         iconCache.removeAllObjects()
     }

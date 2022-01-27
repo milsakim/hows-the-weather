@@ -12,6 +12,8 @@ class CityListViewController: UIViewController {
     // MARK: - Property
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var tableViewFooter: UIView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var viewModel: CurrentWeatherViewModel?
     
@@ -39,8 +41,19 @@ extension CityListViewController: ViewModelDelegate {
     }
     
     func fetchCompleted(for indexPaths: [IndexPath]?) {
+        print("--- \(#function) ---")
+        tableViewFooter.isHidden = true
+        loadingIndicator.stopAnimating()
+        
         if let indexPaths = indexPaths {
-            tableView.reloadRows(at: indexPaths, with: .none)
+            tableView.insertRows(at: indexPaths, with: .none)
+        }
+        
+        if tableView.contentSize.height < tableView.frame.size.height {
+            print("--- content is smaller ---")
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel?.fetchCurrentWeathers()
         }
     }
     
