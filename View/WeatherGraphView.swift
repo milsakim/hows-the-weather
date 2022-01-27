@@ -143,11 +143,11 @@ class WeatherGraphView: UIView {
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
-        
+
         if let humidityDataPoints = humidityDataPoints, humidityDataPoints.count > 0, let path = createPath(from: humidityDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
-            lineLayer.strokeColor = UIColor.black.cgColor
+            lineLayer.strokeColor = UIColor(named: "humidity-graph-color")?.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
@@ -177,9 +177,9 @@ class WeatherGraphView: UIView {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.fillColor = UIColor.clear.cgColor
-            lineLayer.strokeColor = UIColor.magenta.cgColor
+            lineLayer.strokeColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
             lineLayer.lineDashPattern = [4, 4]
-            lineLayer.lineWidth = 0.5
+            lineLayer.lineWidth = 0.8
             
             mainLayer.addSublayer(lineLayer)
         }
@@ -190,7 +190,7 @@ class WeatherGraphView: UIView {
             for index in 0..<data.count {
                 let textLayer: CATextLayer = CATextLayer()
                 textLayer.frame = CGRect(x: lineGap * CGFloat(index) + leadingSpace, y: mainLayer.frame.size.height - bottomSpace/2 - 8, width: lineGap, height: 30)
-                textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
+                textLayer.foregroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
                 textLayer.backgroundColor = UIColor.clear.cgColor
                 textLayer.alignmentMode = CATextLayerAlignmentMode.center
                 textLayer.contentsScale = UIScreen.main.scale
