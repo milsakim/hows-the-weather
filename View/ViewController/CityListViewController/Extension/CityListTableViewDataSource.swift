@@ -22,6 +22,7 @@ extension CityListViewController: UITableViewDataSource {
         }
         
         if let viewModel = viewModel {
+            // 해당 도시의 날씨 정보가 fetch 되어있는 경우
             if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)] {
                 cell.cityLabel.text = currentWeather.name
                 cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
