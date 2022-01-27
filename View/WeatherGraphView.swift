@@ -11,7 +11,7 @@ struct PointEntry {
     let minTempValue: Double
     let maxTempValue: Double
     let humidityValue: Double
-    let label: String
+    let timeStamp: Int
 }
 
 class WeatherGraphView: UIView {
@@ -120,7 +120,7 @@ class WeatherGraphView: UIView {
                 let yPos: CGFloat = (data[index] - minValue) * ratio
                 result.append(CGPoint(x: xPos, y: yPos))
             }
-
+            
             return result
         }
         
@@ -143,11 +143,11 @@ class WeatherGraphView: UIView {
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
-        
+
         if let humidityDataPoints = humidityDataPoints, humidityDataPoints.count > 0, let path = createPath(from: humidityDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
-            lineLayer.strokeColor = UIColor.black.cgColor
+            lineLayer.strokeColor = UIColor(named: "humidity-graph-color")?.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
@@ -177,9 +177,9 @@ class WeatherGraphView: UIView {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.fillColor = UIColor.clear.cgColor
-            lineLayer.strokeColor = UIColor.magenta.cgColor
+            lineLayer.strokeColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
             lineLayer.lineDashPattern = [4, 4]
-            lineLayer.lineWidth = 0.5
+            lineLayer.lineWidth = 0.8
             
             mainLayer.addSublayer(lineLayer)
         }
@@ -190,13 +190,18 @@ class WeatherGraphView: UIView {
             for index in 0..<data.count {
                 let textLayer: CATextLayer = CATextLayer()
                 textLayer.frame = CGRect(x: lineGap * CGFloat(index) + leadingSpace, y: mainLayer.frame.size.height - bottomSpace/2 - 8, width: lineGap, height: 30)
-                textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
-                textLayer.backgroundColor = UIColor.black.cgColor
+                textLayer.foregroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
+                textLayer.backgroundColor = UIColor.clear.cgColor
                 textLayer.alignmentMode = CATextLayerAlignmentMode.center
                 textLayer.contentsScale = UIScreen.main.scale
                 textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
                 textLayer.fontSize = 11
-                textLayer.string = "\(index)\ntest"
+                
+                let date: Date = Date(timeIntervalSince1970: TimeInterval(data[index].timeStamp))
+                let dateFormatter: DateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "MM-dd\nhh:mm a"
+                textLayer.string = dateFormatter.string(from: date)
+                
                 mainLayer.addSublayer(textLayer)
             }
         }
@@ -213,14 +218,6 @@ class WeatherGraphView: UIView {
             $0.removeFromSuperlayer()
         })
     }
-    
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
     
 }
 

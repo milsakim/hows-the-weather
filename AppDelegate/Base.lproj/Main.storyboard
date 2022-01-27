@@ -95,7 +95,7 @@
                         </activityIndicatorView>
                     </subviews>
                     <viewLayoutGuide key="safeArea" id="weH-Zc-k2I"/>
-                    <color key="backgroundColor" systemColor="systemGreenColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="8RE-WB-uVp" firstAttribute="centerX" secondItem="68h-ei-ORL" secondAttribute="centerX" id="FMl-Rr-Lu9"/>
                         <constraint firstItem="8RE-WB-uVp" firstAttribute="centerY" secondItem="68h-ei-ORL" secondAttribute="centerY" id="X6a-fM-bIM"/>
@@ -126,9 +126,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

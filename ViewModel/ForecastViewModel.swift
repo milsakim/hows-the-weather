@@ -23,7 +23,7 @@ final class ForecastViewModel {
     private var foreCastData: [ForeCastData] = []
     
     var graphPointEntryData: [PointEntry] {
-        foreCastData.compactMap { PointEntry(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, label: String($0.date)) }
+        foreCastData.compactMap { PointEntry(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, timeStamp: $0.date) }
     }
     
     weak var delegate: ViewModelDelegate?
