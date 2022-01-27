@@ -26,15 +26,31 @@ extension CityListViewController {
     }
     
     func setupSortingButton() {
-        let sortByCityName: UIAction = UIAction(title: "City Name", state: .off) { action in
+        var sortByCityNameActionState: UIAction.State = .off
+        var sortByTempActionState: UIAction.State = .off
+        var sortByDistanceActionState: UIAction.State = .off
+        
+        let sortingCriterionString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) as? String ?? SortingCriterion.name.rawValue
+        switch SortingCriterion(rawValue: sortingCriterionString) {
+        case .name:
+            sortByCityNameActionState = .on
+        case .temperature:
+            sortByTempActionState = .on
+        case .distance:
+            sortByDistanceActionState = .on
+        default:
+            sortByCityNameActionState = .on
+        }
+        
+        let sortByCityName: UIAction = UIAction(title: "City Name", state: sortByCityNameActionState) { action in
             UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
-        let sortByTemp: UIAction = UIAction(title: "Temperature", state: .off) { action in
+        let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
             
         }
-        let sortByDistance: UIAction = UIAction(title: "Distance") { action in
+        let sortByDistance: UIAction = UIAction(title: "Distance", state: sortByDistanceActionState) { action in
             
         }
         let sortingStandardMenu: UIMenu = UIMenu(title: "Sort by", options: [.singleSelection, .displayInline], children: [sortByCityName, sortByTemp, sortByDistance])
