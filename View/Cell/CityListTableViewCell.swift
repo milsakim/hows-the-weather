@@ -20,7 +20,7 @@ class CityListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        weatherIconView.backgroundColor = .gray
+        weatherIconView.backgroundColor = .lightGray 
         weatherIconView.layer.cornerRadius = weatherIconView.frame.height / 2
     }
 
