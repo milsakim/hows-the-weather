@@ -27,7 +27,12 @@ extension CityListViewController {
     
     func setupTableHeaderView() {
         let sortByCityName: UIAction = UIAction(title: "City Name") { action in
-            
+            if let viewModel = self.viewModel {
+                viewModel.supportingCities.sort {
+                    return $0.name > $1.name
+                }
+                self.tableView.reloadData()
+            }
         }
         let sortByTemp: UIAction = UIAction(title: "Temperature") { action in
             
