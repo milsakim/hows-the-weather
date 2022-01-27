@@ -29,7 +29,6 @@ final class CurrentWeatherViewModel {
     private let loadSize: Int = 20
     private var startIndex: Int = 0 {
         didSet {
-            print("--- startIndex: \(startIndex) ---")
             if startIndex == supportingCities.count {
                 DispatchQueue.main.async {
                     self.delegate?.allSupportedCitiesAreFetched()
@@ -46,11 +45,7 @@ final class CurrentWeatherViewModel {
     
     private let client: OpenWeatherAPIClient = OpenWeatherAPIClient()
     
-    var isFetchInProgress: Bool = false {
-        didSet {
-            print("--- isFetchInProgress: \(isFetchInProgress) ---")
-        }
-    }
+    var isFetchInProgress: Bool = false
 
     var supportingCities: [City] = []
     var currentWeather: [String: CurrentWeatherResponse] = [:]
