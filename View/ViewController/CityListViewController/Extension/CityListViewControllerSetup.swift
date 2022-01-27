@@ -26,7 +26,18 @@ extension CityListViewController {
     }
     
     func setupTableHeaderView() {
-        
+        let sortByCityName: UIAction = UIAction(title: "City Name") { action in
+            
+        }
+        let sortByTemp: UIAction = UIAction(title: "Temperature") { action in
+            
+        }
+        let sortByDistance: UIAction = UIAction(title: "Distance") { action in
+            
+        }
+        let sortingMenu: UIMenu = UIMenu(title: "Sort by", children: [sortByCityName, sortByTemp, sortByDistance])
+        sortButton.menu = sortingMenu
+        sortButton.showsMenuAsPrimaryAction = true
     }
     
     func setupViewModel() {
