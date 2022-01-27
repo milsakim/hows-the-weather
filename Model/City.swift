@@ -12,7 +12,7 @@ struct SupportingCityList: Codable {
 }
 
 struct City: Codable {
-    let id: Double
+    let id: Int
     let name: String
     let state: String
     let country: String

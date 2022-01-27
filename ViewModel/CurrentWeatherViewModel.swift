@@ -32,7 +32,7 @@ final class CurrentWeatherViewModel {
     }
     
     var supportingCities: [City] = []
-    var currentWeather: [Double: CurrentWeatherResponse] = [:]
+    var currentWeather: [String: CurrentWeatherResponse] = [:]
     var iconCache: NSCache<NSString, UIImage> = NSCache()
     
     // MARK: - Initializer
@@ -43,11 +43,12 @@ final class CurrentWeatherViewModel {
             print("Fail to get path or data")
             return
         }
-
         guard let json: SupportingCityList = try? JSONDecoder().decode(SupportingCityList.self, from: fileData) else {
             print("Fail to decode json data")
             return
         }
+        
+        print("file read fin")
         
         supportingCities = json.data
     }
@@ -55,13 +56,13 @@ final class CurrentWeatherViewModel {
     // MARK: - Deinitializer
     
     deinit {
-        print()
         supportingCities.removeAll()
     }
     
     // MARK: -
     
     func fetchCurrentWeathers() {
+        print(#function)
         for cityIndex in 0..<supportingCities.count {
             client.fetchCurrentWeatherData(city: Int(supportingCities[cityIndex].id), unit: "metric", language: "kr") { result in
                 switch result {
@@ -72,9 +73,7 @@ final class CurrentWeatherViewModel {
                         self.delegate?.fetchFailed(error: error)
                     }
                 case .success(let data):
-                    print("\(self.supportingCities[cityIndex].name) fetch success")
-                    
-                    self.currentWeather[self.supportingCities[cityIndex].id] = data
+                    self.currentWeather[String(self.supportingCities[cityIndex].id)] = data
                     
                     DispatchQueue.main.async {
                         self.delegate?.fetchCompleted([IndexPath(row: cityIndex, section: 0)])

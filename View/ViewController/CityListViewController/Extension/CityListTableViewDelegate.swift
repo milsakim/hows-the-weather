@@ -18,7 +18,7 @@ extension CityListViewController: UITableViewDelegate {
             showAlertController()
         }
         else {
-            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id], let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
+            if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)], let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "DetailedWeatherViewController", bundle: .main)
                 guard let detailedWeatherViewController: DetailedWeatherViewController = storyboard.instantiateViewController(withIdentifier: "DetailedWeatherViewController") as? DetailedWeatherViewController else {
                     print("Fail to cast DetailedWeatherViewController")

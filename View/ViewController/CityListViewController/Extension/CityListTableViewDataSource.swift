@@ -22,7 +22,7 @@ extension CityListViewController: UITableViewDataSource {
         }
         
         if let viewModel = viewModel {
-            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id] {
+            if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)] {
                 cell.cityLabel.text = currentWeather.name
                 cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
                 
@@ -52,6 +52,10 @@ extension CityListViewController: UITableViewDataSource {
                 cell.cityLabel.text = viewModel.supportingCities[indexPath.row].name
                 cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
             }
+        }
+        else {
+            cell.cityLabel.text = "---"
+            cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
         }
         
         return cell
