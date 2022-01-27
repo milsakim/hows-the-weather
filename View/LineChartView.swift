@@ -30,6 +30,12 @@ class LineChartView: UIView {
             setNeedsLayout()
         }
     }
+    var minTemp: Double? {
+        data?.compactMap({ $0.minTempValue }).min()
+    }
+    var maxTemp: Double? {
+        data?.compactMap({ $0.minTempValue }).min()
+    }
 
     private let dataLayer: CALayer = CALayer()
     
@@ -64,10 +70,11 @@ class LineChartView: UIView {
         mainLayer.addSublayer(dataLayer)
         
         scrollView.layer.addSublayer(mainLayer)
-        
-        layer.addSublayer(gridLayer)
+        scrollView.delegate = self
         
         addSubview(scrollView)
+        
+        layer.addSublayer(gridLayer)
     }
     
     override func layoutSubviews() {
@@ -269,4 +276,12 @@ class LineChartView: UIView {
     }
     */
 
+}
+
+extension LineChartView: UIScrollViewDelegate {
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        print(#function)
+    }
+    
 }
