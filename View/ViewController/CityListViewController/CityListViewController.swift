@@ -12,6 +12,8 @@ class CityListViewController: UIViewController {
     // MARK: - Property
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet var tableViewFooter: UIView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var viewModel: CurrentWeatherViewModel?
     
@@ -33,10 +35,33 @@ class CityListViewController: UIViewController {
 
 extension CityListViewController: ViewModelDelegate {
     
-    func fetchCompleted(_ indexPaths: [IndexPath]?) {
+    func fetchStarted() {
+        // 정렬 버튼 비활성화 시키기
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    func fetchCompleted(for indexPaths: [IndexPath]?) {
+        print("--- \(#function) ---")
+        tableViewFooter.isHidden = true
+        loadingIndicator.stopAnimating()
+        
         if let indexPaths = indexPaths {
-            tableView.reloadRows(at: indexPaths, with: .none)
+            tableView.insertRows(at: indexPaths, with: .none)
         }
+        
+        if tableView.contentSize.height < tableView.frame.size.height {
+            print("--- content is smaller ---")
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel?.fetchCurrentWeathers()
+        }
+    }
+    
+    func allSupportedCitiesAreFetched() {
+        print("--- \(#function): \(viewModel?.currentWeather.count)")
+        
+        // 정렬 버튼 활성화 시키기
+        navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
     func fetchFailed(error: APIResponseError) {

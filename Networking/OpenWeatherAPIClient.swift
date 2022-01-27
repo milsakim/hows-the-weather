@@ -14,36 +14,53 @@ final class OpenWeatherAPIClient {
     
     private let appID: String = "35ec455f68e67138f01a758d471cf357"
     
-    func fetchCurrentWeatherData(city id: Int, unit: String, language: String, completion handler: @escaping (Result<CurrentWeatherResponse, APIResponseError>) -> Void) {
-        let urlString = baseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=\(unit)" + "&" + "lang=\(language)"
-        guard let url: URL = URL(string: urlString) else {
-            print("Fail to create URL: \(urlString)")
-            return
-        }
+    func fetchCurrentWeatherData(cities ids: [Int], unit: String, language: String, completion handler: @escaping (Result<CurrentWeatherResponse, APIResponseError>) -> Void, finishHandler: @escaping () -> Void) {
+        print("--- \(#function): \(ids.count) ---")
+        let dispatchGroup: DispatchGroup = DispatchGroup()
+        var tasks: [URLSessionDataTask] = []
         
-        let urlRequest: URLRequest = URLRequest(url: url)
-        let task: URLSessionDataTask = URLSession.shared.dataTask(with: urlRequest) { (data, urlResponse, error) in
-            guard let httpResponse: HTTPURLResponse = urlResponse as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
-                if let data = data {
-                    if let decodedData = try? JSONDecoder().decode(ErrorMessage.self, from: data) {
-                        print(decodedData)
-                    }
-                }
-                handler(Result.failure(.network))
-                return
-            }
-            guard let data = data else {
-                handler(Result.failure(.network))
-                return
-            }
-            guard let decodedData: CurrentWeatherResponse = try? JSONDecoder().decode(CurrentWeatherResponse.self, from: data) else {
-                handler(.failure(.decoding))
+        for id in ids {
+            let urlString = baseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=\(unit)" + "&" + "lang=\(language)"
+            guard let url: URL = URL(string: urlString) else {
+                print("Fail to create URL: \(urlString)")
                 return
             }
             
-            handler(.success(decodedData))
+            dispatchGroup.enter()
+            
+            let urlRequest: URLRequest = URLRequest(url: url)
+            let task: URLSessionDataTask = URLSession.shared.dataTask(with: urlRequest) { (data, urlResponse, error) in
+                guard let httpResponse: HTTPURLResponse = urlResponse as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+                    if let data = data {
+                        if let decodedData = try? JSONDecoder().decode(ErrorMessage.self, from: data) {
+                            print(decodedData)
+                        }
+                    }
+                    handler(Result.failure(.network))
+                    return
+                }
+                guard let data = data else {
+                    handler(Result.failure(.network))
+                    return
+                }
+                guard let decodedData: CurrentWeatherResponse = try? JSONDecoder().decode(CurrentWeatherResponse.self, from: data) else {
+                    handler(.failure(.decoding))
+                    return
+                }
+                
+                handler(.success(decodedData))
+                dispatchGroup.leave()
+            }
+            
+            tasks.append(task)
         }
-        task.resume()
+        
+        dispatchGroup.notify(queue: DispatchQueue.main) {
+            print("Every task is complete")
+            finishHandler()
+        }
+        
+        tasks.forEach({ $0.resume() })
     }
     
     func fetchForecastData(city id: Int, ompletion handler: @escaping (Result<ForecastResponse, APIResponseError>) -> Void) {

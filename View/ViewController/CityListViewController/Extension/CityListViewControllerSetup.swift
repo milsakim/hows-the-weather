@@ -47,10 +47,15 @@ extension CityListViewController {
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
-        let sortByTemp: UIAction = UIAction(title: "Temperature", attributes: .disabled, state: sortByTempActionState) { action in
+        let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
+            UserDefaults.standard.set(SortingCriterion.temperature.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            self.viewModel?.sortSupportingCityList()
+            self.tableView.reloadData()
         }
         let sortByDistance: UIAction = UIAction(title: "Distance", attributes: .disabled, state: sortByDistanceActionState) { action in
-
+            UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            self.viewModel?.sortSupportingCityList()
+            self.tableView.reloadData()
         }
         let sortingStandardMenu: UIMenu = UIMenu(title: "Sort by", options: [.singleSelection, .displayInline], children: [sortByCityName, sortByTemp, sortByDistance])
         
@@ -85,6 +90,7 @@ extension CityListViewController {
         sortingButton.menu = sortingMenu
     
         navigationItem.setRightBarButton(sortingButton, animated: false)
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     func setupTableView() {
@@ -93,12 +99,32 @@ extension CityListViewController {
         tableView.delegate = self
         
         tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+        
+        tableView.tableFooterView = tableViewFooter
+        tableViewFooter.isHidden = true
     }
 
     func setupViewModel() {
         viewModel = CurrentWeatherViewModel()
         viewModel?.delegate = self
         viewModel?.fetchCurrentWeathers()
+    }
+    
+    @objc func reloadAllData() {
+        guard let viewModel = viewModel, !viewModel.isFetchInProgress else {
+            tableView.refreshControl?.endRefreshing()
+            return
+        }
+        
+        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
+        setupSortingButton()
+        viewModel.sortSupportingCityList()
+        viewModel.clear()
+        tableView.reloadData()
+        viewModel.fetchCurrentWeathers()
+        tableView.refreshControl?.endRefreshing()
     }
 
 }

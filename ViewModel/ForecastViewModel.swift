@@ -35,6 +35,12 @@ final class ForecastViewModel {
         cityID = id
     }
     
+    // MARK: - Deinitialzier
+    
+    deinit {
+        print("--- ForecastViewModel deinit ---")
+    }
+    
     func fetchForecastData() {
         client.fetchForecastData(city: cityID) { result in
             switch result {
@@ -46,7 +52,7 @@ final class ForecastViewModel {
                 }
                 
                 DispatchQueue.main.async {
-                    self.delegate?.fetchCompleted(nil)
+                    self.delegate?.fetchCompleted(for: nil)
                 }
             }
         }

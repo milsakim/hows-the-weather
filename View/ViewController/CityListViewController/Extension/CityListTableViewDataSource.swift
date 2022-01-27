@@ -13,14 +13,15 @@ extension CityListViewController: UITableViewDataSource {
         guard let viewModel = viewModel else {
             return 0
         }
-        return viewModel.supportingCities.count
+        
+        return viewModel.currentWeather.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell: CityListTableViewCell = tableView.dequeueReusableCell(withIdentifier: CityListTableViewCell.reuseID, for: indexPath) as? CityListTableViewCell else {
             fatalError("Fail to cast cell")
         }
-        
+
         if let viewModel = viewModel {
             // 해당 도시의 날씨 정보가 fetch 되어있는 경우
             if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)] {
