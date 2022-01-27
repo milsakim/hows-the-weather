@@ -28,32 +28,33 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="252" text="Seoul" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z9f-9K-Y4Z">
-                                                    <rect key="frame" x="20" y="8" width="304" height="50"/>
+                                                    <rect key="frame" x="20" y="8" width="292" height="50"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="32"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="752" verticalHuggingPriority="752" text="Label℃" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MEn-gq-XTY">
+                                                    <rect key="frame" x="20" y="64" width="350" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YYy-oN-g7N">
-                                                    <rect key="frame" x="332" y="8" width="50" height="50"/>
+                                                    <rect key="frame" x="320" y="8" width="50" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="YYy-oN-g7N" secondAttribute="height" multiplier="1:1" id="Hw6-5c-nEH"/>
                                                         <constraint firstAttribute="height" constant="50" id="edM-VG-pRr"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="752" verticalHuggingPriority="752" text="Label℃" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MEn-gq-XTY">
-                                                    <rect key="frame" x="327" y="64" width="55" height="15"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="MEn-gq-XTY" secondAttribute="trailing" constant="8" id="0F4-91-nAu"/>
+                                                <constraint firstAttribute="trailing" secondItem="MEn-gq-XTY" secondAttribute="trailing" constant="20" id="0F4-91-nAu"/>
                                                 <constraint firstItem="YYy-oN-g7N" firstAttribute="leading" secondItem="z9f-9K-Y4Z" secondAttribute="trailing" constant="8" id="Ing-VR-UOF"/>
                                                 <constraint firstItem="MEn-gq-XTY" firstAttribute="top" secondItem="z9f-9K-Y4Z" secondAttribute="bottom" constant="6" id="LED-Cg-eGW"/>
-                                                <constraint firstAttribute="trailing" secondItem="YYy-oN-g7N" secondAttribute="trailing" constant="8" id="LRj-y7-xOu"/>
+                                                <constraint firstAttribute="trailing" secondItem="YYy-oN-g7N" secondAttribute="trailing" constant="20" id="LRj-y7-xOu"/>
                                                 <constraint firstItem="z9f-9K-Y4Z" firstAttribute="leading" secondItem="Vua-C6-0pz" secondAttribute="leading" constant="20" symbolic="YES" id="e9E-Yx-htA"/>
                                                 <constraint firstAttribute="bottom" secondItem="MEn-gq-XTY" secondAttribute="bottom" constant="8" id="gQE-y3-zDx"/>
+                                                <constraint firstItem="MEn-gq-XTY" firstAttribute="leading" secondItem="Vua-C6-0pz" secondAttribute="leading" constant="20" symbolic="YES" id="k44-vv-tlo"/>
                                                 <constraint firstItem="YYy-oN-g7N" firstAttribute="bottom" secondItem="z9f-9K-Y4Z" secondAttribute="bottom" id="pZc-gB-Ipc"/>
                                                 <constraint firstItem="YYy-oN-g7N" firstAttribute="top" secondItem="Vua-C6-0pz" secondAttribute="top" constant="8" id="rWP-JH-xfr"/>
                                                 <constraint firstItem="z9f-9K-Y4Z" firstAttribute="top" secondItem="Vua-C6-0pz" secondAttribute="top" constant="8" id="rq6-OU-75i"/>
