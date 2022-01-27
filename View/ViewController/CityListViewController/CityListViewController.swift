@@ -36,11 +36,13 @@ class CityListViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         print(#function)
         
-        if tableView.contentSize.height < tableView.frame.size.height {
-            print("--- content is smaller ---")
-            tableViewFooter.isHidden = false
-            loadingIndicator.startAnimating()
-            viewModel?.fetchCurrentWeathers()
+        coordinator.animate(alongsideTransition: nil) { transitionCoordinator in
+            if self.tableView.contentSize.height < self.tableView.frame.size.height {
+                print("--- content is smaller ---")
+                self.tableViewFooter.isHidden = false
+                self.loadingIndicator.startAnimating()
+                self.viewModel?.fetchCurrentWeathers()
+            }
         }
     }
     
