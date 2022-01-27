@@ -50,7 +50,37 @@ final class CurrentWeatherViewModel {
         
         print("file read fin")
         
-        supportingCities = json.data
+        if let sortingCriterion: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) as? String,
+           let isAscending: Bool =  UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending.rawValue) as? Bool {
+            switch SortingCriterion(rawValue: sortingCriterion) {
+            case .name:
+                if isAscending {
+                    supportingCities = json.data.sorted { $0.name < $1.name }
+                }
+                else {
+                    supportingCities = json.data.sorted { $0.name > $1.name }
+                }
+            case .temperature:
+                if isAscending {
+                    
+                }
+                else {
+                    
+                }
+            case .distance:
+                if isAscending {
+                    
+                }
+                else {
+                    
+                }
+            default:
+                supportingCities = json.data
+            }
+        }
+        else {
+            supportingCities = json.data
+        }
     }
     
     // MARK: - Deinitializer
@@ -79,6 +109,38 @@ final class CurrentWeatherViewModel {
                         self.delegate?.fetchCompleted([IndexPath(row: cityIndex, section: 0)])
                     }
                 }
+            }
+        }
+    }
+    
+    // MARK: -
+    
+    func sortSupportingCityList() {
+        let criterionString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) as? String ?? SortingCriterion.name.rawValue
+        let sortingCriterion: SortingCriterion = SortingCriterion(rawValue: criterionString) ?? .name
+        let isAcending: Bool = UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending.rawValue) as? Bool ?? true
+        
+        switch sortingCriterion {
+        case .name:
+            if isAcending {
+                supportingCities.sort { $0.name < $1.name }
+            }
+            else {
+                supportingCities.sort { $0.name > $1.name }
+            }
+        case .temperature:
+            if isAcending {
+                
+            }
+            else {
+                
+            }
+        case .distance:
+            if isAcending {
+                
+            }
+            else {
+                
             }
         }
     }
