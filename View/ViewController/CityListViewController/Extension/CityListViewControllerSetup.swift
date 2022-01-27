@@ -99,12 +99,20 @@ extension CityListViewController {
         tableView.delegate = self
         
         tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
     }
 
     func setupViewModel() {
         viewModel = CurrentWeatherViewModel()
         viewModel?.delegate = self
         viewModel?.fetchCurrentWeathers()
+    }
+    
+    @objc func reloadAllData() {
+        viewModel?.clear()
+        viewModel?.fetchCurrentWeathers()
+        tableView.reloadData()
+        tableView.refreshControl?.endRefreshing()
     }
 
 }

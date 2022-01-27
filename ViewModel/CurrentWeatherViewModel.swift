@@ -15,6 +15,7 @@ enum DownloadError: Error {
 }
 
 protocol ViewModelDelegate: AnyObject {
+    func fetchStarted()
     func fetchCompleted(for indexPaths: [IndexPath]?)
     func allSupportedCitiesAreFetched()
     func fetchFailed(error: APIResponseError)
@@ -79,6 +80,8 @@ final class CurrentWeatherViewModel {
     // MARK: -
     
     func fetchCurrentWeathers() {
+        delegate?.fetchStarted()
+        
         // startIndex..<endIndex에 해당하는 도시의 날씨 정보를 fetch
         let endIndex: Int = (startIndex + loadSize) < supportingCities.count ? startIndex + loadSize : supportingCities.count
         

@@ -27,6 +27,10 @@ class ForecastViewController: UIViewController {
 
 extension ForecastViewController: ViewModelDelegate {
     
+    func fetchStarted() {
+        print(#function)
+    }
+    
     func fetchCompleted(for indexPaths: [IndexPath]?) {
         print(#function)
         lineGraphView.data = viewModel?.graphPointEntryData

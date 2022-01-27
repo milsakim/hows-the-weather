@@ -33,6 +33,11 @@ class CityListViewController: UIViewController {
 
 extension CityListViewController: ViewModelDelegate {
     
+    func fetchStarted() {
+        // 정렬 버튼 비활성화 시키기
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
     func fetchCompleted(for indexPaths: [IndexPath]?) {
         if let indexPaths = indexPaths {
             tableView.reloadRows(at: indexPaths, with: .none)
