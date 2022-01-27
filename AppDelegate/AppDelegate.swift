@@ -13,7 +13,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // CityListViewController에서 보여줄 도시 목록 정렬 기준 initial setting
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) == nil {
+            UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+        }
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending.rawValue) == nil {
+            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
+        }
+        
         return true
     }
 
