@@ -48,9 +48,14 @@ extension CityListViewController {
             self.tableView.reloadData()
         }
         let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
+            UserDefaults.standard.set(SortingCriterion.temperature.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            self.viewModel?.sortSupportingCityList()
+            self.tableView.reloadData()
         }
-        let sortByDistance: UIAction = UIAction(title: "Distance", state: sortByDistanceActionState) { action in
-
+        let sortByDistance: UIAction = UIAction(title: "Distance", attributes: .disabled, state: sortByDistanceActionState) { action in
+            UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            self.viewModel?.sortSupportingCityList()
+            self.tableView.reloadData()
         }
         let sortingStandardMenu: UIMenu = UIMenu(title: "Sort by", options: [.singleSelection, .displayInline], children: [sortByCityName, sortByTemp, sortByDistance])
         

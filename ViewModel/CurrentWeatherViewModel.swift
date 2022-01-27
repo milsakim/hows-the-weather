@@ -67,7 +67,6 @@ final class CurrentWeatherViewModel {
         print("file read fin: \(json.data.count)")
         
         supportingCities = json.data
-        sortSupportingCityList()
     }
     
     // MARK: - Deinitializer
@@ -152,10 +151,10 @@ final class CurrentWeatherViewModel {
             }
         case .temperature:
             if isAcending {
-                
+                supportingCities.sort { currentWeather[String($0.id)]!.main.temp < currentWeather[String($1.id)]!.main.temp }
             }
             else {
-                
+                supportingCities.sort { currentWeather[String($0.id)]!.main.temp > currentWeather[String($1.id)]!.main.temp }
             }
         case .distance:
             if isAcending {
