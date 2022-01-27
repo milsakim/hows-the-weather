@@ -14,7 +14,7 @@ struct PointEntry {
     let label: String
 }
 
-class LineChartView: UIView {
+class WeatherGraphView: UIView {
     
     let lineGap: CGFloat = 60.0
     
@@ -278,7 +278,7 @@ class LineChartView: UIView {
     
 }
 
-extension LineChartView: UIScrollViewDelegate {
+extension WeatherGraphView: UIScrollViewDelegate {
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         print(#function)
