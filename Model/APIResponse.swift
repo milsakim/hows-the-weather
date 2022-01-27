@@ -14,6 +14,7 @@ struct CurrentWeatherResponse: Codable {
     let main: Main
     let wind: Wind
     let name: String
+    let id: Int
 }
 
 struct Main: Codable {
@@ -45,5 +46,10 @@ struct ErrorMessage: Codable {
 // MARK: - Forecast Related Models
 
 struct ForecastResponse: Codable {
-    
+    let list: [Forecast]
+}
+
+struct Forecast: Codable {
+    let dt: Int
+    let main: Main
 }

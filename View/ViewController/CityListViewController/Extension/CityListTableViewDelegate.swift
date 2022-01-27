@@ -8,7 +8,7 @@
 import UIKit
 
 extension CityListViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else {
             return
@@ -18,7 +18,7 @@ extension CityListViewController: UITableViewDelegate {
             showAlertController()
         }
         else {
-            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id], let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
+            if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)], let cachedIcon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
                 let storyboard: UIStoryboard = UIStoryboard(name: "DetailedWeatherViewController", bundle: .main)
                 guard let detailedWeatherViewController: DetailedWeatherViewController = storyboard.instantiateViewController(withIdentifier: "DetailedWeatherViewController") as? DetailedWeatherViewController else {
                     print("Fail to cast DetailedWeatherViewController")
@@ -48,5 +48,14 @@ extension CityListViewController: UITableViewDelegate {
 }
 
 extension CityListViewController {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let viewModel = viewModel, viewModel.supportingCities.count != viewModel.currentWeather.count else { return }
+        if tableView.contentOffset.y + tableView.frame.size.height >= (tableView.contentSize.height - 50.0) {
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel.fetchCurrentWeathers()
+        }
+    }
     
 }

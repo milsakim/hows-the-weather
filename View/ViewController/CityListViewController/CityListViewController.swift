@@ -12,19 +12,38 @@ class CityListViewController: UIViewController {
     // MARK: - Property
     
     @IBOutlet weak var tableView: UITableView!
-    
-    // table view의 header
-    @IBOutlet var headerView: UIView!
-    @IBOutlet weak var sortButton: UIButton!
-    @IBOutlet weak var ascendingButton: UIButton!
+    @IBOutlet var tableViewFooter: UIView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
     var viewModel: CurrentWeatherViewModel?
+
+    var cityIDs: [String] = []
+    
+    // MARK: - Deinit
+    
+    deinit {
+        print("--- CityListViewController deinit ---")
+    }
     
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print(#function)
+        
+        coordinator.animate(alongsideTransition: nil) { transitionCoordinator in
+            if self.tableView.contentSize.height < self.tableView.frame.size.height {
+                print("--- content is smaller ---")
+                self.tableViewFooter.isHidden = false
+                self.loadingIndicator.startAnimating()
+                self.viewModel?.fetchCurrentWeathers()
+            }
+        }
     }
     
     private func commonInit() {
@@ -36,12 +55,42 @@ class CityListViewController: UIViewController {
     
 }
 
-extension CityListViewController: ViewModelDelegate {
+extension CityListViewController: CurrentWeatherViewModelDelegate {
     
-    func fetchCompleted(_ indexPaths: [IndexPath]?) {
-        if let indexPaths = indexPaths {
-            tableView.reloadRows(at: indexPaths, with: .none)
+    func fetchStarted() {
+        // 정렬 버튼 비활성화 시키기
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    func fetchCompleted(for indexPaths: [IndexPath]?, data: [String]?) {
+        print("--- \(#function) ---")
+        print("--- \(viewModel?.currentWeather.count) ---")
+        
+        tableViewFooter.isHidden = true
+        loadingIndicator.stopAnimating()
+        
+        if let indexPaths = indexPaths, let newData: [String] = data {
+            DispatchQueue.main.async {
+                self.tableView.beginUpdates()
+                self.cityIDs += newData
+                self.tableView.insertRows(at: indexPaths, with: .none)
+                self.tableView.endUpdates()
+            }
         }
+        
+        if tableView.contentSize.height < tableView.frame.size.height {
+            print("--- content is smaller ---")
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel?.fetchCurrentWeathers()
+        }
+    }
+    
+    func allSupportedCitiesAreFetched() {
+        print("--- \(#function): \(viewModel?.currentWeather.count)")
+        
+        // 정렬 버튼 활성화 시키기
+        navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
     func fetchFailed(error: APIResponseError) {

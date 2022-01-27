@@ -18,4 +18,21 @@ extension CityListViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    @objc func reloadAllData() {
+        guard let viewModel = viewModel, !viewModel.isFetchInProgress else {
+            tableView.refreshControl?.endRefreshing()
+            return
+        }
+        
+        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
+        cityIDs = []
+        setupSortingButton()
+        viewModel.sortSupportingCityList()
+        viewModel.clear()
+        tableView.reloadData()
+        viewModel.fetchCurrentWeathers()
+        tableView.refreshControl?.endRefreshing()
+    }
+    
 }

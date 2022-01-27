@@ -10,19 +10,17 @@ import UIKit
 extension CityListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else {
-            return 0
-        }
-        return viewModel.supportingCities.count
+        return cityIDs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell: CityListTableViewCell = tableView.dequeueReusableCell(withIdentifier: CityListTableViewCell.reuseID, for: indexPath) as? CityListTableViewCell else {
             fatalError("Fail to cast cell")
         }
-        
+
         if let viewModel = viewModel {
-            if let currentWeather = viewModel.currentWeather[viewModel.supportingCities[indexPath.row].id] {
+            // 해당 도시의 날씨 정보가 fetch 되어있는 경우
+            if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)] {
                 cell.cityLabel.text = currentWeather.name
                 cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
                 
@@ -52,6 +50,10 @@ extension CityListViewController: UITableViewDataSource {
                 cell.cityLabel.text = viewModel.supportingCities[indexPath.row].name
                 cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
             }
+        }
+        else {
+            cell.cityLabel.text = "---"
+            cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
         }
         
         return cell
