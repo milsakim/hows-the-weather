@@ -45,49 +45,11 @@ extension CityListViewController {
         
         tableView.refreshControl = UIRefreshControl()
     }
-    
-    func setupTableHeaderView() {
-        let sortByCityName: UIAction = UIAction(title: "City Name") { action in
-            if let viewModel = self.viewModel {
-                viewModel.supportingCities.sort {
-                    return $0.name > $1.name
-                }
-                self.tableView.reloadData()
-            }
-        }
-        let sortByTemp: UIAction = UIAction(title: "Temperature") { action in
-            
-        }
-        let sortByDistance: UIAction = UIAction(title: "Distance") { action in
-            
-        }
-        let sortingMenu: UIMenu = UIMenu(title: "Sort by", children: [sortByCityName, sortByTemp, sortByDistance])
-        sortButton.menu = sortingMenu
-        sortButton.showsMenuAsPrimaryAction = true
-    }
-    
+
     func setupViewModel() {
         viewModel = CurrentWeatherViewModel()
         viewModel?.delegate = self
         viewModel?.fetchCurrentWeathers()
     }
-    
-    @objc func presentSortingMenu() {
-        let sortByCityName: UIAction = UIAction(title: "City Name") { action in
-            if let viewModel = self.viewModel {
-                viewModel.supportingCities.sort {
-                    return $0.name > $1.name
-                }
-                self.tableView.reloadData()
-            }
-        }
-        let sortByTemp: UIAction = UIAction(title: "Temperature") { action in
-            
-        }
-        let sortByDistance: UIAction = UIAction(title: "Distance") { action in
-            
-        }
-        let sortingMenu: UIMenu = UIMenu(title: "Sort by", children: [sortByCityName, sortByTemp, sortByDistance])
-    }
-    
+
 }
