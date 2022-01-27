@@ -21,11 +21,19 @@ protocol ViewModelDelegate: AnyObject {
     func fetchFailed(error: APIResponseError)
 }
 
+protocol CurrentWeatherViewModelDelegate: AnyObject {
+    var cityIDs: [String] { get set }
+    func fetchStarted()
+    func fetchCompleted(for indexPaths: [IndexPath]?, data: [String]?)
+    func allSupportedCitiesAreFetched()
+    func fetchFailed(error: APIResponseError)
+}
+
 final class CurrentWeatherViewModel {
     
     // MARK: - Property
     
-    weak var delegate: ViewModelDelegate?
+    weak var delegate: CurrentWeatherViewModelDelegate?
     
     private let loadSize: Int = 9
     var startIndex: Int = 0 {
@@ -113,7 +121,7 @@ final class CurrentWeatherViewModel {
             }
         }, finishHandler: {
             self.isFetchInProgress = false
-            self.delegate?.fetchCompleted(for: (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0) }))
+            self.delegate?.fetchCompleted(for: (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0) }), data: self.supportingCities[self.startIndex..<endIndex].map({ String($0.id) }))
             self.startIndex = endIndex
         })
     }
@@ -154,6 +162,10 @@ final class CurrentWeatherViewModel {
             else {
                 
             }
+        }
+        
+        if (delegate?.cityIDs.count ?? -1) == supportingCities.count {
+            delegate?.cityIDs = supportingCities.map({ String($0.id) })
         }
     }
     
