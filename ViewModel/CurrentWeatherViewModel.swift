@@ -27,7 +27,7 @@ final class CurrentWeatherViewModel {
     
     weak var delegate: ViewModelDelegate?
     
-    private let loadSize: Int = 20
+    private let loadSize: Int = 10
     private var startIndex: Int = 0 {
         didSet {
             if startIndex == supportingCities.count {
@@ -107,27 +107,6 @@ final class CurrentWeatherViewModel {
                 self.startIndex += 1
             }
         }
-        
-        /*
-        for cityIndex in 0..<supportingCities.count {
-            client.fetchCurrentWeatherData(city: Int(supportingCities[cityIndex].id), unit: "metric", language: "kr") { result in
-                switch result {
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        print("failure: \(error.localizedDescription)")
-                        // 에러 처리
-                        self.delegate?.fetchFailed(error: error)
-                    }
-                case .success(let data):
-                    self.currentWeather[String(self.supportingCities[cityIndex].id)] = data
-                    
-                    DispatchQueue.main.async {
-                        self.delegate?.fetchCompleted([IndexPath(row: cityIndex, section: 0)])
-                    }
-                }
-            }
-        }
-        */
     }
     
     func clear() {
