@@ -143,18 +143,6 @@ class WeatherGraphView: UIView {
         }
     }
     
-    private func drawHumidityChart() {
-        if let humidityDataPoints = humidityDataPoints,
-           humidityDataPoints.count > 0,
-           let path = createPath(from: humidityDataPoints) {
-            let lineLayer = CAShapeLayer()
-            lineLayer.path = path.cgPath
-            lineLayer.strokeColor = UIColor.blue.cgColor
-            lineLayer.fillColor = UIColor.clear.cgColor
-            dataLayer.addSublayer(lineLayer)
-        }
-    }
-    
     private func createPath(from points: [CGPoint]) -> UIBezierPath? {
         guard points.count > 0 else {
             return nil
