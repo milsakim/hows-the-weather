@@ -30,13 +30,7 @@ class LineChartView: UIView {
             setNeedsLayout()
         }
     }
-    var minTemp: Double? {
-        data?.compactMap({ $0.minTempValue }).min()
-    }
-    var maxTemp: Double? {
-        data?.compactMap({ $0.minTempValue }).min()
-    }
-
+    
     private let dataLayer: CALayer = CALayer()
     
     private let mainLayer: CALayer = CALayer()
@@ -45,7 +39,6 @@ class LineChartView: UIView {
     
     private let gridLayer: CALayer = CALayer()
     
-    private var dataPoints: [CGPoint]?
     private var minTempDataPoints: [CGPoint]?
     private var maxTempDataPoints: [CGPoint]?
     private var humidityDataPoints: [CGPoint]?
@@ -70,8 +63,6 @@ class LineChartView: UIView {
         mainLayer.addSublayer(dataLayer)
         
         scrollView.layer.addSublayer(mainLayer)
-        scrollView.delegate = self
-        
         addSubview(scrollView)
         
         layer.addSublayer(gridLayer)
@@ -85,11 +76,20 @@ class LineChartView: UIView {
             scrollView.contentSize = contentSize
             mainLayer.frame = CGRect(origin: .zero, size: contentSize)
             dataLayer.frame = CGRect(x: 0, y: topSpace, width: mainLayer.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
+            dataLayer.backgroundColor = UIColor.green.cgColor
             gridLayer.frame = CGRect(x: 0, y: topSpace, width: self.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
             
-            minTempDataPoints = convertDataEntriesToPoints(data: data.compactMap({ $0.minTempValue }))
-            maxTempDataPoints = convertDataEntriesToPoints(data: data.compactMap({ $0.maxTempValue }))
-            humidityDataPoints = convertDataEntriesToPoints(data: data.compactMap({ $0.humidityValue }))
+            let minTempData: [Double] = data.compactMap({ $0.minTempValue })
+            print(minTempData.count)
+            let maxTempData: [Double] = data.compactMap({ $0.maxTempValue })
+            let tempRange: (Double?, Double?) = (minTempData.min(), maxTempData.max())
+            
+            let humidityData: [Double] = data.compactMap({ $0.humidityValue })
+            let humidityRange: (Double?, Double?) = (humidityData.min(), humidityData.max())
+            
+            minTempDataPoints = convertDataEntriesToPoints(data: minTempData, range: tempRange)
+            maxTempDataPoints = convertDataEntriesToPoints(data: maxTempData, range: tempRange)
+            humidityDataPoints = convertDataEntriesToPoints(data: humidityData, range: humidityRange)
             
             clean()
             
@@ -100,17 +100,17 @@ class LineChartView: UIView {
         }
     }
     
-    private func convertDataEntriesToPoints(data: [Double]) -> [CGPoint] {
-        if let maxValue = data.max(), let minValue = data.min() {
+    private func convertDataEntriesToPoints(data: [Double], range: (min: Double?, max: Double?)) -> [CGPoint] {
+        if let minValue: Double = range.min, let maxValue: Double = range.max {
             var result: [CGPoint] = []
-            let minMaxRange: CGFloat = CGFloat(maxValue - minValue) * topHorizontalLine
+            let ratio: CGFloat = dataLayer.frame.height / CGFloat(maxValue - minValue)
             
             for index in 0..<data.count {
-                let height = dataLayer.frame.height * (1 - ((CGFloat(data[index]) - CGFloat(minValue)) / minMaxRange))
-                let point = CGPoint(x: CGFloat(index) * lineGap + lineGap / 2 + leadingSpace, y: height)
-                result.append(point)
+                let xPos: CGFloat = CGFloat(index) * lineGap + lineGap / 2 + leadingSpace
+                let yPos: CGFloat = (data[index] - minValue) * ratio
+                result.append(CGPoint(x: xPos, y: yPos))
             }
-            
+
             return result
         }
         
@@ -118,18 +118,18 @@ class LineChartView: UIView {
     }
     
     private func drawChart() {
-        if let minTempDataPoints = minTempDataPoints, minTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: minTempDataPoints) {
-            let lineLayer = CAShapeLayer()
-            lineLayer.path = path.cgPath
-            lineLayer.strokeColor = UIColor.blue.cgColor
-            lineLayer.fillColor = UIColor.clear.cgColor
-            dataLayer.addSublayer(lineLayer)
-        }
-        
         if let maxTempDataPoints = maxTempDataPoints, maxTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: maxTempDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.strokeColor = UIColor.red.cgColor
+            lineLayer.fillColor = UIColor.clear.cgColor
+            dataLayer.addSublayer(lineLayer)
+        }
+        
+        if let minTempDataPoints = minTempDataPoints, minTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: minTempDataPoints) {
+            let lineLayer = CAShapeLayer()
+            lineLayer.path = path.cgPath
+            lineLayer.strokeColor = UIColor.blue.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
@@ -146,7 +146,7 @@ class LineChartView: UIView {
     private func drawHumidityChart() {
         if let humidityDataPoints = humidityDataPoints,
            humidityDataPoints.count > 0,
-            let path = createPath(from: humidityDataPoints) {
+           let path = createPath(from: humidityDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.strokeColor = UIColor.blue.cgColor
@@ -167,7 +167,7 @@ class LineChartView: UIView {
         }
         return path
     }
-
+    
     private func drawHorizontalLines() {
         guard let data = data else {
             return
@@ -201,12 +201,12 @@ class LineChartView: UIView {
                 var minMaxGap:CGFloat = 0
                 var lineValue:Int = 0
                 /*
-                if let max = data.max()?.value,
-                    let min = data.min()?.value {
-                    minMaxGap = CGFloat(max - min) * topHorizontalLine
-                    lineValue = Int((1-value) * minMaxGap) + Int(min)
-                }
-                */
+                 if let max = data.max()?.value,
+                 let min = data.min()?.value {
+                 minMaxGap = CGFloat(max - min) * topHorizontalLine
+                 lineValue = Int((1-value) * minMaxGap) + Int(min)
+                 }
+                 */
                 let textLayer = CATextLayer()
                 textLayer.frame = CGRect(x: 4, y: height, width: 50, height: 16)
                 textLayer.foregroundColor = #colorLiteral(red: 0.5019607843, green: 0.6784313725, blue: 0.8078431373, alpha: 1).cgColor
@@ -269,13 +269,13 @@ class LineChartView: UIView {
     }
     
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
+     // Only override draw() if you perform custom drawing.
+     // An empty implementation adversely affects performance during animation.
+     override func draw(_ rect: CGRect) {
+     // Drawing code
+     }
+     */
+    
 }
 
 extension LineChartView: UIScrollViewDelegate {
