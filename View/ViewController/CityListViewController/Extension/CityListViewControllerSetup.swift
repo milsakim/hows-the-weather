@@ -40,8 +40,8 @@ extension CityListViewController {
         tableView.delegate = self
         
         // table view의 header 설정
-        tableView.tableHeaderView = headerView
-        setupTableHeaderView()
+//        tableView.tableHeaderView = headerView
+//        setupTableHeaderView()
         
         tableView.refreshControl = UIRefreshControl()
     }
