@@ -47,7 +47,9 @@ class WeatherGraphView: UIView {
     private var minTempColor: CGColor {
         UIColor(named: "min-temp-graph-color")?.cgColor ?? UIColor.blue.cgColor
     }
-    
+    private var maxTempColor: CGColor {
+        UIColor(named: "max-temp-graph-color")?.cgColor ?? UIColor.red.cgColor
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -150,7 +152,7 @@ class WeatherGraphView: UIView {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.lineWidth = 3.0
-            lineLayer.strokeColor = UIColor.red.cgColor
+            lineLayer.strokeColor = maxTempColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
@@ -160,7 +162,7 @@ class WeatherGraphView: UIView {
             lineLayer.path = path.cgPath
             lineLayer.lineWidth = 3.0
             lineLayer.lineDashPattern = [10, 5, 5, 5]
-            lineLayer.strokeColor =  UIColor(named: "min-temp-graph-color")?.cgColor ?? UIColor.blue.cgColor
+            lineLayer.strokeColor =  minTempColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
@@ -246,7 +248,7 @@ class WeatherGraphView: UIView {
                 let dotRadius: CGFloat = 8
                 let dotLayer: CALayer = CALayer()
                 dotLayer.frame = CGRect(x: maxTempDataPoint.x - (dotRadius / 2), y: maxTempDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
-                dotLayer.backgroundColor = UIColor.red.cgColor
+                dotLayer.backgroundColor = maxTempColor
                 dotLayer.cornerRadius = dotRadius / 2
                 dataLayer.addSublayer(dotLayer)
             }
@@ -304,7 +306,7 @@ class WeatherGraphView: UIView {
             maxTempLabelLayer.alignmentMode = .center
             maxTempLabelLayer.contentsScale = UIScreen.main.scale
             maxTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
-            maxTempLabelLayer.foregroundColor = UIColor.red.cgColor
+            maxTempLabelLayer.foregroundColor = maxTempColor
             maxTempLabelLayer.fontSize = fontSize
             maxTempLabelLayer.string = maxTempString
             dataLayer.addSublayer(maxTempLabelLayer)
