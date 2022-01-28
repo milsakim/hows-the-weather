@@ -13,7 +13,7 @@ final class OpenWeatherAPIClient {
     private let forecastBaseURLString: String = "https://api.openweathermap.org/data/2.5/forecast?"
     
     private let appID: String = "35ec455f68e67138f01a758d471cf357"
-    
+
     func fetchCurrentWeatherData(cityIDs: [Int], unit: String, language: String, completion handler: @escaping (Result<[CurrentWeatherResponse], APIResponseError>) -> Void) {
         print("--- \(#function) called: \(cityIDs.reduce(into: "", { $0 += "\($1) " }))---")
         

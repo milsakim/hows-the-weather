@@ -18,6 +18,7 @@ extension CityListViewController: CurrentWeatherViewModelDelegate {
         print("--- \(#function) called ---")
         tableViewFooter.isHidden = true
         loadingIndicator.stopAnimating()
+        tableView.refreshControl?.endRefreshing()
         
         if let indexPaths = indexPaths, let newData: [String] = data {
             DispatchQueue.main.async {
@@ -53,6 +54,7 @@ extension CityListViewController: CurrentWeatherViewModelDelegate {
             tableViewFooter.isHidden = true
             loadingIndicator.stopAnimating()
             tableView.reloadData()
+            showFetchingFailureAlertController()
         }
     }
     
