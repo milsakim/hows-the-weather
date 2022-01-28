@@ -195,7 +195,7 @@ class WeatherGraphView: UIView {
         
         for index in 0..<(data.count - 1) {
             let path: UIBezierPath = UIBezierPath()
-            path.move(to: CGPoint(x: lineGap * CGFloat(index + 1) + leadingSpace, y: topSpace))
+            path.move(to: CGPoint(x: lineGap * CGFloat(index + 1) + leadingSpace, y: 0.0))
             path.addLine(to: CGPoint(x: lineGap * CGFloat(index + 1) + leadingSpace, y: mainLayer.frame.size.height - bottomSpace))
             
             let lineLayer = CAShapeLayer()
