@@ -133,9 +133,9 @@
 		16D6506727A16002005DCEDB /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				16D6506B27A1608D005DCEDB /* DetailedWeatherViewControllerSetup.swift */,
 				16D6506827A16026005DCEDB /* DetailedWeatherTableViewDatasource.swift */,
 				16D6507127A167F7005DCEDB /* DetailedWeatherTableViewDelegate.swift */,
-				16D6506B27A1608D005DCEDB /* DetailedWeatherViewControllerSetup.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
