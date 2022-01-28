@@ -94,14 +94,12 @@ class WeatherGraphView: UIView {
             print(minTempData.count)
             let maxTempData: [Double] = data.compactMap({ $0.maxTempValue })
             let tempRange: (Double?, Double?) = (minTempData.min(), maxTempData.max())
-            
             let humidityData: [Double] = data.compactMap({ $0.humidityValue })
             let humidityRange: (Double?, Double?) = (humidityData.min(), humidityData.max())
             
             minTempDataPoints = convertDataEntriesToPoints(data: minTempData, range: tempRange)
             maxTempDataPoints = convertDataEntriesToPoints(data: maxTempData, range: tempRange)
             humidityDataPoints = convertDataEntriesToPoints(data: humidityData, range: humidityRange)
-            
             clean()
             
             drawVerticalLines()
@@ -117,7 +115,7 @@ class WeatherGraphView: UIView {
             
             for index in 0..<data.count {
                 let xPos: CGFloat = CGFloat(index) * lineGap + lineGap / 2 + leadingSpace
-                let yPos: CGFloat = (data[index] - minValue) * ratio
+                let yPos: CGFloat = dataLayer.frame.height - (data[index] - minValue) * ratio
                 result.append(CGPoint(x: xPos, y: yPos))
             }
             
