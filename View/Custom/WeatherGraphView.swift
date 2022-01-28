@@ -69,7 +69,9 @@ class WeatherGraphView: UIView {
     
     private func setupView() {
         mainLayer.addSublayer(dataLayer)
+        
         contentView.layer.addSublayer(mainLayer)
+        
         scrollView.addSubview(contentView)
         
         addSubview(scrollView)
@@ -82,11 +84,12 @@ class WeatherGraphView: UIView {
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.minimumZoomScale = 0.5
+        scrollView.maximumZoomScale = 1.0
     }
     
     override func layoutSubviews() {
         scrollView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
-        
+        scrollView.setZoomScale(1.0, animated: true)
         if let data = data {
             let contentSize: CGSize = CGSize(width: CGFloat(data.count) * lineGap + leadingSpace + trailingSpace, height: frame.size.height)
             scrollView.contentSize = contentSize
@@ -346,6 +349,30 @@ extension WeatherGraphView: UIScrollViewDelegate {
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         print(#function)
+        
+        let scrollViewWidth: CGFloat = scrollView.bounds.width
+        let scrollViewHeight: CGFloat = scrollView.bounds.height
+        
+        let contentViewWidth: CGFloat = contentView.frame.width
+        let contentViewHeight: CGFloat = contentView.frame.height
+        
+        var contentViewFrame: CGRect = contentView.frame
+        
+        if contentViewWidth < scrollViewWidth {
+            contentViewFrame.origin.x = (scrollViewWidth - contentViewWidth) / 2
+        }
+        else {
+            contentViewFrame.origin.x = 0
+        }
+        
+        if contentViewHeight < scrollViewHeight {
+            contentViewFrame.origin.y = (scrollViewHeight - contentViewHeight) / 2
+        }
+        else {
+            contentViewFrame.origin.y = 0
+        }
+        
+        contentView.frame = contentViewFrame
     }
     
 }
