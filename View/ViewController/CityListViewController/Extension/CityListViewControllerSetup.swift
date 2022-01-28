@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum SortingCriterion: String {
-    case name = "name"
-    case temperature = "temperature"
-    case distance = "distance"
-}
-
 extension CityListViewController {
     
     func setupNavigation() {
@@ -28,7 +22,7 @@ extension CityListViewController {
         var sortByTempActionState: UIAction.State = .off
         var sortByDistanceActionState: UIAction.State = .off
         
-        let sortingCriterionString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) as? String ?? SortingCriterion.name.rawValue
+        let sortingCriterionString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion) as? String ?? SortingCriterion.name.rawValue
         switch SortingCriterion(rawValue: sortingCriterionString) {
         case .name:
             sortByCityNameActionState = .on
@@ -41,17 +35,17 @@ extension CityListViewController {
         }
         
         let sortByCityName: UIAction = UIAction(title: "City Name", state: sortByCityNameActionState) { action in
-            UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
-            UserDefaults.standard.set(SortingCriterion.temperature.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            UserDefaults.standard.set(SortingCriterion.temperature.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         let sortByDistance: UIAction = UIAction(title: "Distance", attributes: .disabled, state: sortByDistanceActionState) { action in
-            UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
+            UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
@@ -61,7 +55,7 @@ extension CityListViewController {
         var ascendingOrderActionState: UIAction.State = .off
         var decendingOrderActionState: UIAction.State = .off
         
-        if UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending.rawValue) as? Bool ?? true {
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending) as? Bool ?? true {
             ascendingOrderActionState = .on
         }
         else {
@@ -69,12 +63,12 @@ extension CityListViewController {
         }
         
         let acsendingOrder: UIAction = UIAction(title: "Ascending", state: ascendingOrderActionState) { action in
-            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
+            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         let descendingOrder: UIAction = UIAction(title: "Descending", state: decendingOrderActionState) { action in
-            UserDefaults.standard.set(false, forKey: UserDefaultsKey.isAscending.rawValue)
+            UserDefaults.standard.set(false, forKey: UserDefaultsKey.isAscending)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
@@ -95,6 +89,51 @@ extension CityListViewController {
         let settingButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "setting-ic"), style: .plain, target: self, action: nil)
         navigationItem.setLeftBarButton(settingButton, animated: false)
         navigationItem.leftBarButtonItem?.isEnabled = false
+        
+        var celsiusActionState: UIAction.State = .off
+        var fahrenheitActionState: UIAction.State = .off
+        
+        let unitString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
+        switch MeasurementUnit(rawValue: unitString) {
+        case .celsius:
+            celsiusActionState = .on
+        case .fahrenheit:
+            fahrenheitActionState = .on
+        default:
+            celsiusActionState = .on
+        }
+        
+        let celsius: UIAction = UIAction(title: "Celsius", state: celsiusActionState) { action in
+            
+        }
+        let fahrenheit: UIAction = UIAction(title: "Fahrenheit", state: fahrenheitActionState) { action in
+            
+        }
+        let unitsMenu: UIMenu = UIMenu(title: "Unit", options: [.singleSelection, .displayInline], children: [celsius, fahrenheit])
+        
+        var englishActionState: UIAction.State = .off
+        var koreanActionState: UIAction.State = .off
+        
+        let languageString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.language) as? String ?? Language.korean.rawValue
+        switch Language(rawValue: languageString) {
+        case .korean:
+            koreanActionState = .on
+        case .english:
+            englishActionState = .on
+        default:
+            koreanActionState = .on
+        }
+        
+        let english: UIAction = UIAction(title: "English", state: englishActionState) { action in
+            
+        }
+        let korean: UIAction = UIAction(title: "Korean", state: koreanActionState) { action in
+            
+        }
+        let languageMenu: UIMenu = UIMenu(title: "Language", options: [.singleSelection, .displayInline], children: [korean, english])
+        
+        let settingMenu: UIMenu = UIMenu(title: "Setting", options: [], children: [unitsMenu, languageMenu])
+        settingButton.menu = settingMenu
     }
     
     func setupTableView() {

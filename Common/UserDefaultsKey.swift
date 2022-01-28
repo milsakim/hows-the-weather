@@ -20,7 +20,7 @@ struct UserDefaultsKey {
     static let sortingCriterion = "SortingCritrion"
     static let isAscending = "IsAcsending"
     static let language = "Language"
-    static let unit = "Unit"
+    static let unit = "MeasurementUnit"
 }
 
 enum SortingCriterion: String {
@@ -29,7 +29,7 @@ enum SortingCriterion: String {
     case distance = "distance"
 }
 
-enum Unit: String {
+enum MeasurementUnit: String {
     case celsius = "metric"
     case fahrenheit = "imperial"
 }

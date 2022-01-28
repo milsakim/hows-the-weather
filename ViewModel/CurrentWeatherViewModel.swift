@@ -115,9 +115,9 @@ final class CurrentWeatherViewModel {
     // MARK: -
     
     func sortSupportingCityList() {
-        let criterionString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) as? String ?? SortingCriterion.name.rawValue
+        let criterionString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion) as? String ?? SortingCriterion.name.rawValue
         let sortingCriterion: SortingCriterion = SortingCriterion(rawValue: criterionString) ?? .name
-        let isAcending: Bool = UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending.rawValue) as? Bool ?? true
+        let isAcending: Bool = UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending) as? Bool ?? true
         
         switch sortingCriterion {
         case .name:

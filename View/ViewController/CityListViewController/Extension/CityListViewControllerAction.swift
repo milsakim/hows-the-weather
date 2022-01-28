@@ -45,8 +45,8 @@ extension CityListViewController {
             return
         }
         
-        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
-        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
+        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending)
         cityIDs = []
         tableView.reloadData()
         setupSortingButton()
