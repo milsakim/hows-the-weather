@@ -7,6 +7,12 @@
 
 import Foundation
 
+
+protocol ForecastViewModelDelegate: AnyObject {
+    func fetchCompleted(for indexPaths: [IndexPath]?)
+    func fetchFailed(error: APIResponseError)
+}
+
 struct ForeCastData {
     let date: Int
     let minTemperature: Double
@@ -26,7 +32,7 @@ final class ForecastViewModel {
         foreCastData.compactMap { GraphPointData(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, timeStamp: $0.date) }
     }
     
-    weak var delegate: ViewModelDelegate?
+    weak var delegate: ForecastViewModelDelegate?
     
     // MARK: - Initializer
     
