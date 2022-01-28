@@ -132,7 +132,7 @@ class WeatherGraphView: UIView {
         if let maxTempDataPoints = maxTempDataPoints, maxTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: maxTempDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
-            lineLayer.lineWidth = 1.5
+            lineLayer.lineWidth = 3.0
             lineLayer.strokeColor = UIColor.red.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
@@ -141,6 +141,7 @@ class WeatherGraphView: UIView {
         if let minTempDataPoints = minTempDataPoints, minTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: minTempDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
+            lineLayer.lineWidth = 2.0
             lineLayer.strokeColor = UIColor.blue.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
@@ -149,6 +150,7 @@ class WeatherGraphView: UIView {
         if let humidityDataPoints = humidityDataPoints, humidityDataPoints.count > 0, let path = createPath(from: humidityDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
+            lineLayer.lineWidth = 2.0
             lineLayer.strokeColor = UIColor(named: "humidity-graph-color")?.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
