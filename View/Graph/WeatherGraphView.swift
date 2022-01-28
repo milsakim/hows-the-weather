@@ -271,6 +271,7 @@ class WeatherGraphView: UIView {
             let minTempLabelLayer: CATextLayer = CATextLayer()
             minTempLabelLayer.frame = CGRect(origin: CGPoint(x: minTempDataPoints[dataIndex].x - (lineGap / 2), y: minTempDataPoints[dataIndex].y - labelLayerSize.height), size: labelLayerSize)
             minTempLabelLayer.alignmentMode = .center
+            minTempLabelLayer.contentsScale = UIScreen.main.scale
             minTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
             minTempLabelLayer.foregroundColor = UIColor.blue.cgColor
             minTempLabelLayer.fontSize = 11
@@ -280,6 +281,7 @@ class WeatherGraphView: UIView {
             let maxTempLabelLayer: CATextLayer = CATextLayer()
             maxTempLabelLayer.frame = CGRect(origin: CGPoint(x: maxTempDataPoints[dataIndex].x - (lineGap / 2), y: maxTempDataPoints[dataIndex].y - labelLayerSize.height), size: labelLayerSize)
             maxTempLabelLayer.alignmentMode = .center
+            maxTempLabelLayer.contentsScale = UIScreen.main.scale
             maxTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
             maxTempLabelLayer.foregroundColor = UIColor.red.cgColor
             maxTempLabelLayer.fontSize = 11
@@ -289,6 +291,7 @@ class WeatherGraphView: UIView {
             let humidityLabelLayer: CATextLayer = CATextLayer()
             humidityLabelLayer.frame = CGRect(origin: CGPoint(x: humidityDataPoints[dataIndex].x - (lineGap / 2), y: humidityDataPoints[dataIndex].y - labelLayerSize.height), size: labelLayerSize)
             humidityLabelLayer.alignmentMode = .center
+            humidityLabelLayer.contentsScale = UIScreen.main.scale
             humidityLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
             humidityLabelLayer.foregroundColor = UIColor(named: "humidity-graph-color")?.cgColor ?? UIColor.black.cgColor
             humidityLabelLayer.fontSize = 11
