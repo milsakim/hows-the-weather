@@ -19,6 +19,11 @@ class CityListViewController: UIViewController {
 
     var cityIDs: [String] = []
     
+    private let cellHeight: CGFloat = 87.0
+    var isContentSmaller: Bool {
+        cellHeight * CGFloat(tableView.numberOfRows(inSection: 0)) < tableView.frame.height
+    }
+    
     // MARK: - Deinit
     
     deinit {
@@ -34,11 +39,11 @@ class CityListViewController: UIViewController {
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        print(#function)
+        print("--- \(#function) ---")
         
         coordinator.animate(alongsideTransition: nil) { transitionCoordinator in
-            if self.tableView.contentSize.height < self.tableView.frame.size.height {
-                print("--- content is smaller ---")
+            if self.isContentSmaller {
+                print("--- \(#function): content is smaller ---")
                 self.tableViewFooter.isHidden = false
                 self.loadingIndicator.startAnimating()
                 self.viewModel?.fetchCurrentWeathers()
@@ -48,11 +53,11 @@ class CityListViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if self.tableView.contentSize.height < self.tableView.frame.size.height {
-            print("--- content is smaller ---")
-            self.tableViewFooter.isHidden = false
-            self.loadingIndicator.startAnimating()
-            self.viewModel?.fetchCurrentWeathers()
+        if isContentSmaller {
+            print("--- \(#function): content is smaller ---")
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel?.fetchCurrentWeathers()
         }
     }
     
@@ -61,50 +66,6 @@ class CityListViewController: UIViewController {
         setupNavigation()
         setupTableView()
         setupViewModel()
-    }
-    
-}
-
-extension CityListViewController: CurrentWeatherViewModelDelegate {
-    
-    func fetchStarted() {
-        // 정렬 버튼 비활성화 시키기
-        navigationItem.rightBarButtonItem?.isEnabled = false
-    }
-    
-    func fetchCompleted(for indexPaths: [IndexPath]?, data: [String]?) {
-        print("--- \(#function) ---")
-        print("--- \(viewModel?.currentWeather.count) ---")
-        
-        tableViewFooter.isHidden = true
-        loadingIndicator.stopAnimating()
-        
-        if let indexPaths = indexPaths, let newData: [String] = data {
-            DispatchQueue.main.async {
-                self.tableView.beginUpdates()
-                self.cityIDs += newData
-                self.tableView.insertRows(at: indexPaths, with: .none)
-                self.tableView.endUpdates()
-            }
-        }
-        
-        if tableView.contentSize.height < tableView.frame.size.height {
-            print("--- content is smaller ---")
-            tableViewFooter.isHidden = false
-            loadingIndicator.startAnimating()
-            viewModel?.fetchCurrentWeathers()
-        }
-    }
-    
-    func allSupportedCitiesAreFetched() {
-        print("--- \(#function): \(viewModel?.currentWeather.count)")
-        
-        // 정렬 버튼 활성화 시키기
-        navigationItem.rightBarButtonItem?.isEnabled = true
-    }
-    
-    func fetchFailed(error: APIResponseError) {
-        print("fetch failed")
     }
     
 }

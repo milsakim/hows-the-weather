@@ -14,6 +14,12 @@ class ForecastViewController: UIViewController {
     var viewModel: ForecastViewModel?
     var cityID: Int?
     
+    // MARK: - Deinitializer
+    
+    deinit {
+        print("--- ForecastViewController deinit ---")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()

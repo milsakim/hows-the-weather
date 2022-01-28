@@ -18,7 +18,11 @@ extension CityListViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    @objc func reloadAllData() {
+    /**
+     도시의 현재 날씨 정보를 서버로부터 다시 받아온다
+     */
+    @objc func handleRefreshControl() {
+        print("--- \(#function) called ---")
         guard let viewModel = viewModel, !viewModel.isFetchInProgress else {
             tableView.refreshControl?.endRefreshing()
             return
@@ -27,12 +31,14 @@ extension CityListViewController {
         UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
         cityIDs = []
+        tableView.reloadData()
         setupSortingButton()
         viewModel.sortSupportingCityList()
         viewModel.clear()
-        tableView.reloadData()
+//        tableView.reloadData()
         viewModel.fetchCurrentWeathers()
         tableView.refreshControl?.endRefreshing()
+        print("--- \(#function): end refreshing ---")
     }
-    
+        
 }

@@ -36,6 +36,7 @@ final class CurrentWeatherViewModel {
     weak var delegate: CurrentWeatherViewModelDelegate?
     
     private let loadSize: Int = 9
+    
     var startIndex: Int = 0 {
         didSet {
             print("--- startIndex: \(startIndex) ---")
@@ -44,15 +45,7 @@ final class CurrentWeatherViewModel {
             }
         }
     }
-    /*
-    var fetchedCount: Int = 0 {
-        didSet {
-            if fetchedCount == supportingCities.count {
-                delegate?.allSupportedCitiesAreFetched()
-            }
-        }
-    }
-    */
+
     private let client: OpenWeatherAPIClient = OpenWeatherAPIClient()
     
     var isFetchInProgress: Bool = false {
@@ -60,6 +53,7 @@ final class CurrentWeatherViewModel {
            print("--- isFetchInProgress: \(isFetchInProgress) ---")
         }
     }
+    var isFetchingFailed: Bool = false
 
     var supportingCities: [City] = []
     var currentWeather: [String: CurrentWeatherResponse] = [:]
@@ -70,15 +64,15 @@ final class CurrentWeatherViewModel {
     init() {
         guard let filePath = Bundle.main.path(forResource: "supporting-city-list", ofType: "json"),
                 let fileData = FileManager.default.contents(atPath: filePath) else {
-            print("Fail to get path or data")
+            print("--- Fail to get path or data ---")
             return
         }
         guard let json: SupportingCityList = try? JSONDecoder().decode(SupportingCityList.self, from: fileData) else {
-            print("Fail to decode json data")
+            print("--- Fail to decode json data ---")
             return
         }
         
-        print("file read fin: \(json.data.count)")
+        print("--- file read fin: \(json.data.count) ---")
         
         supportingCities = json.data
         sortSupportingCityList()
@@ -94,8 +88,6 @@ final class CurrentWeatherViewModel {
     // MARK: -
     
     func fetchCurrentWeathers() {
-        print("--- \(#function) ---")
-        
         guard !isFetchInProgress else {
             print("--- \(#function): fetch is on progress ---")
             return
@@ -108,20 +100,27 @@ final class CurrentWeatherViewModel {
         
         isFetchInProgress = true
         
+        print("--- \(#function): \(supportingCities[startIndex..<endIndex].reduce(into: "", { $0 += $1.name + " " })) ---")
         client.fetchCurrentWeatherData(cities: supportingCities[startIndex..<endIndex].compactMap({ $0.id }), unit: "metric", language: "kr", completion: { result in
             switch result {
             case .failure(let error):
                 DispatchQueue.main.async {
-                    print("failure: \(error.localizedDescription)")
+                    print("--- failure: \(error.localizedDescription) ---")
                     // 에러 처리
+                    self.isFetchingFailed = true
                     self.delegate?.fetchFailed(error: error)
                 }
             case .success(let data):
+                print("--- fetch success: \(data.name) ---")
                 self.currentWeather[String(data.id)] = data
             }
         }, finishHandler: {
             self.isFetchInProgress = false
-            self.delegate?.fetchCompleted(for: (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0) }), data: self.supportingCities[self.startIndex..<endIndex].map({ String($0.id) }))
+            
+            let indicesPathsOfFetchedData: [IndexPath] = (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0) })
+            let idsOfFetchedData: [String] = self.supportingCities[self.startIndex..<endIndex].map({ String($0.id) })
+            self.delegate?.fetchCompleted(for: indicesPathsOfFetchedData, data: idsOfFetchedData)
+            
             self.startIndex = endIndex
         })
     }
@@ -131,6 +130,7 @@ final class CurrentWeatherViewModel {
         startIndex = 0
         currentWeather.removeAll()
         iconCache.removeAllObjects()
+//        isFetchingFailed = false
     }
     
     // MARK: -
@@ -157,10 +157,10 @@ final class CurrentWeatherViewModel {
             }
         case .distance:
             if isAcending {
-                
+                // 거리 오름차순 정렬
             }
             else {
-                
+                // 거리 내림차순 정렬
             }
         }
         
