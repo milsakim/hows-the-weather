@@ -104,7 +104,8 @@ class WeatherGraphView: UIView {
             
             drawVerticalLines()
             drawChart()
-            drawLabels()
+            drawDots()
+            drawDateLabels()
         }
     }
     
@@ -188,7 +189,7 @@ class WeatherGraphView: UIView {
         }
     }
     
-    private func drawLabels() {
+    private func drawDateLabels() {
         if let data = data, data.count > 0 {
             for index in 0..<data.count {
                 let textLayer: CATextLayer = CATextLayer()
@@ -220,6 +221,41 @@ class WeatherGraphView: UIView {
         gridLayer.sublayers?.forEach({
             $0.removeFromSuperlayer()
         })
+    }
+    
+    private func drawDots() {
+        if let minTempDataPoints = minTempDataPoints {
+            for minTempDataPoint in minTempDataPoints {
+                let dotRadius: CGFloat = 8
+                let dotLayer: CALayer = CALayer()
+                dotLayer.frame = CGRect(x: minTempDataPoint.x - (dotRadius / 2), y: minTempDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
+                dotLayer.backgroundColor = UIColor.blue.cgColor
+                dotLayer.cornerRadius = dotRadius / 2
+                dataLayer.addSublayer(dotLayer)
+            }
+        }
+        
+        if let maxTempDataPoints = maxTempDataPoints {
+            for maxTempDataPoint in maxTempDataPoints {
+                let dotRadius: CGFloat = 8
+                let dotLayer: CALayer = CALayer()
+                dotLayer.frame = CGRect(x: maxTempDataPoint.x - (dotRadius / 2), y: maxTempDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
+                dotLayer.backgroundColor = UIColor.red.cgColor
+                dotLayer.cornerRadius = dotRadius / 2
+                dataLayer.addSublayer(dotLayer)
+            }
+        }
+        
+        if let humidityDataPoints = humidityDataPoints {
+            for humidityDataPoint in humidityDataPoints {
+                let dotRadius: CGFloat = 8
+                let dotLayer: CALayer = CALayer()
+                dotLayer.frame = CGRect(x: humidityDataPoint.x - (dotRadius / 2), y: humidityDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
+                dotLayer.backgroundColor = UIColor(named: "humidity-graph-color")?.cgColor ?? UIColor.black.cgColor
+                dotLayer.cornerRadius = dotRadius / 2
+                dataLayer.addSublayer(dotLayer)
+            }
+        }
     }
     
 }
