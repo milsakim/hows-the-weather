@@ -28,6 +28,7 @@ final class OpenWeatherAPIClient {
                 fetchError = .url
                 return
             }
+            
             dispatchGroup.enter()
             let task: URLSessionDataTask = URLSession.shared.dataTask(with: url) { data, urlResponse, error in
                 guard let httpResponse: HTTPURLResponse = urlResponse as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
@@ -36,16 +37,19 @@ final class OpenWeatherAPIClient {
                     dispatchGroup.leave()
                     return
                 }
+                
                 guard let data = data else {
                     fetchError = .network
                     dispatchGroup.leave()
                     return
                 }
+                
                 guard let decodedData: CurrentWeatherResponse = try? JSONDecoder().decode(CurrentWeatherResponse.self, from: data) else {
                     fetchError = .network
                     dispatchGroup.leave()
                     return
                 }
+                
                 fetchedWeatherData.append(decodedData)
                 dispatchGroup.leave()
             }

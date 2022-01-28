@@ -229,11 +229,11 @@
 		16D6536327A10E8100716509 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				16D6536427A10E9A00716509 /* CityListViewControllerSetup.swift */,
-				16D6536B27A110B300716509 /* CityListTableViewDataSource.swift */,
-				16D6536E27A110CB00716509 /* CityListTableViewDelegate.swift */,
-				16D6507327A1855D005DCEDB /* CityListViewControllerAction.swift */,
 				1649DA3927A3DB3800FEC2F4 /* CurrentWeatherViewModelDelegate.swift */,
+				16D6536E27A110CB00716509 /* CityListTableViewDelegate.swift */,
+				16D6536B27A110B300716509 /* CityListTableViewDataSource.swift */,
+				16D6507327A1855D005DCEDB /* CityListViewControllerAction.swift */,
+				16D6536427A10E9A00716509 /* CityListViewControllerSetup.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";

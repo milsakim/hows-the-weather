@@ -16,12 +16,10 @@ class CityListViewController: UIViewController {
     
     @IBOutlet var tableViewFooter: UIView!
     
-    var viewModel: CurrentWeatherViewModel?
-
-    var cityIDs: [String] = []
-    
     private let cellHeight: CGFloat = 87.0
     
+    var viewModel: CurrentWeatherViewModel?
+    var cityList: [City] = []
     var isContentSmaller: Bool {
         cellHeight * CGFloat(tableView.numberOfRows(inSection: 0)) < tableView.frame.height
     }
@@ -30,7 +28,7 @@ class CityListViewController: UIViewController {
     
     deinit {
         viewModel = nil
-        cityIDs.removeAll()
+        cityList.removeAll()
         print("--- CityListViewController deinit ---")
     }
     
@@ -71,7 +69,7 @@ class CityListViewController: UIViewController {
     
     private func commonInit() {
         title = "Today's Weather"
-        setupNavigation()
+        setUpNavigation()
         setupTableView()
         setupViewModel()
     }

@@ -26,9 +26,10 @@ extension DetailedWeatherViewController: UITableViewDelegate {
         }
         
         guard let city = city else {
-            print("city is nil")
+            print("--- city is nil ---")
             return
         }
+        
         forecastViewController.cityID = city.id
         forecastViewController.title = "\(city.name) Forecast"
         

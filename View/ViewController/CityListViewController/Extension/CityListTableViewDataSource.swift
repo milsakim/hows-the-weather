@@ -11,7 +11,7 @@ extension CityListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        print("--- \(#function) called ---")
-        return cityIDs.count
+        return cityList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -21,8 +21,10 @@ extension CityListViewController: UITableViewDataSource {
         }
         
         if let viewModel = viewModel {
+            let id: String = String(cityList[indexPath.row].id)
+            
             // 해당 도시의 날씨 정보가 fetch 되어있는 경우
-            if let currentWeather = viewModel.currentWeather[cityIDs[indexPath.row]] {
+            if let currentWeather = viewModel.currentWeather[id] {
                 cell.cityLabel.text = currentWeather.name
                 cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
                 
@@ -49,7 +51,7 @@ extension CityListViewController: UITableViewDataSource {
                 }
             }
             else {
-                cell.cityLabel.text = viewModel.supportingCities[indexPath.row].name
+                cell.cityLabel.text = cityList[indexPath.row].name
                 cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
             }
         }

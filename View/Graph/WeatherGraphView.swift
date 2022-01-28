@@ -47,6 +47,7 @@ class WeatherGraphView: UIView {
     private var minTempColor: CGColor {
         UIColor(named: "min-temp-graph-color")?.cgColor ?? UIColor.blue.cgColor
     }
+    
     private var maxTempColor: CGColor {
         UIColor(named: "max-temp-graph-color")?.cgColor ?? UIColor.red.cgColor
     }
@@ -180,12 +181,14 @@ class WeatherGraphView: UIView {
         guard points.count > 0 else {
             return nil
         }
+        
         let path = UIBezierPath()
         path.move(to: points[0])
         
         for i in 1..<points.count {
             path.addLine(to: points[i])
         }
+        
         return path
     }
     
