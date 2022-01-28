@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1630261B27A324A6000818DE /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1630261A27A324A6000818DE /* NetworkMonitor.swift */; };
 		1633974E27A1178F00771895 /* OpenWeatherAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1633974D27A1178F00771895 /* OpenWeatherAPIClient.swift */; };
 		1633975027A11BFB00771895 /* APIResponseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1633974F27A11BFB00771895 /* APIResponseError.swift */; };
 		1633975327A1289900771895 /* CurrentWeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1633975227A1289900771895 /* CurrentWeatherViewModel.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1630261A27A324A6000818DE /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		1633974D27A1178F00771895 /* OpenWeatherAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenWeatherAPIClient.swift; sourceTree = "<group>"; };
 		1633974F27A11BFB00771895 /* APIResponseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResponseError.swift; sourceTree = "<group>"; };
 		1633975227A1289900771895 /* CurrentWeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherViewModel.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 			children = (
 				1633974D27A1178F00771895 /* OpenWeatherAPIClient.swift */,
 				1633974F27A11BFB00771895 /* APIResponseError.swift */,
+				1630261A27A324A6000818DE /* NetworkMonitor.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				16D6506C27A1608D005DCEDB /* DetailedWeatherViewControllerSetup.swift in Sources */,
 				1633974E27A1178F00771895 /* OpenWeatherAPIClient.swift in Sources */,
 				16D6506427A154A7005DCEDB /* DetailedWeatherViewController.swift in Sources */,
+				1630261B27A324A6000818DE /* NetworkMonitor.swift in Sources */,
 				16D6534927A0E83900716509 /* SceneDelegate.swift in Sources */,
 				16D6536F27A110CB00716509 /* CityListTableViewDelegate.swift in Sources */,
 				16D6507227A167F7005DCEDB /* DetailedWeatherTableViewDelegate.swift in Sources */,

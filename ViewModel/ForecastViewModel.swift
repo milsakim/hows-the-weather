@@ -22,8 +22,8 @@ final class ForecastViewModel {
     private let cityID: Int
     private var foreCastData: [ForeCastData] = []
     
-    var graphPointEntryData: [PointEntry] {
-        foreCastData.compactMap { PointEntry(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, timeStamp: $0.date) }
+    var graphPointEntryData: [GraphPointData] {
+        foreCastData.compactMap { GraphPointData(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, timeStamp: $0.date) }
     }
     
     weak var delegate: ViewModelDelegate?
