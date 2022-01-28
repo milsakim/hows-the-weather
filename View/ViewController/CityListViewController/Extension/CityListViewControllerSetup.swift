@@ -99,7 +99,6 @@ extension CityListViewController {
         tableView.delegate = self
         
         let refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = .green
         tableView.refreshControl = refreshControl
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         
