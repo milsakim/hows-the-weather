@@ -161,7 +161,7 @@ class WeatherGraphView: UIView {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
             lineLayer.lineWidth = 3.0
-            lineLayer.lineDashPattern = [10, 5, 5, 5]
+            lineLayer.lineDashPattern = [10, 10]
             lineLayer.strokeColor =  minTempColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
