@@ -12,13 +12,15 @@ extension CityListViewController: CurrentWeatherViewModelDelegate {
     func fetchStarted() {
         // 정렬 버튼 비활성화 시키기
         navigationItem.rightBarButtonItem?.isEnabled = false
+        // 설정 버튼 비활성화 시키기
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
     
     func fetchCompleted(for indexPaths: [IndexPath]?, data: [String]?) {
         print("--- \(#function) called ---")
         tableViewFooter.isHidden = true
         loadingIndicator.stopAnimating()
-        
+        navigationItem.leftBarButtonItem?.isEnabled = true
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
         }

@@ -13,3 +13,12 @@ enum UserDefaultsKey: String {
     case language = "Language"
     case unit = "Unit"
 }
+
+/*
+struct UserDefaultsKey {
+    static let sortingCriterion = "SortingCritrion"
+    static let isAscending = "IsAcsending"
+    static let language = "Language"
+    static let unit = "Unit"
+}
+*/

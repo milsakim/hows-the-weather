@@ -17,9 +17,7 @@ extension CityListViewController {
     
     func setupNavigation() {
         setupSortingButton()
-        
-        let settingButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "setting-ic"), style: .plain, target: self, action: nil)
-        navigationItem.setLeftBarButton(settingButton, animated: false)
+        setupSettingButton()
         
         // back button title 삭제
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -91,6 +89,12 @@ extension CityListViewController {
     
         navigationItem.setRightBarButton(sortingButton, animated: false)
         navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+    
+    func setupSettingButton() {
+        let settingButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "setting-ic"), style: .plain, target: self, action: nil)
+        navigationItem.setLeftBarButton(settingButton, animated: false)
+        navigationItem.leftBarButtonItem?.isEnabled = false
     }
     
     func setupTableView() {

@@ -37,6 +37,7 @@ final class CurrentWeatherViewModel {
     var isFetchInProgress: Bool = false {
         didSet {
            print("--- isFetchInProgress: \(isFetchInProgress) ---")
+            delegate?.fetchStarted()
         }
     }
 //    var isFetchingFailed: Bool = false
