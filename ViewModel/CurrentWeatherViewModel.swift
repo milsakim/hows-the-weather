@@ -53,7 +53,7 @@ final class CurrentWeatherViewModel {
            print("--- isFetchInProgress: \(isFetchInProgress) ---")
         }
     }
-    var isFetchingFailed: Bool = false
+//    var isFetchingFailed: Bool = false
 
     var supportingCities: [City] = []
     var currentWeather: [String: CurrentWeatherResponse] = [:]
@@ -87,44 +87,36 @@ final class CurrentWeatherViewModel {
     
     // MARK: -
     
-    func fetchCurrentWeathers() {
-        guard !isFetchInProgress else {
-            print("--- \(#function): fetch is on progress ---")
-            return
-        }
+    func fetchCurrentWeatherData() {
+        print("--- \(#function) called: \(startIndex) ---")
         
-        delegate?.fetchStarted()
-        
-        // startIndex..<endIndex에 해당하는 도시의 날씨 정보를 fetch
-        let endIndex: Int = (startIndex + loadSize) <= supportingCities.count ? startIndex + loadSize : supportingCities.count
+        if isFetchInProgress { return }
         
         isFetchInProgress = true
         
-        print("--- \(#function): \(supportingCities[startIndex..<endIndex].reduce(into: "", { $0 += $1.name + " " })) ---")
-        client.fetchCurrentWeatherData(cities: supportingCities[startIndex..<endIndex].compactMap({ $0.id }), unit: "metric", language: "kr", completion: { result in
+        let endIndex: Int = (startIndex + loadSize) <= supportingCities.count ? startIndex + loadSize : supportingCities.count
+        print("--- endIndex: \(endIndex) ---")
+        let cityIDsToFetch: [Int] = supportingCities[startIndex..<endIndex].map({ $0.id })
+        client.fetchCurrentWeatherData(cityIDs: cityIDsToFetch, unit: "metric", language: "kr") { result in
             switch result {
+            case .success(let weatherData):
+                print("--- \(#function) success: \(weatherData.reduce(into: "", { $0 += $1.name + " " }))")
+                for weatherDatum in weatherData {
+                    self.currentWeather[String(weatherDatum.id)] = weatherDatum
+                }
+                self.isFetchInProgress = false
+                self.delegate?.fetchCompleted(for: (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0)}), data: cityIDsToFetch.map({ String($0) }))
+                self.startIndex = endIndex
             case .failure(let error):
+                print("--- \(#function) fail ---")
                 DispatchQueue.main.async {
-                    print("--- failure: \(error.localizedDescription) ---")
-                    // 에러 처리
-                    self.isFetchingFailed = true
+                    print("--- \(#function) fail block ---")
                     self.delegate?.fetchFailed(error: error)
                 }
-            case .success(let data):
-                print("--- fetch success: \(data.name) ---")
-                self.currentWeather[String(data.id)] = data
             }
-        }, finishHandler: {
-            self.isFetchInProgress = false
-            
-            let indicesPathsOfFetchedData: [IndexPath] = (self.startIndex..<endIndex).map({ IndexPath(row: $0, section: 0) })
-            let idsOfFetchedData: [String] = self.supportingCities[self.startIndex..<endIndex].map({ String($0.id) })
-            self.delegate?.fetchCompleted(for: indicesPathsOfFetchedData, data: idsOfFetchedData)
-            
-            self.startIndex = endIndex
-        })
+        }
     }
-    
+
     func clear() {
         print("--- \(#function) ---")
         startIndex = 0

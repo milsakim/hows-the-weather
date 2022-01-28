@@ -108,7 +108,7 @@ extension CityListViewController {
     func setupViewModel() {
         viewModel = CurrentWeatherViewModel()
         viewModel?.delegate = self
-        viewModel?.fetchCurrentWeathers()
+        viewModel?.fetchCurrentWeatherData()
     }
 
 }

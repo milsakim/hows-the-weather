@@ -47,13 +47,13 @@ extension CityListViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        print("--- \(#function) called: \(tableView.contentSize.height) / \(tableView.frame.size.height)---")
         guard let viewModel = viewModel, viewModel.supportingCities.count != viewModel.currentWeather.count else { return }
-        guard !viewModel.isFetchInProgress, !viewModel.isFetchingFailed else { return }
+        guard !viewModel.isFetchInProgress else { return }
         
         if tableView.contentOffset.y + tableView.frame.size.height >= (tableView.contentSize.height - 50.0) {
 //            print("--- \(#function) ---")
             tableViewFooter.isHidden = false
             loadingIndicator.startAnimating()
-            viewModel.fetchCurrentWeathers()
+            viewModel.fetchCurrentWeatherData()
         }
     }
     

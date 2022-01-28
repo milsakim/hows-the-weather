@@ -36,7 +36,7 @@ extension CityListViewController {
         viewModel.sortSupportingCityList()
         viewModel.clear()
 //        tableView.reloadData()
-        viewModel.fetchCurrentWeathers()
+        viewModel.fetchCurrentWeatherData()
         tableView.refreshControl?.endRefreshing()
         print("--- \(#function): end refreshing ---")
     }

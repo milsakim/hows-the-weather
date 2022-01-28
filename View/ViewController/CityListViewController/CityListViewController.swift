@@ -46,7 +46,7 @@ class CityListViewController: UIViewController {
                 print("--- \(#function): content is smaller ---")
                 self.tableViewFooter.isHidden = false
                 self.loadingIndicator.startAnimating()
-                self.viewModel?.fetchCurrentWeathers()
+                self.viewModel?.fetchCurrentWeatherData()
             }
         }
     }
@@ -57,7 +57,7 @@ class CityListViewController: UIViewController {
             print("--- \(#function): content is smaller ---")
             tableViewFooter.isHidden = false
             loadingIndicator.startAnimating()
-            viewModel?.fetchCurrentWeathers()
+            viewModel?.fetchCurrentWeatherData()
         }
     }
     
