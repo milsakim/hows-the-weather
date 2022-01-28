@@ -7,18 +7,34 @@
 
 import Foundation
 
+/*
 enum UserDefaultsKey: String {
     case sortingCriterion = "SortingCritrion"
     case isAscending = "IsAcsending"
     case language = "Language"
     case unit = "Unit"
 }
+*/
 
-/*
 struct UserDefaultsKey {
     static let sortingCriterion = "SortingCritrion"
     static let isAscending = "IsAcsending"
     static let language = "Language"
     static let unit = "Unit"
 }
-*/
+
+enum SortingCriterion: String {
+    case name = "name"
+    case temperature = "temperature"
+    case distance = "distance"
+}
+
+enum Unit: String {
+    case celsius = "metric"
+    case fahrenheit = "imperial"
+}
+
+enum Language: String {
+    case english = "en"
+    case korean = "kr"
+}
