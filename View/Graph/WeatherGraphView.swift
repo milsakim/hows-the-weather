@@ -267,9 +267,10 @@ class WeatherGraphView: UIView {
 
         for dataIndex in 0..<data.count {
             let labelLayerSize: CGSize = CGSize(width: lineGap, height: 15)
+            let gap: CGFloat = 2.0
             
             let minTempLabelLayer: CATextLayer = CATextLayer()
-            minTempLabelLayer.frame = CGRect(origin: CGPoint(x: minTempDataPoints[dataIndex].x - (lineGap / 2), y: minTempDataPoints[dataIndex].y - labelLayerSize.height), size: labelLayerSize)
+            minTempLabelLayer.frame = CGRect(origin: CGPoint(x: minTempDataPoints[dataIndex].x - (lineGap / 2), y: minTempDataPoints[dataIndex].y - labelLayerSize.height - gap), size: labelLayerSize)
             minTempLabelLayer.alignmentMode = .center
             minTempLabelLayer.contentsScale = UIScreen.main.scale
             minTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
@@ -279,7 +280,7 @@ class WeatherGraphView: UIView {
             dataLayer.addSublayer(minTempLabelLayer)
             
             let maxTempLabelLayer: CATextLayer = CATextLayer()
-            maxTempLabelLayer.frame = CGRect(origin: CGPoint(x: maxTempDataPoints[dataIndex].x - (lineGap / 2), y: maxTempDataPoints[dataIndex].y - labelLayerSize.height), size: labelLayerSize)
+            maxTempLabelLayer.frame = CGRect(origin: CGPoint(x: maxTempDataPoints[dataIndex].x - (lineGap / 2), y: maxTempDataPoints[dataIndex].y - labelLayerSize.height - gap), size: labelLayerSize)
             maxTempLabelLayer.alignmentMode = .center
             maxTempLabelLayer.contentsScale = UIScreen.main.scale
             maxTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
@@ -289,7 +290,7 @@ class WeatherGraphView: UIView {
             dataLayer.addSublayer(maxTempLabelLayer)
             
             let humidityLabelLayer: CATextLayer = CATextLayer()
-            humidityLabelLayer.frame = CGRect(origin: CGPoint(x: humidityDataPoints[dataIndex].x - (lineGap / 2), y: humidityDataPoints[dataIndex].y - labelLayerSize.height), size: labelLayerSize)
+            humidityLabelLayer.frame = CGRect(origin: CGPoint(x: humidityDataPoints[dataIndex].x - (lineGap / 2), y: humidityDataPoints[dataIndex].y - labelLayerSize.height - gap), size: labelLayerSize)
             humidityLabelLayer.alignmentMode = .center
             humidityLabelLayer.contentsScale = UIScreen.main.scale
             humidityLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
