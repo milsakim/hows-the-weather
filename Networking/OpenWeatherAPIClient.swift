@@ -69,8 +69,8 @@ final class OpenWeatherAPIClient {
         tasks.forEach({ $0.resume() })
     }
 
-    func fetchForecastData(city id: Int, ompletion handler: @escaping (Result<ForecastResponse, APIResponseError>) -> Void) {
-        let urlString = forecastBaseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=metric" + "&" + "lang=kr"
+    func fetchForecastData(city id: Int, unit: String, completion handler: @escaping (Result<ForecastResponse, APIResponseError>) -> Void) {
+        let urlString = forecastBaseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=\(unit)" + "&" + "lang=kr"
         guard let url: URL = URL(string: urlString) else {
             print("--- Fail to create URL: \(urlString) ---")
             return

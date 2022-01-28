@@ -48,7 +48,9 @@ final class ForecastViewModel {
     }
     
     func fetchForecastData() {
-        client.fetchForecastData(city: cityID) { result in
+        let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
+        
+        client.fetchForecastData(city: cityID, unit: unit) { result in
             switch result {
             case .failure(let error):
                 self.delegate?.fetchFailed(error: error)

@@ -20,13 +20,23 @@ extension CityListViewController: UITableViewDataSource {
             fatalError("Fail to cast cell")
         }
         
+        let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
+        
+        var unitSymbol: String = "℃"
+        switch MeasurementUnit(rawValue: unit) {
+        case .fahrenheit:
+            unitSymbol = "℉"
+        default:
+            unitSymbol = "℃"
+        }
+        
         if let viewModel = viewModel {
             let id: String = String(cityList[indexPath.row].id)
             
             // 해당 도시의 날씨 정보가 fetch 되어있는 경우
             if let currentWeather = viewModel.currentWeather[id] {
                 cell.cityLabel.text = currentWeather.name
-                cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
+                cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) \(unitSymbol) / \(currentWeather.main.humidity) %"
                 
                 if let icon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
                     cell.weatherIconView.image = icon
@@ -52,12 +62,12 @@ extension CityListViewController: UITableViewDataSource {
             }
             else {
                 cell.cityLabel.text = cityList[indexPath.row].name
-                cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
+                cell.tempAndHumidityLabel.text = "-- \(unitSymbol) / -- %"
             }
         }
         else {
             cell.cityLabel.text = "---"
-            cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
+            cell.tempAndHumidityLabel.text = "-- \(unitSymbol) / -- %"
         }
         
         return cell

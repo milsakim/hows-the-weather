@@ -122,11 +122,19 @@ extension CityListViewController {
         }
         
         let celsius: UIAction = UIAction(title: "Celsius", state: celsiusActionState) { action in
+            UserDefaults.standard.set(MeasurementUnit.celsius.rawValue, forKey: UserDefaultsKey.unit)
+            
             // 데이터 다시 fetch
+            self.clearData()
+            self.viewModel?.fetchCurrentWeatherData()
         }
         
         let fahrenheit: UIAction = UIAction(title: "Fahrenheit", state: fahrenheitActionState) { action in
+            UserDefaults.standard.set(MeasurementUnit.fahrenheit.rawValue, forKey: UserDefaultsKey.unit)
+            
             // 데이터 다시 fetch
+            self.clearData()
+            self.viewModel?.fetchCurrentWeatherData()
         }
         
         let unitsMenu: UIMenu = UIMenu(title: "Unit", options: [.singleSelection, .displayInline], children: [celsius, fahrenheit])
@@ -144,12 +152,20 @@ extension CityListViewController {
             koreanActionState = .on
         }
         
-        let english: UIAction = UIAction(title: "English", state: englishActionState) { action in
-            // 데이터 다시 fetch
-        }
-    
         let korean: UIAction = UIAction(title: "Korean", state: koreanActionState) { action in
+            UserDefaults.standard.set(Language.korean.rawValue, forKey: UserDefaultsKey.language)
+            
             // 데이터 다시 fetch
+            self.clearData()
+            self.viewModel?.fetchCurrentWeatherData()
+        }
+        
+        let english: UIAction = UIAction(title: "English", state: englishActionState) { action in
+            UserDefaults.standard.set(Language.english.rawValue, forKey: UserDefaultsKey.language)
+            
+            // 데이터 다시 fetch
+            self.clearData()
+            self.viewModel?.fetchCurrentWeatherData()
         }
         
         let languageMenu: UIMenu = UIMenu(title: "Language", options: [.singleSelection, .displayInline], children: [korean, english])
