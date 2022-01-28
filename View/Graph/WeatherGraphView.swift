@@ -44,6 +44,10 @@ class WeatherGraphView: UIView {
     private var maxTempDataPoints: [CGPoint]?
     private var humidityDataPoints: [CGPoint]?
     
+    private var minTempColor: CGColor {
+        UIColor(named: "min-temp-graph-color")?.cgColor ?? UIColor.blue.cgColor
+    }
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -156,7 +160,7 @@ class WeatherGraphView: UIView {
             lineLayer.path = path.cgPath
             lineLayer.lineWidth = 3.0
             lineLayer.lineDashPattern = [10, 5, 5, 5]
-            lineLayer.strokeColor = UIColor.blue.cgColor
+            lineLayer.strokeColor =  UIColor(named: "min-temp-graph-color")?.cgColor ?? UIColor.blue.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
@@ -231,7 +235,7 @@ class WeatherGraphView: UIView {
                 let dotRadius: CGFloat = 8
                 let dotLayer: CALayer = CALayer()
                 dotLayer.frame = CGRect(x: minTempDataPoint.x - (dotRadius / 2), y: minTempDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
-                dotLayer.backgroundColor = UIColor.blue.cgColor
+                dotLayer.backgroundColor = minTempColor
                 dotLayer.cornerRadius = dotRadius / 2
                 dataLayer.addSublayer(dotLayer)
             }
@@ -283,7 +287,7 @@ class WeatherGraphView: UIView {
             minTempLabelLayer.alignmentMode = .center
             minTempLabelLayer.contentsScale = UIScreen.main.scale
             minTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
-            minTempLabelLayer.foregroundColor = UIColor.blue.cgColor
+            minTempLabelLayer.foregroundColor = minTempColor
             minTempLabelLayer.fontSize = fontSize
             minTempLabelLayer.string = minTempString
             dataLayer.addSublayer(minTempLabelLayer)
