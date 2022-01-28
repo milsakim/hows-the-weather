@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct PointEntry {
+struct GraphPointData {
     let minTempValue: Double
     let maxTempValue: Double
     let humidityValue: Double
@@ -25,7 +25,7 @@ class WeatherGraphView: UIView {
     
     let topHorizontalLine: CGFloat = 110.0 / 100.0
     
-    var data: [PointEntry]? {
+    var data: [GraphPointData]? {
         didSet {
             setNeedsLayout()
         }
@@ -137,20 +137,21 @@ class WeatherGraphView: UIView {
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
-        
+        // 최저 온도 그래프
         if let minTempDataPoints = minTempDataPoints, minTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: minTempDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
-            lineLayer.lineWidth = 2.0
+            lineLayer.lineWidth = 3.0
+            lineLayer.lineDashPattern = [10, 5, 5, 5]
             lineLayer.strokeColor = UIColor.blue.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
         }
-
+        // 습도 그래프
         if let humidityDataPoints = humidityDataPoints, humidityDataPoints.count > 0, let path = createPath(from: humidityDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
-            lineLayer.lineWidth = 2.0
+            lineLayer.lineWidth = 3.0
             lineLayer.strokeColor = UIColor(named: "humidity-graph-color")?.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
