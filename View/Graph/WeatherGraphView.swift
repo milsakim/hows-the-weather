@@ -97,7 +97,6 @@ class WeatherGraphView: UIView {
             gridLayer.frame = CGRect(x: 0, y: topSpace, width: self.frame.width, height: mainLayer.frame.height - topSpace - bottomSpace)
             
             let minTempData: [Double] = data.compactMap({ $0.minTempValue })
-            print(minTempData.count)
             let maxTempData: [Double] = data.compactMap({ $0.maxTempValue })
             let tempRange: (Double?, Double?) = (minTempData.min(), maxTempData.max())
             let humidityData: [Double] = data.compactMap({ $0.humidityValue })
