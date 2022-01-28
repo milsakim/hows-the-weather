@@ -10,6 +10,8 @@ import UIKit
 extension CityListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+        
         guard let viewModel = viewModel else {
             return
         }
@@ -20,8 +22,6 @@ extension CityListViewController: UITableViewDelegate {
         else {
             pushViewController(indexPath: indexPath)
         }
-        
-        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -9,10 +9,10 @@ import UIKit
 
 extension CityListViewController {
     
-    // MARK: - Navigation Related Setup
+    // MARK: - Navigation Setup
     
     func setUpNavigation() {
-        guard self.navigationController != nil else {
+        guard navigationController != nil else {
             return
         }
         

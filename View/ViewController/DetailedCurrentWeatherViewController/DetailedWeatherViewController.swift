@@ -30,8 +30,8 @@ class DetailedWeatherViewController: UIViewController {
     }
     
     private func commonInit() {
-        setupNavigation()
-        setupTableView()
+        setUpNavigation()
+        setUpTableView()
     }
 
 }

@@ -9,7 +9,7 @@ import Foundation
 
 
 protocol ForecastViewModelDelegate: AnyObject {
-    func fetchCompleted(for indexPaths: [IndexPath]?)
+    func fetchCompleted()
     func fetchFailed(error: APIResponseError)
 }
 
@@ -60,7 +60,7 @@ final class ForecastViewModel {
                 }
                 
                 DispatchQueue.main.async {
-                    self.delegate?.fetchCompleted(for: nil)
+                    self.delegate?.fetchCompleted()
                 }
             }
         }

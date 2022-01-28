@@ -9,7 +9,9 @@ import UIKit
 
 extension ForecastViewController {
     
-    func setupViewModel() {
+    // MARK: - View Model Setup
+    
+    func setUpViewModel() {
         if let cityID = cityID {
             viewModel = ForecastViewModel(city: cityID)
             viewModel?.delegate = self

@@ -9,12 +9,24 @@ import UIKit
 
 extension DetailedWeatherViewController {
     
-    func setupNavigation() {
+    // MARK: - Navigation Setup
+    
+    func setUpNavigation() {
+        guard navigationController != nil else {
+            return
+        }
+        
         // back button title 삭제
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    func setupTableView() {
+    // MARK: - Table View Setup
+    
+    func setUpTableView() {
+        guard tableView != nil else {
+            return
+        }
+        
         tableView.dataSource = self
         tableView.delegate = self
         
