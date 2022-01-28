@@ -93,12 +93,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1630261927A3072B000818DE /* Graph */ = {
+		1630261927A3072B000818DE /* Custom */ = {
 			isa = PBXGroup;
 			children = (
 				16CA8D0627A191C400871E9E /* WeatherGraphView.swift */,
 			);
-			path = Graph;
+			path = Custom;
 			sourceTree = "<group>";
 		};
 		1633975127A11C2300771895 /* ViewModel */ = {
@@ -246,7 +246,7 @@
 			children = (
 				16D6507A27A190BC005DCEDB /* Cell */,
 				16D6537027A1167000716509 /* ViewController */,
-				1630261927A3072B000818DE /* Graph */,
+				1630261927A3072B000818DE /* Custom */,
 			);
 			path = View;
 			sourceTree = "<group>";
