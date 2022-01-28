@@ -12,21 +12,25 @@ class CityListViewController: UIViewController {
     // MARK: - Property
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet var tableViewFooter: UIView!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet var tableViewFooter: UIView!
     
     var viewModel: CurrentWeatherViewModel?
 
     var cityIDs: [String] = []
     
     private let cellHeight: CGFloat = 87.0
+    
     var isContentSmaller: Bool {
         cellHeight * CGFloat(tableView.numberOfRows(inSection: 0)) < tableView.frame.height
     }
     
-    // MARK: - Deinit
+    // MARK: - Deinitialization
     
     deinit {
+        viewModel = nil
+        cityIDs.removeAll()
         print("--- CityListViewController deinit ---")
     }
     
@@ -36,6 +40,18 @@ class CityListViewController: UIViewController {
         super.viewDidLoad()
         commonInit()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isContentSmaller {
+            print("--- \(#function): content is smaller ---")
+            tableViewFooter.isHidden = false
+            loadingIndicator.startAnimating()
+            viewModel?.fetchCurrentWeatherData()
+        }
+    }
+    
+    // MARK: - Responding to Environment Change
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -50,16 +66,8 @@ class CityListViewController: UIViewController {
             }
         }
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if isContentSmaller {
-            print("--- \(#function): content is smaller ---")
-            tableViewFooter.isHidden = false
-            loadingIndicator.startAnimating()
-            viewModel?.fetchCurrentWeatherData()
-        }
-    }
+    
+    // MARK: - Common Initialization
     
     private func commonInit() {
         title = "Today's Weather"
