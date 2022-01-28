@@ -19,7 +19,9 @@ class CurrentWeatherTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+
+        weatherIconView.backgroundColor = .lightGray
+        weatherIconView.layer.cornerRadius = weatherIconView.frame.height / 2
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
