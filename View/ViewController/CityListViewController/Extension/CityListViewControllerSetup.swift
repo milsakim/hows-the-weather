@@ -98,7 +98,9 @@ extension CityListViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        tableView.refreshControl = UIRefreshControl()
+        let refreshControl = UIRefreshControl()
+        refreshControl.backgroundColor = .green
+        tableView.refreshControl = refreshControl
         tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         
         tableView.tableFooterView = tableViewFooter

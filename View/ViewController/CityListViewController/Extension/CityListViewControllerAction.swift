@@ -39,7 +39,9 @@ extension CityListViewController {
     @objc func handleRefreshControl() {
         print("--- \(#function) called ---")
         guard let viewModel = viewModel, !viewModel.isFetchInProgress else {
-            tableView.refreshControl?.endRefreshing()
+            DispatchQueue.main.async {
+                self.tableView.refreshControl?.endRefreshing()
+            }
             return
         }
         
@@ -50,9 +52,12 @@ extension CityListViewController {
         setupSortingButton()
         viewModel.sortSupportingCityList()
         viewModel.clear()
-//        tableView.reloadData()
         viewModel.fetchCurrentWeatherData()
-        tableView.refreshControl?.endRefreshing()
+        
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+        }
+
         print("--- \(#function): end refreshing ---")
     }
         
