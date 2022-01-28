@@ -45,6 +45,16 @@ class CityListViewController: UIViewController {
             }
         }
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.tableView.contentSize.height < self.tableView.frame.size.height {
+            print("--- content is smaller ---")
+            self.tableViewFooter.isHidden = false
+            self.loadingIndicator.startAnimating()
+            self.viewModel?.fetchCurrentWeathers()
+        }
+    }
     
     private func commonInit() {
         title = "Today's Weather"
