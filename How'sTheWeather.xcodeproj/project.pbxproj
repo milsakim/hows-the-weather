@@ -87,11 +87,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1630261927A3072B000818DE /* New Group */ = {
+		1630261927A3072B000818DE /* Graph */ = {
 			isa = PBXGroup;
 			children = (
+				16CA8D0627A191C400871E9E /* WeatherGraphView.swift */,
 			);
-			path = "New Group";
+			path = Graph;
 			sourceTree = "<group>";
 		};
 		1633975127A11C2300771895 /* ViewModel */ = {
@@ -132,9 +133,9 @@
 		16D6506727A16002005DCEDB /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				16D6506B27A1608D005DCEDB /* DetailedWeatherViewControllerSetup.swift */,
 				16D6506827A16026005DCEDB /* DetailedWeatherTableViewDatasource.swift */,
 				16D6507127A167F7005DCEDB /* DetailedWeatherTableViewDelegate.swift */,
-				16D6506B27A1608D005DCEDB /* DetailedWeatherViewControllerSetup.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -236,8 +237,7 @@
 			children = (
 				16D6507A27A190BC005DCEDB /* Cell */,
 				16D6537027A1167000716509 /* ViewController */,
-				16CA8D0627A191C400871E9E /* WeatherGraphView.swift */,
-				1630261927A3072B000818DE /* New Group */,
+				1630261927A3072B000818DE /* Graph */,
 			);
 			path = View;
 			sourceTree = "<group>";

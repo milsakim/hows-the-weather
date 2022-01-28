@@ -104,9 +104,24 @@ class WeatherGraphView: UIView {
             
             drawVerticalLines()
             drawChart()
-            drawLabels()
+            drawDots()
+            drawDataLabels()
+            drawDateLabels()
         }
     }
+    
+    private func clean() {
+        mainLayer.sublayers?.forEach({
+            if $0 is CATextLayer || $0 is CAShapeLayer {
+                $0.removeFromSuperlayer()
+            }
+        })
+        dataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
+        gridLayer.sublayers?.forEach({
+            $0.removeFromSuperlayer()
+        })
+    }
+    
     
     private func convertDataEntriesToPoints(data: [Double], range: (min: Double?, max: Double?)) -> [CGPoint] {
         if let minValue: Double = range.min, let maxValue: Double = range.max {
@@ -188,14 +203,14 @@ class WeatherGraphView: UIView {
         }
     }
     
-    private func drawLabels() {
+    private func drawDateLabels() {
         if let data = data, data.count > 0 {
             for index in 0..<data.count {
                 let textLayer: CATextLayer = CATextLayer()
                 textLayer.frame = CGRect(x: lineGap * CGFloat(index) + leadingSpace, y: mainLayer.frame.size.height - bottomSpace/2 - 8, width: lineGap, height: 30)
                 textLayer.foregroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
                 textLayer.backgroundColor = UIColor.clear.cgColor
-                textLayer.alignmentMode = CATextLayerAlignmentMode.center
+                textLayer.alignmentMode = .center
                 textLayer.contentsScale = UIScreen.main.scale
                 textLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
                 textLayer.fontSize = 11
@@ -210,16 +225,80 @@ class WeatherGraphView: UIView {
         }
     }
     
-    private func clean() {
-        mainLayer.sublayers?.forEach({
-            if $0 is CATextLayer || $0 is CAShapeLayer {
-                $0.removeFromSuperlayer()
+    private func drawDots() {
+        if let minTempDataPoints = minTempDataPoints {
+            for minTempDataPoint in minTempDataPoints {
+                let dotRadius: CGFloat = 8
+                let dotLayer: CALayer = CALayer()
+                dotLayer.frame = CGRect(x: minTempDataPoint.x - (dotRadius / 2), y: minTempDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
+                dotLayer.backgroundColor = UIColor.blue.cgColor
+                dotLayer.cornerRadius = dotRadius / 2
+                dataLayer.addSublayer(dotLayer)
             }
-        })
-        dataLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
-        gridLayer.sublayers?.forEach({
-            $0.removeFromSuperlayer()
-        })
+        }
+        
+        if let maxTempDataPoints = maxTempDataPoints {
+            for maxTempDataPoint in maxTempDataPoints {
+                let dotRadius: CGFloat = 8
+                let dotLayer: CALayer = CALayer()
+                dotLayer.frame = CGRect(x: maxTempDataPoint.x - (dotRadius / 2), y: maxTempDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
+                dotLayer.backgroundColor = UIColor.red.cgColor
+                dotLayer.cornerRadius = dotRadius / 2
+                dataLayer.addSublayer(dotLayer)
+            }
+        }
+        
+        if let humidityDataPoints = humidityDataPoints {
+            for humidityDataPoint in humidityDataPoints {
+                let dotRadius: CGFloat = 8
+                let dotLayer: CALayer = CALayer()
+                dotLayer.frame = CGRect(x: humidityDataPoint.x - (dotRadius / 2), y: humidityDataPoint.y - (dotRadius / 2), width: dotRadius, height: dotRadius)
+                dotLayer.backgroundColor = UIColor(named: "humidity-graph-color")?.cgColor ?? UIColor.black.cgColor
+                dotLayer.cornerRadius = dotRadius / 2
+                dataLayer.addSublayer(dotLayer)
+            }
+        }
+    }
+    
+    private func drawDataLabels() {
+        guard let data = data, let minTempDataPoints = minTempDataPoints, let maxTempDataPoints = maxTempDataPoints, let humidityDataPoints = humidityDataPoints else {
+            return
+        }
+
+        for dataIndex in 0..<data.count {
+            let labelLayerSize: CGSize = CGSize(width: lineGap, height: 15)
+            let gap: CGFloat = 2.0
+            
+            let minTempLabelLayer: CATextLayer = CATextLayer()
+            minTempLabelLayer.frame = CGRect(origin: CGPoint(x: minTempDataPoints[dataIndex].x - (lineGap / 2), y: minTempDataPoints[dataIndex].y - labelLayerSize.height - gap), size: labelLayerSize)
+            minTempLabelLayer.alignmentMode = .center
+            minTempLabelLayer.contentsScale = UIScreen.main.scale
+            minTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+            minTempLabelLayer.foregroundColor = UIColor.blue.cgColor
+            minTempLabelLayer.fontSize = 11
+            minTempLabelLayer.string = "\(data[dataIndex].minTempValue)℃"
+            dataLayer.addSublayer(minTempLabelLayer)
+            
+            let maxTempLabelLayer: CATextLayer = CATextLayer()
+            maxTempLabelLayer.frame = CGRect(origin: CGPoint(x: maxTempDataPoints[dataIndex].x - (lineGap / 2), y: maxTempDataPoints[dataIndex].y - labelLayerSize.height - gap), size: labelLayerSize)
+            maxTempLabelLayer.alignmentMode = .center
+            maxTempLabelLayer.contentsScale = UIScreen.main.scale
+            maxTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+            maxTempLabelLayer.foregroundColor = UIColor.red.cgColor
+            maxTempLabelLayer.fontSize = 11
+            maxTempLabelLayer.string = "\(data[dataIndex].maxTempValue)℃"
+            dataLayer.addSublayer(maxTempLabelLayer)
+            
+            let humidityLabelLayer: CATextLayer = CATextLayer()
+            humidityLabelLayer.frame = CGRect(origin: CGPoint(x: humidityDataPoints[dataIndex].x - (lineGap / 2), y: humidityDataPoints[dataIndex].y - labelLayerSize.height - gap), size: labelLayerSize)
+            humidityLabelLayer.alignmentMode = .center
+            humidityLabelLayer.contentsScale = UIScreen.main.scale
+            humidityLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
+            humidityLabelLayer.foregroundColor = UIColor(named: "humidity-graph-color")?.cgColor ?? UIColor.black.cgColor
+            humidityLabelLayer.fontSize = 11
+            humidityLabelLayer.string = "\(data[dataIndex].humidityValue)%"
+            dataLayer.addSublayer(humidityLabelLayer)
+        }
     }
     
 }
