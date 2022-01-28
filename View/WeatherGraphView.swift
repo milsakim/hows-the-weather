@@ -128,9 +128,11 @@ class WeatherGraphView: UIView {
     }
     
     private func drawChart() {
+        // 최고 온도 그래프
         if let maxTempDataPoints = maxTempDataPoints, maxTempDataPoints.count > 0, let path: UIBezierPath = createPath(from: maxTempDataPoints) {
             let lineLayer = CAShapeLayer()
             lineLayer.path = path.cgPath
+            lineLayer.lineWidth = 1.5
             lineLayer.strokeColor = UIColor.red.cgColor
             lineLayer.fillColor = UIColor.clear.cgColor
             dataLayer.addSublayer(lineLayer)
