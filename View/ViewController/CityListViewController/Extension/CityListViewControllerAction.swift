@@ -50,9 +50,14 @@ extension CityListViewController {
     
     func showFetchingFailureAlert() {
         let alertController: UIAlertController = UIAlertController(title: "Fail to Load Weather Data", message: "Please restart application", preferredStyle: .alert)
-        
+
         let retryAction: UIAlertAction = UIAlertAction(title: "Retry", style: .default, handler: { action in
             print("--- retryAction handler ---")
+            
+            if self.viewModel == nil {
+                return
+            }
+            
             self.tableViewFooter.isHidden = false
             self.loadingIndicator.startAnimating()
             self.viewModel?.isFetchInProgress = false
@@ -80,6 +85,8 @@ extension CityListViewController {
         
         clearData()
         
+        viewModel.fetchCurrentWeatherData()
+        
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
         }
@@ -101,7 +108,6 @@ extension CityListViewController {
         setUpSortingNavItem()
         
         viewModel.clear()
-        viewModel.fetchCurrentWeatherData()
     }
     
     
