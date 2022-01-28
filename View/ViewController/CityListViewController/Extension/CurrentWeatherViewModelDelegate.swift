@@ -29,7 +29,7 @@ extension CityListViewController: CurrentWeatherViewModelDelegate {
                 self.tableView.endUpdates()
                 
                 if self.isContentSmaller {
-                    print("--- \(#function): content is smaller, \(self.tableView.contentSize.height) / \(self.tableView.frame.height), numberOfRows: \(self.tableView.numberOfRows(inSection: 0)), \(self.tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.frame.height) ---")
+                    print("--- \(#function): content is smaller ---")
                     self.tableViewFooter.isHidden = false
                     self.loadingIndicator.startAnimating()
                     self.viewModel?.fetchCurrentWeatherData()
