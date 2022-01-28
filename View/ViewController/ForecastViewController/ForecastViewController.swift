@@ -14,33 +14,24 @@ class ForecastViewController: UIViewController {
     var viewModel: ForecastViewModel?
     var cityID: Int?
     
-    // MARK: - Deinitializer
+    // MARK: - Deinitialization
     
     deinit {
+        viewModel = nil
         print("--- ForecastViewController deinit ---")
     }
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()
     }
     
+    // MARK: - Common Initialization
+    
     private func commonInit() {
-        setupViewModel()
-    }
-    
-}
-
-extension ForecastViewController: ForecastViewModelDelegate {
-    
-    func fetchCompleted(for indexPaths: [IndexPath]?) {
-        print("--- \(#function)   ")
-        lineGraphView.data = viewModel?.graphPointEntryData
-    }
-
-    func fetchFailed(error: APIResponseError) {
-        print("--- fetch failed ---")
-        showFetchingFailureAlertController()
+        setUpViewModel()
     }
     
 }

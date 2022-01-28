@@ -29,5 +29,12 @@ class CurrentWeatherTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    override func prepareForReuse() {
+        tempLabel.text = ""
+        descriptionLabel.text = ""
+        maxAndMinTempLabel.text = ""
+        weatherIconView.image = nil
+    }
 
 }

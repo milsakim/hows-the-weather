@@ -28,6 +28,7 @@ final class OpenWeatherAPIClient {
                 fetchError = .url
                 return
             }
+            
             dispatchGroup.enter()
             let task: URLSessionDataTask = URLSession.shared.dataTask(with: url) { data, urlResponse, error in
                 guard let httpResponse: HTTPURLResponse = urlResponse as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
@@ -36,16 +37,19 @@ final class OpenWeatherAPIClient {
                     dispatchGroup.leave()
                     return
                 }
+                
                 guard let data = data else {
                     fetchError = .network
                     dispatchGroup.leave()
                     return
                 }
+                
                 guard let decodedData: CurrentWeatherResponse = try? JSONDecoder().decode(CurrentWeatherResponse.self, from: data) else {
                     fetchError = .network
                     dispatchGroup.leave()
                     return
                 }
+                
                 fetchedWeatherData.append(decodedData)
                 dispatchGroup.leave()
             }
@@ -65,8 +69,8 @@ final class OpenWeatherAPIClient {
         tasks.forEach({ $0.resume() })
     }
 
-    func fetchForecastData(city id: Int, ompletion handler: @escaping (Result<ForecastResponse, APIResponseError>) -> Void) {
-        let urlString = forecastBaseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=metric" + "&" + "lang=kr"
+    func fetchForecastData(city id: Int, unit: String, completion handler: @escaping (Result<ForecastResponse, APIResponseError>) -> Void) {
+        let urlString = forecastBaseURLString + "appID=\(appID)" + "&" + "id=\(id)" + "&" + "units=\(unit)" + "&" + "lang=kr"
         guard let url: URL = URL(string: urlString) else {
             print("--- Fail to create URL: \(urlString) ---")
             return

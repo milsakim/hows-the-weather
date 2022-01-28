@@ -9,7 +9,9 @@ import UIKit
 
 extension ForecastViewController {
     
-    func showFetchingFailureAlertController() {
+    // MARK: - Presenting Alert Controller
+    
+    func showFetchingFailureAlert() {
         let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: { action in
             print("--- retryAction handler ---")
             self.navigationController?.popViewController(animated: true)

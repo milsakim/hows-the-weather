@@ -19,21 +19,27 @@ extension DetailedWeatherViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "ForecastViewController", bundle: .main)
-        guard let forecastViewController: ForecastViewController = storyboard.instantiateViewController(withIdentifier: "ForecastViewController") as? ForecastViewController else {
-            print("Fail to cast ForecastViewController")
+        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+        
+        guard let navigationController = navigationController else {
             return
         }
         
         guard let city = city else {
-            print("city is nil")
+            print("--- city is nil ---")
             return
         }
+        
+        let storyboard: UIStoryboard = UIStoryboard(name: "ForecastViewController", bundle: .main)
+        guard let forecastViewController: ForecastViewController = storyboard.instantiateViewController(withIdentifier: "ForecastViewController") as? ForecastViewController else {
+            print("--- Fail to cast ForecastViewController ---")
+            return
+        }
+        
         forecastViewController.cityID = city.id
         forecastViewController.title = "\(city.name) Forecast"
         
-        navigationController?.pushViewController(forecastViewController, animated: true)
-        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+        navigationController.pushViewController(forecastViewController, animated: true)
     }
     
 }
