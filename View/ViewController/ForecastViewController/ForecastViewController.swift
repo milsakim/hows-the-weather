@@ -31,23 +31,16 @@ class ForecastViewController: UIViewController {
     
 }
 
-extension ForecastViewController: ViewModelDelegate {
-    
-    func fetchStarted() {
-        print(#function)
-    }
+extension ForecastViewController: ForecastViewModelDelegate {
     
     func fetchCompleted(for indexPaths: [IndexPath]?) {
-        print(#function)
+        print("--- \(#function)   ")
         lineGraphView.data = viewModel?.graphPointEntryData
     }
-    
-    func allSupportedCitiesAreFetched() {
-        print(#function)
-    }
-    
+
     func fetchFailed(error: APIResponseError) {
-        print("fetch failed")
+        print("--- fetch failed ---")
+        showFetchingFailureAlertController()
     }
     
 }

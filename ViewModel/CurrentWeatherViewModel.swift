@@ -7,20 +7,6 @@
 
 import UIKit
 
-enum DownloadError: Error {
-    case invalidURLError
-    case urlSessionError
-    case httpError
-    case invalidDataError
-}
-
-protocol ViewModelDelegate: AnyObject {
-    func fetchStarted()
-    func fetchCompleted(for indexPaths: [IndexPath]?)
-    func allSupportedCitiesAreFetched()
-    func fetchFailed(error: APIResponseError)
-}
-
 protocol CurrentWeatherViewModelDelegate: AnyObject {
     var cityIDs: [String] { get set }
     func fetchStarted()
