@@ -276,7 +276,9 @@ class WeatherGraphView: UIView {
             let minTempLabelLayerWidth: CGFloat = minTempStringWidth + widthPadding
             let minTempLabelLayer: CATextLayer = CATextLayer()
             minTempLabelLayer.frame = CGRect(x: minTempDataPoints[dataIndex].x - (minTempLabelLayerWidth / 2), y: minTempDataPoints[dataIndex].y - labelLayerHeight - gap, width: minTempLabelLayerWidth, height: labelLayerHeight)
-            minTempLabelLayer.backgroundColor = UIColor.lightGray.cgColor.copy(alpha: 0.5)
+            minTempLabelLayer.backgroundColor = UIColor(named: "graph-label-background-color")?.cgColor ?? UIColor.lightGray.cgColor.copy(alpha: 0.5)
+            minTempLabelLayer.borderColor = UIColor.gray.cgColor
+            minTempLabelLayer.borderWidth = 0.5
             minTempLabelLayer.cornerRadius = labelLayerHeight / 2
             minTempLabelLayer.alignmentMode = .center
             minTempLabelLayer.contentsScale = UIScreen.main.scale
@@ -291,8 +293,10 @@ class WeatherGraphView: UIView {
             let maxTempLabelLayerWidth: CGFloat = maxTempStringWidth + widthPadding
             let maxTempLabelLayer: CATextLayer = CATextLayer()
             maxTempLabelLayer.frame = CGRect(x: maxTempDataPoints[dataIndex].x - (minTempLabelLayerWidth / 2), y: maxTempDataPoints[dataIndex].y - labelLayerHeight - gap, width: maxTempLabelLayerWidth, height: labelLayerHeight)
-            maxTempLabelLayer.backgroundColor = UIColor.lightGray.cgColor.copy(alpha: 0.5)
+            maxTempLabelLayer.backgroundColor = UIColor(named: "graph-label-background-color")?.cgColor ?? UIColor.lightGray.cgColor.copy(alpha: 0.5)
             maxTempLabelLayer.cornerRadius = labelLayerHeight / 2
+            maxTempLabelLayer.borderColor = UIColor.gray.cgColor
+            maxTempLabelLayer.borderWidth = 0.5
             maxTempLabelLayer.alignmentMode = .center
             maxTempLabelLayer.contentsScale = UIScreen.main.scale
             maxTempLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
@@ -310,7 +314,9 @@ class WeatherGraphView: UIView {
             humidityLabelLayer.contentsScale = UIScreen.main.scale
             humidityLabelLayer.font = CTFontCreateWithName(UIFont.systemFont(ofSize: 0).fontName as CFString, 0, nil)
             humidityLabelLayer.foregroundColor = UIColor(named: "humidity-graph-color")?.cgColor ?? UIColor.black.cgColor
-            humidityLabelLayer.backgroundColor = UIColor.lightGray.cgColor.copy(alpha: 0.5)
+            humidityLabelLayer.backgroundColor = UIColor(named: "graph-label-background-color")?.cgColor ?? UIColor.lightGray.cgColor.copy(alpha: 0.5)
+            humidityLabelLayer.borderColor = UIColor.gray.cgColor
+            humidityLabelLayer.borderWidth = 0.5
             humidityLabelLayer.cornerRadius = humidityLabelLayer.frame.height / 2
             humidityLabelLayer.fontSize = fontSize
             humidityLabelLayer.string = humidityString
