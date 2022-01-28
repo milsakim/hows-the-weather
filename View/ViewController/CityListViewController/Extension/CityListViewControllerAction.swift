@@ -18,7 +18,26 @@ extension CityListViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    @objc func reloadAllData() {
+    func showFetchingFailureAlertController() {
+        let retryAction: UIAlertAction = UIAlertAction(title: "Retry", style: .default, handler: { action in
+            print("--- retryAction handler ---")
+            self.tableViewFooter.isHidden = false
+            self.loadingIndicator.startAnimating()
+            self.viewModel?.isFetchInProgress = false
+            self.viewModel?.fetchCurrentWeatherData()
+        })
+        
+        let alertController: UIAlertController = UIAlertController(title: "Fail to Load Weather Data", message: "Please restart application", preferredStyle: .alert)
+        alertController.addAction(retryAction)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    /**
+     도시의 현재 날씨 정보를 서버로부터 다시 받아온다
+     */
+    @objc func handleRefreshControl() {
+        print("--- \(#function) called ---")
         guard let viewModel = viewModel, !viewModel.isFetchInProgress else {
             tableView.refreshControl?.endRefreshing()
             return
@@ -27,12 +46,14 @@ extension CityListViewController {
         UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
         cityIDs = []
+        tableView.reloadData()
         setupSortingButton()
         viewModel.sortSupportingCityList()
         viewModel.clear()
-        tableView.reloadData()
-        viewModel.fetchCurrentWeathers()
+//        tableView.reloadData()
+        viewModel.fetchCurrentWeatherData()
         tableView.refreshControl?.endRefreshing()
+        print("--- \(#function): end refreshing ---")
     }
-    
+        
 }

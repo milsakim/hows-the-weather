@@ -60,6 +60,7 @@
                                                 <constraint firstItem="z9f-9K-Y4Z" firstAttribute="top" secondItem="Vua-C6-0pz" secondAttribute="top" constant="8" id="rq6-OU-75i"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="cityLabel" destination="z9f-9K-Y4Z" id="Eyj-e3-S5C"/>
                                             <outlet property="tempAndHumidityLabel" destination="MEn-gq-XTY" id="c8W-gM-B6e"/>

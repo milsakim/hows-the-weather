@@ -99,7 +99,7 @@ extension CityListViewController {
         tableView.delegate = self
         
         tableView.refreshControl = UIRefreshControl()
-        tableView.refreshControl?.addTarget(self, action: #selector(reloadAllData), for: .valueChanged)
+        tableView.refreshControl?.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         
         tableView.tableFooterView = tableViewFooter
         tableViewFooter.isHidden = true
@@ -108,7 +108,7 @@ extension CityListViewController {
     func setupViewModel() {
         viewModel = CurrentWeatherViewModel()
         viewModel?.delegate = self
-        viewModel?.fetchCurrentWeathers()
+        viewModel?.fetchCurrentWeatherData()
     }
 
 }
