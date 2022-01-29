@@ -275,6 +275,7 @@ extension WeatherForecastGraphView {
             
             let minTempGraph = CAShapeLayer()
             minTempGraph.path = path.cgPath
+            minTempGraph.lineDashPattern = [8, 4]
             minTempGraph.lineWidth = 3.0
             minTempGraph.strokeColor = minTempColor
             minTempGraph.fillColor = UIColor.clear.cgColor
@@ -290,6 +291,7 @@ extension WeatherForecastGraphView {
             
             let maxTempGraph = CAShapeLayer()
             maxTempGraph.path = path.cgPath
+            maxTempGraph.lineDashPattern = [4, 8]
             maxTempGraph.lineWidth = 3.0
             maxTempGraph.strokeColor = maxTempColor
             maxTempGraph.fillColor = UIColor.clear.cgColor
