@@ -96,7 +96,12 @@ final class CurrentWeatherViewModel {
         print("--- file read fin: \(json.data.count) ---")
         
         // 도시 이름 기준 사전순 정렬
-        availableCityList = json.data.sorted(by: { $0.name < $1.name })
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            availableCityList = json.data.sorted(by: { $0.name < $1.name })
+        default:
+            availableCityList = json.data.sorted(by: { $0.kr_name < $1.kr_name })
+        }
         
         isReadingJSONFailed = false
     }
@@ -164,13 +169,24 @@ extension CurrentWeatherViewModel {
         let sortingCriterion: SortingCriterion = SortingCriterion(rawValue: criterionString) ?? .name
         let isAcending: Bool = UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending) as? Bool ?? true
         
+        
         switch sortingCriterion {
         case .name:
-            if isAcending {
-                delegate.cityList.sort { $0.name < $1.name }
-            }
-            else {
-                delegate.cityList.sort { $0.name > $1.name }
+            switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+            case .english:
+                if isAcending {
+                    delegate.cityList.sort { $0.name < $1.name }
+                }
+                else {
+                    delegate.cityList.sort { $0.name > $1.name }
+                }
+            default:
+                if isAcending {
+                    delegate.cityList.sort { $0.kr_name < $1.kr_name }
+                }
+                else {
+                    delegate.cityList.sort { $0.kr_name > $1.kr_name }
+                }
             }
         case .temperature:
             if isAcending {
