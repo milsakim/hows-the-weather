@@ -20,6 +20,15 @@ extension CityListViewController: UITableViewDataSource {
             fatalError("Fail to cast cell")
         }
         
+        var cityName: String = cityList[indexPath.row].kr_name
+        
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            cityName = cityList[indexPath.row].name
+        default:
+            cityName = cityList[indexPath.row].kr_name
+        }
+        
         let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
         
         var unitSymbol: String = "℃"
@@ -35,7 +44,7 @@ extension CityListViewController: UITableViewDataSource {
             
             // 해당 도시의 날씨 정보가 fetch 되어있는 경우
             if let currentWeather = viewModel.currentWeather[id] {
-                cell.cityLabel.text = currentWeather.name
+                cell.cityLabel.text = cityName
                 cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) \(unitSymbol) / \(currentWeather.main.humidity) %"
                 
                 if let icon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
@@ -61,7 +70,7 @@ extension CityListViewController: UITableViewDataSource {
                 }
             }
             else {
-                cell.cityLabel.text = cityList[indexPath.row].name
+                cell.cityLabel.text = cityName
                 cell.tempAndHumidityLabel.text = "-- \(unitSymbol) / -- %"
             }
         }
