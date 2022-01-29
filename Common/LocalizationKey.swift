@@ -24,6 +24,19 @@ struct LocalizationKey {
     static let celsicus: String = "Celsius"
     static let fahrenheit: String = "Fahrenheit"
     
+    // MARK: - DetailedWeatherViewController
+    
+    static let feelsLike: String = "Feels like"
+    static let max: String = "Max"
+    static let min: String = "Min"
+    
+    static let todaysDetails: String = "Today's Details"
+    static let humidity: String = "Humidity"
+    static let pressure: String = "Pressure"
+    static let wind: String = "Wind"
+    
+    static let forecast: String = "Forecast"
+    
 }
 
 enum PreferredLocalization: String {
