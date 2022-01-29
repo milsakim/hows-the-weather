@@ -5,3 +5,18 @@
   Created by HyeJee Kim on 2022/01/29.
   
 */
+
+// MARK: - CityListViewController
+
+"Today's Weather" = "Today's Weather";
+
+"Sort" = "Sort";
+"City Name" = "City Name";
+"Temperature" = "Temperature";
+"Distance" = "Distance";
+"Ascending" = "Ascending";
+"Descending" = "Descending";
+
+"Prefrences" = "Prefrences";
+"Celsius" = "Celsius";
+"Fahrenheit" = "Fahrenheit";

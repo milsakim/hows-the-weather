@@ -5,3 +5,18 @@
   Created by HyeJee Kim on 2022/01/29.
   
 */
+
+// MARK: - CityListViewController
+
+"Today's Weather" = "오늘의 날씨";
+
+"Sort" = "정렬";
+"City Name" = "도시 이름";
+"Temperature" = "기온";
+"Distance" = "거리";
+"Ascending" = "오름차순";
+"Descending" = "내림차순";
+
+"Prefrences" = "설정";
+"Celsius" = "섭씨";
+"Fahrenheit" = "화씨";
