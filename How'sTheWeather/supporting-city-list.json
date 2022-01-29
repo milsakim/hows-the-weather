@@ -3,6 +3,7 @@
         {
             "id": 1842616,
             "name": "Gongju",
+            "kr_name": "공주",
             "state": "",
             "country": "KR",
             "coord": {
@@ -13,6 +14,7 @@
         {
             "id": 1841808,
             "name": "Gwangju",
+            "kr_name": "광주",
             "state": "",
             "country": "KR",
             "coord": {
@@ -23,6 +25,7 @@
         {
             "id": 1842225,
             "name": "Gumi",
+            "kr_name": "구미",
             "state": "",
             "country": "KR",
             "coord": {
@@ -33,6 +36,7 @@
         {
             "id": 1842025,
             "name": "Gunsan",
+            "kr_name": "군산",
             "state": "",
             "country": "KR",
             "coord": {
@@ -43,6 +47,7 @@
         {
             "id": 1835327,
             "name": "Daegu",
+            "kr_name": "대구",
             "state": "",
             "country": "KR",
             "coord": {
@@ -53,6 +58,7 @@
         {
             "id": 1835224,
             "name": "Daejeon",
+            "kr_name": "대전",
             "state": "",
             "country": "KR",
             "coord": {
@@ -63,6 +69,7 @@
         {
             "id": 1841066,
             "name": "Mokpo",
+            "kr_name": "목포",
             "state": "",
             "country": "KR",
             "coord": {
@@ -73,6 +80,7 @@
         {
             "id": 1838524,
             "name": "Busan",
+            "kr_name": "부산",
             "state": "",
             "country": "KR",
             "coord": {
@@ -83,6 +91,7 @@
         {
             "id": 1835895,
             "name": "Seosan",
+            "kr_name": "서산",
             "state": "",
             "country": "KR",
             "coord": {
@@ -93,6 +102,7 @@
         {
             "id": 1835847,
             "name": "Seoul",
+            "kr_name": "서울",
             "state": "",
             "country": "KR",
             "coord": {
@@ -103,6 +113,7 @@
         {
             "id": 1836553,
             "name": "Sokcho",
+            "kr_name": "속초",
             "state": "",
             "country": "KR",
             "coord": {
@@ -113,6 +124,7 @@
         {
             "id": 1835553,
             "name": "Suwon",
+            "kr_name": "수원",
             "state": "",
             "country": "KR",
             "coord": {
@@ -123,6 +135,7 @@
         {
             "id": 1835648,
             "name": "Suncheon",
+            "kr_name": "순천",
             "state": "",
             "country": "KR",
             "coord": {
@@ -133,6 +146,7 @@
         {
             "id": 1833742,
             "name": "Ulsan",
+            "kr_name": "울산",
             "state": "",
             "country": "KR",
             "coord": {
@@ -143,6 +157,7 @@
         {
             "id": 1843491,
             "name": "Iksan",
+            "kr_name": "익산",
             "state": "",
             "country": "KR",
             "coord": {
@@ -153,6 +168,7 @@
         {
             "id": 1845457,
             "name": "Jeonju",
+            "kr_name": "전주",
             "state": "",
             "country": "KR",
             "coord": {
@@ -163,6 +179,7 @@
         {
             "id": 1846266,
             "name": "Jeju City",
+            "kr_name": "제주시",
             "state": "",
             "country": "KR",
             "coord": {
@@ -173,6 +190,7 @@
         {
             "id": 1845759,
             "name": "Cheonan",
+            "kr_name": "천안",
             "state": "",
             "country": "KR",
             "coord": {
@@ -183,6 +201,7 @@
         {
             "id": 1845604,
             "name": "Cheongju-si",
+            "kr_name": "청주시",
             "state": "",
             "country": "KR",
             "coord": {
@@ -193,6 +212,7 @@
         {
             "id": 1845136,
             "name": "Chuncheon",
+            "kr_name": "춘천",
             "state": "",
             "country": "KR",
             "coord": {
