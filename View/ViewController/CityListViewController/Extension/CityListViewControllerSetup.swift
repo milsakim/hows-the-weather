@@ -17,7 +17,7 @@ extension CityListViewController {
         }
         
         setUpSortingNavItem()
-        setUpSettingNavItem()
+        setUpPreferencesNavItem()
         
         // back button title 삭제
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -99,7 +99,7 @@ extension CityListViewController {
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
-    func setUpSettingNavItem() {
+    func setUpPreferencesNavItem() {
         guard self.navigationController != nil else {
             return
         }
@@ -121,7 +121,7 @@ extension CityListViewController {
             celsiusActionState = .on
         }
         
-        let celsius: UIAction = UIAction(title: "Celsius", state: celsiusActionState) { action in
+        let celsius: UIAction = UIAction(title: LocalizationKey.celsicus.localized, state: celsiusActionState) { action in
             UserDefaults.standard.set(MeasurementUnit.celsius.rawValue, forKey: UserDefaultsKey.unit)
             
             // 데이터 다시 fetch
@@ -129,7 +129,7 @@ extension CityListViewController {
             self.viewModel?.fetchCurrentWeatherData()
         }
         
-        let fahrenheit: UIAction = UIAction(title: "Fahrenheit", state: fahrenheitActionState) { action in
+        let fahrenheit: UIAction = UIAction(title: LocalizationKey.fahrenheit.localized, state: fahrenheitActionState) { action in
             UserDefaults.standard.set(MeasurementUnit.fahrenheit.rawValue, forKey: UserDefaultsKey.unit)
             
             // 데이터 다시 fetch
@@ -139,39 +139,10 @@ extension CityListViewController {
         
         let unitsMenu: UIMenu = UIMenu(title: "Unit", options: [.singleSelection, .displayInline], children: [celsius, fahrenheit])
         
-        var englishActionState: UIAction.State = .off
-        var koreanActionState: UIAction.State = .off
+
+        let preferencesMenu: UIMenu = UIMenu(title: LocalizationKey.prefrences.localized, options: [], children: [unitsMenu])
         
-        let languageString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.language) as? String ?? Language.korean.rawValue
-        switch Language(rawValue: languageString) {
-        case .korean:
-            koreanActionState = .on
-        case .english:
-            englishActionState = .on
-        default:
-            koreanActionState = .on
-        }
-        
-        let korean: UIAction = UIAction(title: "Korean", state: koreanActionState) { action in
-            UserDefaults.standard.set(Language.korean.rawValue, forKey: UserDefaultsKey.language)
-            
-            // 데이터 다시 fetch
-            self.clearData()
-            self.viewModel?.fetchCurrentWeatherData()
-        }
-        
-        let english: UIAction = UIAction(title: "English", state: englishActionState) { action in
-            UserDefaults.standard.set(Language.english.rawValue, forKey: UserDefaultsKey.language)
-            
-            // 데이터 다시 fetch
-            self.clearData()
-            self.viewModel?.fetchCurrentWeatherData()
-        }
-        
-        let languageMenu: UIMenu = UIMenu(title: "Language", options: [.singleSelection, .displayInline], children: [korean, english])
-        
-        let settingMenu: UIMenu = UIMenu(title: "Setting", options: [], children: [unitsMenu, languageMenu])
-        settingButton.menu = settingMenu
+        settingButton.menu = preferencesMenu
     }
     
     // MARK: - Table View Setup
