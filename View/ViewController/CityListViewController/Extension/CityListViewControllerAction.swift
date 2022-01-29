@@ -24,8 +24,14 @@ extension CityListViewController {
                 return
             }
             
+            switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+            case .english:
+                detailedWeatherViewController.title = cityList[indexPath.row].name
+            default:
+                detailedWeatherViewController.title = cityList[indexPath.row].kr_name
+            }
+            
             detailedWeatherViewController.city = cityList[indexPath.row]
-            detailedWeatherViewController.title = cityList[indexPath.row].name
             detailedWeatherViewController.currentWeather = currentWeather
             detailedWeatherViewController.iconImage = cachedIcon
             
