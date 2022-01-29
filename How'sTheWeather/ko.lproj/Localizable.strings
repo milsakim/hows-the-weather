@@ -20,3 +20,16 @@
 "Prefrences" = "설정";
 "Celsius" = "섭씨";
 "Fahrenheit" = "화씨";
+
+// MARK: - DetailedWeatherViewController
+
+"Feels like" = "체감온도";
+"Max" = "최고";
+"Min" = "최저";
+
+"Today's Details" = "오늘 날씨 상세";
+"Humidity" = "습도";
+"Pressure" = "압력";
+"Wind" = "풍속";
+
+"Forecast" = "미래날씨";

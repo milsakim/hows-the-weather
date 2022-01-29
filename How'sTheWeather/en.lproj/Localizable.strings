@@ -20,3 +20,17 @@
 "Prefrences" = "Prefrences";
 "Celsius" = "Celsius";
 "Fahrenheit" = "Fahrenheit";
+
+// MARK: - DetailedWeatherViewController
+
+"Feels like" = "Feels like";
+"Max" = "Max";
+"Min" = "Min";
+
+"Today's Details" = "Today's Details";
+"Humidity" = "Humidity";
+"Pressure" = "Pressure";
+"Wind" = "Wind";
+
+"Forecast" = "Forecast";
+
