@@ -17,7 +17,7 @@ extension ForecastViewController {
             self.navigationController?.popViewController(animated: true)
         })
         
-        let alertController: UIAlertController = UIAlertController(title: "Fail to Load Forecast Data", message: "Please restart application", preferredStyle: .alert)
+        let alertController: UIAlertController = UIAlertController(title: LocalizationKey.fetchingFailureAlertTitle.localized, message: LocalizationKey.fetchingFailureAlertMessage.localized, preferredStyle: .alert)
         alertController.addAction(okAction)
         
         present(alertController, animated: true, completion: nil)
