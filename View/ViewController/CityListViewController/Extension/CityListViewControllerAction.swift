@@ -45,7 +45,7 @@ extension CityListViewController {
     // MARK: - Presenting Alert Controller
     
     func showDataFetchingInProgressAlert() {
-        let alertController: UIAlertController = UIAlertController(title: "Loading Weather Data", message: "Please try in few seconds", preferredStyle: .alert)
+        let alertController: UIAlertController = UIAlertController(title: LocalizationKey.dataFetchingInProgressAlertTitle.localized, message: LocalizationKey.dataFetchingInProgressAlertMessage.localized, preferredStyle: .alert)
         
         let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         
@@ -55,9 +55,9 @@ extension CityListViewController {
     }
     
     func showFetchingFailureAlert() {
-        let alertController: UIAlertController = UIAlertController(title: "Loading Weather Data Failed", message: "Please restart application", preferredStyle: .alert)
+        let alertController: UIAlertController = UIAlertController(title: LocalizationKey.fetchingFailureAlertTitle.localized, message: LocalizationKey.fetchingFailureAlertMessage.localized, preferredStyle: .alert)
 
-        let retryAction: UIAlertAction = UIAlertAction(title: "Retry", style: .default, handler: { action in
+        let retryAction: UIAlertAction = UIAlertAction(title: LocalizationKey.retryActionTitle.localized, style: .default, handler: { action in
             print("--- retryAction handler ---")
             
             if self.viewModel == nil {
