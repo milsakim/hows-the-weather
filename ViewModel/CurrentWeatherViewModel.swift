@@ -126,10 +126,17 @@ extension CurrentWeatherViewModel {
         isFetchInProgress = true
         
         let endIndex: Int = (startIndex + fragmentSize) <= availableCityList.count ? startIndex + fragmentSize : availableCityList.count
-        print("--- endIndex: \(endIndex) ---")
         let cityIDsToFetch: [Int] = availableCityList[startIndex..<endIndex].map({ $0.id })
+        
         let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
-        let language: String = UserDefaults.standard.object(forKey: UserDefaultsKey.language) as? String ?? Language.korean.rawValue
+        
+        let language: String
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            language = Language.english.rawValue
+        default:
+            language = Language.korean.rawValue
+        }
         
         client.fetchCurrentWeatherData(cityIDs: cityIDsToFetch, unit: unit, language: language) { result in
             switch result {
