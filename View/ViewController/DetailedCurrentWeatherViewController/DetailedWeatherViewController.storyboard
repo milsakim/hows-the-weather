@@ -168,8 +168,12 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="humidityInfoLabel" destination="d0J-NF-Ioi" id="6YB-Gy-A4t"/>
+                                            <outlet property="humidityLabel" destination="f1S-tO-wEm" id="k8c-Rm-Ge4"/>
                                             <outlet property="pressureInfoLabel" destination="JiY-8m-yqx" id="r8l-SW-yZe"/>
+                                            <outlet property="pressureLabel" destination="O90-sb-2hp" id="Uzo-mB-Je4"/>
+                                            <outlet property="titleLabel" destination="f7B-rQ-xzG" id="Riv-4b-XOs"/>
                                             <outlet property="windInfoLabel" destination="FPJ-nw-9jS" id="29W-Pe-CBV"/>
+                                            <outlet property="windLabel" destination="nWp-7q-2WP" id="ims-Hm-8Su"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="nGP-fF-JdP" style="IBUITableViewCellStyleDefault" id="dZi-gS-y6Y">

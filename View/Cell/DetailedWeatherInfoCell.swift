@@ -11,6 +11,10 @@ class DetailedWeatherInfoCell: UITableViewCell {
     
     static let reuseID: String = "DetailedWeatherInfoCell"
 
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var pressureLabel: UILabel!
+    @IBOutlet weak var windLabel: UILabel!
     @IBOutlet weak var humidityInfoLabel: UILabel!
     @IBOutlet weak var pressureInfoLabel: UILabel!
     @IBOutlet weak var windInfoLabel: UILabel!
