@@ -25,3 +25,8 @@ struct LocalizationKey {
     static let fahrenheit: String = "Fahrenheit"
     
 }
+
+enum PreferredLocalization: String {
+    case english = "en"
+    case korean = "ko"
+}
