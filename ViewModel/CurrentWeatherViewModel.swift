@@ -41,7 +41,7 @@ final class CurrentWeatherViewModel {
     
     var isFetchInProgress: Bool = false {
         didSet {
-           print("--- isFetchInProgress: \(isFetchInProgress) ---")
+            print("--- isFetchInProgress: \(isFetchInProgress) ---")
             delegate?.fetchStarted()
         }
     }
@@ -71,12 +71,18 @@ final class CurrentWeatherViewModel {
     
     func readJSONData() {
         guard let filePath = Bundle.main.path(forResource: "supporting-city-list", ofType: "json"),
-                let fileData = FileManager.default.contents(atPath: filePath) else {
-            print("--- Fail to get path or data ---")
-            return
-        }
+              let fileData = FileManager.default.contents(atPath: filePath) else {
+                  if delegate != nil {
+                      delegate?.fetchFailed(error: .decoding)
+                  }
+                  print("--- Fail to get path or data ---")
+                  return
+              }
         
         guard let json: SupportingCityList = try? JSONDecoder().decode(SupportingCityList.self, from: fileData) else {
+            if delegate != nil {
+                delegate?.fetchFailed(error: .decoding)
+            }
             print("--- Fail to decode json data ---")
             return
         }
@@ -124,7 +130,7 @@ extension CurrentWeatherViewModel {
             }
         }
     }
-
+    
     func clear() {
         print("--- CurrentWeatherViewModel \(#function) called ---")
         startIndex = 0
