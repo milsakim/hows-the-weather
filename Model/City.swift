@@ -14,6 +14,7 @@ struct SupportingCityList: Codable {
 struct City: Codable {
     let id: Int
     let name: String
+    let kr_name: String
     let state: String
     let country: String
     let coord: Coordinate
