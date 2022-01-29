@@ -34,3 +34,11 @@
 
 "Forecast" = "Forecast";
 
+// MARK: - Alert Controller
+
+"Loading Weather Data" = "Loading Weather Data";
+"Please try in few seconds" = "Please try in few seconds";
+
+"Loading Weather Data Failed" = "Loading Weather Data Failed";
+"Please restart application" = "Please restart application";
+"Retry" = "Retry";
