@@ -37,6 +37,15 @@ struct LocalizationKey {
     
     static let forecast: String = "Forecast"
     
+    // MARK: - Alert Controller
+    
+    static let dataFetchingInProgressAlertTitle: String = "Loading Weather Data"
+    static let dataFetchingInProgressAlertMessage: String = "Please try in few seconds"
+    
+    static let fetchingFailureAlertTitle: String = "Loading Weather Data Failed"
+    static let fetchingFailureAlertMessage: String = "Please restart application"
+    static let retryActionTitle: String = "Retry"
+    
 }
 
 enum PreferredLocalization: String {

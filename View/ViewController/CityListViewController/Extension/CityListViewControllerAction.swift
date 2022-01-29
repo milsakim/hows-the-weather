@@ -38,13 +38,13 @@ extension CityListViewController {
             navigationController?.pushViewController(detailedWeatherViewController, animated: true)
         }
         else {
-            showDataLoadingAlert()
+            showDataFetchingInProgressAlert()
         }
     }
     
     // MARK: - Presenting Alert Controller
     
-    func showDataLoadingAlert() {
+    func showDataFetchingInProgressAlert() {
         let alertController: UIAlertController = UIAlertController(title: "Loading Weather Data", message: "Please try in few seconds", preferredStyle: .alert)
         
         let okAction: UIAlertAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -55,7 +55,7 @@ extension CityListViewController {
     }
     
     func showFetchingFailureAlert() {
-        let alertController: UIAlertController = UIAlertController(title: "Fail to Load Weather Data", message: "Please restart application", preferredStyle: .alert)
+        let alertController: UIAlertController = UIAlertController(title: "Loading Weather Data Failed", message: "Please restart application", preferredStyle: .alert)
 
         let retryAction: UIAlertAction = UIAlertAction(title: "Retry", style: .default, handler: { action in
             print("--- retryAction handler ---")
