@@ -68,7 +68,7 @@ class CityListViewController: UIViewController {
     // MARK: - Common Initialization
     
     private func commonInit() {
-        title = "Today's Weather"
+        title = LocalizationKey.cityListViewControllerTitle.localized
         setUpNavigation()
         setupTableView()
         setupViewModel()

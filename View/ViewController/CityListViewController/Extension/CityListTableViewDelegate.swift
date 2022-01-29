@@ -17,7 +17,7 @@ extension CityListViewController: UITableViewDelegate {
         }
         
         if viewModel.isFetchInProgress {
-            showDataLoadingAlert()
+            showDataFetchingInProgressAlert()
         }
         else {
             pushViewController(indexPath: indexPath)

@@ -17,7 +17,7 @@ extension CityListViewController {
         }
         
         setUpSortingNavItem()
-        setUpSettingNavItem()
+        setUpPreferencesNavItem()
         
         // back button title 삭제
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -44,19 +44,19 @@ extension CityListViewController {
             sortByCityNameActionState = .on
         }
         
-        let sortByCityName: UIAction = UIAction(title: "City Name", state: sortByCityNameActionState) { action in
+        let sortByCityName: UIAction = UIAction(title: LocalizationKey.cityName.localized, state: sortByCityNameActionState) { action in
             UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         
-        let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
+        let sortByTemp: UIAction = UIAction(title: LocalizationKey.temperature.localized, state: sortByTempActionState) { action in
             UserDefaults.standard.set(SortingCriterion.temperature.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         
-        let sortByDistance: UIAction = UIAction(title: "Distance", attributes: .disabled, state: sortByDistanceActionState) { action in
+        let sortByDistance: UIAction = UIAction(title: LocalizationKey.distance.localized, attributes: .disabled, state: sortByDistanceActionState) { action in
             UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
@@ -75,13 +75,13 @@ extension CityListViewController {
             decendingOrderActionState = .on
         }
         
-        let acsendingOrder: UIAction = UIAction(title: "Ascending", state: ascendingOrderActionState) { action in
+        let acsendingOrder: UIAction = UIAction(title: LocalizationKey.ascending.localized, state: ascendingOrderActionState) { action in
             UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         
-        let descendingOrder: UIAction = UIAction(title: "Descending", state: decendingOrderActionState) { action in
+        let descendingOrder: UIAction = UIAction(title: LocalizationKey.descending.localized, state: decendingOrderActionState) { action in
             UserDefaults.standard.set(false, forKey: UserDefaultsKey.isAscending)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
@@ -89,17 +89,17 @@ extension CityListViewController {
         
         let orderMenu: UIMenu = UIMenu(title: "In Order", options: [.singleSelection, .displayInline], children: [acsendingOrder, descendingOrder])
         
-    
-        let sortingMenu: UIMenu = UIMenu(title: "Sort", options: [], children: [sortingStandardMenu, orderMenu])
+        
+        let sortingMenu: UIMenu = UIMenu(title: LocalizationKey.sort.localized, options: [], children: [sortingStandardMenu, orderMenu])
         
         let sortingButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), style: .plain, target: self, action: nil)
         sortingButton.menu = sortingMenu
-    
+        
         navigationItem.setRightBarButton(sortingButton, animated: false)
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
-    func setUpSettingNavItem() {
+    func setUpPreferencesNavItem() {
         guard self.navigationController != nil else {
             return
         }
@@ -121,7 +121,7 @@ extension CityListViewController {
             celsiusActionState = .on
         }
         
-        let celsius: UIAction = UIAction(title: "Celsius", state: celsiusActionState) { action in
+        let celsius: UIAction = UIAction(title: LocalizationKey.celsicus.localized, state: celsiusActionState) { action in
             UserDefaults.standard.set(MeasurementUnit.celsius.rawValue, forKey: UserDefaultsKey.unit)
             
             // 데이터 다시 fetch
@@ -129,7 +129,7 @@ extension CityListViewController {
             self.viewModel?.fetchCurrentWeatherData()
         }
         
-        let fahrenheit: UIAction = UIAction(title: "Fahrenheit", state: fahrenheitActionState) { action in
+        let fahrenheit: UIAction = UIAction(title: LocalizationKey.fahrenheit.localized, state: fahrenheitActionState) { action in
             UserDefaults.standard.set(MeasurementUnit.fahrenheit.rawValue, forKey: UserDefaultsKey.unit)
             
             // 데이터 다시 fetch
@@ -139,39 +139,10 @@ extension CityListViewController {
         
         let unitsMenu: UIMenu = UIMenu(title: "Unit", options: [.singleSelection, .displayInline], children: [celsius, fahrenheit])
         
-        var englishActionState: UIAction.State = .off
-        var koreanActionState: UIAction.State = .off
+
+        let preferencesMenu: UIMenu = UIMenu(title: LocalizationKey.prefrences.localized, options: [], children: [unitsMenu])
         
-        let languageString: String = UserDefaults.standard.object(forKey: UserDefaultsKey.language) as? String ?? Language.korean.rawValue
-        switch Language(rawValue: languageString) {
-        case .korean:
-            koreanActionState = .on
-        case .english:
-            englishActionState = .on
-        default:
-            koreanActionState = .on
-        }
-        
-        let korean: UIAction = UIAction(title: "Korean", state: koreanActionState) { action in
-            UserDefaults.standard.set(Language.korean.rawValue, forKey: UserDefaultsKey.language)
-            
-            // 데이터 다시 fetch
-            self.clearData()
-            self.viewModel?.fetchCurrentWeatherData()
-        }
-        
-        let english: UIAction = UIAction(title: "English", state: englishActionState) { action in
-            UserDefaults.standard.set(Language.english.rawValue, forKey: UserDefaultsKey.language)
-            
-            // 데이터 다시 fetch
-            self.clearData()
-            self.viewModel?.fetchCurrentWeatherData()
-        }
-        
-        let languageMenu: UIMenu = UIMenu(title: "Language", options: [.singleSelection, .displayInline], children: [korean, english])
-        
-        let settingMenu: UIMenu = UIMenu(title: "Setting", options: [], children: [unitsMenu, languageMenu])
-        settingButton.menu = settingMenu
+        settingButton.menu = preferencesMenu
     }
     
     // MARK: - Table View Setup
@@ -192,16 +163,25 @@ extension CityListViewController {
         tableView.tableFooterView = tableViewFooter
         tableViewFooter.isHidden = true
     }
-
+    
     // MARK: - View Model Setup
     
     func setupViewModel() {
-        if viewModel == nil {
-            viewModel = CurrentWeatherViewModel()
+        viewModel = CurrentWeatherViewModel()
+        
+        guard let viewModel = viewModel else {
+            return
         }
         
-        viewModel?.delegate = self
-        viewModel?.fetchCurrentWeatherData()
+        viewModel.delegate = self
+        viewModel.readJSONData()
+        
+        guard !viewModel.isReadingJSONFailed else {
+            showFetchingFailureAlert()
+            return
+        }
+        
+        viewModel.fetchCurrentWeatherData()
     }
-
+    
 }

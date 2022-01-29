@@ -9,7 +9,7 @@ import UIKit
 
 class ForecastViewController: UIViewController {
 
-    @IBOutlet weak var lineGraphView: WeatherGraphView!
+    @IBOutlet weak var lineGraphView: WeatherForecastGraphView!
     
     var viewModel: ForecastViewModel?
     var cityID: Int?

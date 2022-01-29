@@ -31,10 +31,10 @@ extension DetailedWeatherViewController: UITableViewDataSource {
             }
             
             if let currentWeather = currentWeather {
-                cell.tempLabel.text = "\(currentWeather.main.temp)"
+                cell.tempLabel.text = "\(currentWeather.main.temp) \(unitSymbol)"
                 cell.descriptionLabel.text = currentWeather.weather[0].description
-                cell.feelsLikeLabel.text = "Feels like \(currentWeather.main.feels_like) \(unitSymbol)"
-                cell.maxAndMinTempLabel.text = "Max \(currentWeather.main.temp_max) \(unitSymbol) / Min \(currentWeather.main.temp_min) \(unitSymbol)"
+                cell.feelsLikeLabel.text = "\(LocalizationKey.feelsLike.localized) \(currentWeather.main.feels_like) \(unitSymbol)"
+                cell.maxAndMinTempLabel.text = "\(LocalizationKey.max.localized) \(currentWeather.main.temp_max) \(unitSymbol) / \(LocalizationKey.min.localized) \(currentWeather.main.temp_min) \(unitSymbol)"
                 cell.weatherIconView.image = iconImage
             }
             
@@ -45,6 +45,10 @@ extension DetailedWeatherViewController: UITableViewDataSource {
             }
             
             if let currentWeather = currentWeather {
+                cell.titleLabel.text = LocalizationKey.todaysDetails.localized
+                cell.humidityLabel.text = LocalizationKey.humidity.localized
+                cell.pressureLabel.text = LocalizationKey.pressure.localized
+                cell.windLabel.text = LocalizationKey.wind.localized
                 cell.humidityInfoLabel.text = "\(currentWeather.main.humidity) %"
                 cell.pressureInfoLabel.text = "\(currentWeather.main.pressure)"
                 cell.windInfoLabel.text = "\(currentWeather.wind.speed)"
@@ -55,7 +59,7 @@ extension DetailedWeatherViewController: UITableViewDataSource {
             let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
             
             var config = cell.defaultContentConfiguration()
-            config.text = "Forecast"
+            config.text = LocalizationKey.forecast.localized
             
             cell.accessoryType = .disclosureIndicator
             cell.contentConfiguration = config

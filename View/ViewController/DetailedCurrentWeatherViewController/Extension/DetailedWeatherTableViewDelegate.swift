@@ -36,8 +36,14 @@ extension DetailedWeatherViewController: UITableViewDelegate {
             return
         }
         
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            forecastViewController.title = "\(city.name) \(LocalizationKey.forecast.localized)"
+        default:
+            forecastViewController.title = "\(city.kr_name) \(LocalizationKey.forecast.localized)"
+        }
+        
         forecastViewController.cityID = city.id
-        forecastViewController.title = "\(city.name) Forecast"
         
         navigationController.pushViewController(forecastViewController, animated: true)
     }

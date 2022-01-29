@@ -33,7 +33,7 @@ final class CurrentWeatherViewModel {
     var startIndex: Int = 0 {
         didSet {
             print("--- startIndex: \(startIndex) ---")
-            if startIndex >= availableCityList.count {
+            if startIndex != 0, startIndex >= availableCityList.count {
                 delegate?.allWeatherDataFetched()
             }
         }
@@ -41,10 +41,12 @@ final class CurrentWeatherViewModel {
     
     var isFetchInProgress: Bool = false {
         didSet {
-           print("--- isFetchInProgress: \(isFetchInProgress) ---")
+            print("--- isFetchInProgress: \(isFetchInProgress) ---")
             delegate?.fetchStarted()
         }
     }
+    
+    var isReadingJSONFailed: Bool = false
     
     var availableCityListCount: Int {
         availableCityList.count
@@ -53,7 +55,7 @@ final class CurrentWeatherViewModel {
     // MARK: - Initialization
     
     init() {
-        readJSONData()
+        //        readJSONData()
     }
     
     // MARK: - Deinitialization
@@ -71,12 +73,22 @@ final class CurrentWeatherViewModel {
     
     func readJSONData() {
         guard let filePath = Bundle.main.path(forResource: "supporting-city-list", ofType: "json"),
-                let fileData = FileManager.default.contents(atPath: filePath) else {
-            print("--- Fail to get path or data ---")
-            return
-        }
+              let fileData = FileManager.default.contents(atPath: filePath) else {
+                  isReadingJSONFailed = true
+                  
+                  if delegate != nil {
+                      delegate?.fetchFailed(error: .decoding)
+                  }
+                  print("--- Fail to get path or data ---")
+                  return
+              }
         
         guard let json: SupportingCityList = try? JSONDecoder().decode(SupportingCityList.self, from: fileData) else {
+            isReadingJSONFailed = true
+            
+            if delegate != nil {
+                delegate?.fetchFailed(error: .decoding)
+            }
             print("--- Fail to decode json data ---")
             return
         }
@@ -84,7 +96,14 @@ final class CurrentWeatherViewModel {
         print("--- file read fin: \(json.data.count) ---")
         
         // 도시 이름 기준 사전순 정렬
-        availableCityList = json.data.sorted(by: { $0.name < $1.name })
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            availableCityList = json.data.sorted(by: { $0.name < $1.name })
+        default:
+            availableCityList = json.data.sorted(by: { $0.kr_name < $1.kr_name })
+        }
+        
+        isReadingJSONFailed = false
     }
     
 }
@@ -94,16 +113,30 @@ extension CurrentWeatherViewModel {
     // MARK: - Data Fetching
     
     func fetchCurrentWeatherData() {
-        print("--- \(#function) called: \(startIndex) ---")
-        guard !isFetchInProgress else { return }
+        print("--- CurrentWeatherViewModel \(#function) called: \(startIndex) ---")
+        guard !isReadingJSONFailed else {
+            delegate?.fetchFailed(error: .decoding)
+            return
+        }
+        
+        guard !isFetchInProgress else {
+            return
+        }
         
         isFetchInProgress = true
         
         let endIndex: Int = (startIndex + fragmentSize) <= availableCityList.count ? startIndex + fragmentSize : availableCityList.count
-        print("--- endIndex: \(endIndex) ---")
         let cityIDsToFetch: [Int] = availableCityList[startIndex..<endIndex].map({ $0.id })
+        
         let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
-        let language: String = UserDefaults.standard.object(forKey: UserDefaultsKey.language) as? String ?? Language.korean.rawValue
+        
+        let language: String
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            language = Language.english.rawValue
+        default:
+            language = Language.korean.rawValue
+        }
         
         client.fetchCurrentWeatherData(cityIDs: cityIDsToFetch, unit: unit, language: language) { result in
             switch result {
@@ -124,9 +157,9 @@ extension CurrentWeatherViewModel {
             }
         }
     }
-
+    
     func clear() {
-        print("--- \(#function) ---")
+        print("--- CurrentWeatherViewModel \(#function) called ---")
         startIndex = 0
         currentWeather.removeAll()
         iconCache.removeAllObjects()
@@ -143,13 +176,24 @@ extension CurrentWeatherViewModel {
         let sortingCriterion: SortingCriterion = SortingCriterion(rawValue: criterionString) ?? .name
         let isAcending: Bool = UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending) as? Bool ?? true
         
+        
         switch sortingCriterion {
         case .name:
-            if isAcending {
-                delegate.cityList.sort { $0.name < $1.name }
-            }
-            else {
-                delegate.cityList.sort { $0.name > $1.name }
+            switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+            case .english:
+                if isAcending {
+                    delegate.cityList.sort { $0.name < $1.name }
+                }
+                else {
+                    delegate.cityList.sort { $0.name > $1.name }
+                }
+            default:
+                if isAcending {
+                    delegate.cityList.sort { $0.kr_name < $1.kr_name }
+                }
+                else {
+                    delegate.cityList.sort { $0.kr_name > $1.kr_name }
+                }
             }
         case .temperature:
             if isAcending {
