@@ -44,19 +44,19 @@ extension CityListViewController {
             sortByCityNameActionState = .on
         }
         
-        let sortByCityName: UIAction = UIAction(title: "City Name", state: sortByCityNameActionState) { action in
+        let sortByCityName: UIAction = UIAction(title: LocalizationKey.cityName.localized, state: sortByCityNameActionState) { action in
             UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         
-        let sortByTemp: UIAction = UIAction(title: "Temperature", state: sortByTempActionState) { action in
+        let sortByTemp: UIAction = UIAction(title: LocalizationKey.temperature.localized, state: sortByTempActionState) { action in
             UserDefaults.standard.set(SortingCriterion.temperature.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         
-        let sortByDistance: UIAction = UIAction(title: "Distance", attributes: .disabled, state: sortByDistanceActionState) { action in
+        let sortByDistance: UIAction = UIAction(title: LocalizationKey.distance.localized, attributes: .disabled, state: sortByDistanceActionState) { action in
             UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
@@ -75,13 +75,13 @@ extension CityListViewController {
             decendingOrderActionState = .on
         }
         
-        let acsendingOrder: UIAction = UIAction(title: "Ascending", state: ascendingOrderActionState) { action in
+        let acsendingOrder: UIAction = UIAction(title: LocalizationKey.ascending.localized, state: ascendingOrderActionState) { action in
             UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
         }
         
-        let descendingOrder: UIAction = UIAction(title: "Descending", state: decendingOrderActionState) { action in
+        let descendingOrder: UIAction = UIAction(title: LocalizationKey.descending.localized, state: decendingOrderActionState) { action in
             UserDefaults.standard.set(false, forKey: UserDefaultsKey.isAscending)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
@@ -90,7 +90,7 @@ extension CityListViewController {
         let orderMenu: UIMenu = UIMenu(title: "In Order", options: [.singleSelection, .displayInline], children: [acsendingOrder, descendingOrder])
         
         
-        let sortingMenu: UIMenu = UIMenu(title: "Sort", options: [], children: [sortingStandardMenu, orderMenu])
+        let sortingMenu: UIMenu = UIMenu(title: LocalizationKey.sort.localized, options: [], children: [sortingStandardMenu, orderMenu])
         
         let sortingButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), style: .plain, target: self, action: nil)
         sortingButton.menu = sortingMenu
