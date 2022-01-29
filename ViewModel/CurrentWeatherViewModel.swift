@@ -94,7 +94,7 @@ extension CurrentWeatherViewModel {
     // MARK: - Data Fetching
     
     func fetchCurrentWeatherData() {
-        print("--- \(#function) called: \(startIndex) ---")
+        print("--- CurrentWeatherViewModel \(#function) called: \(startIndex) ---")
         guard !isFetchInProgress else { return }
         
         isFetchInProgress = true
@@ -126,7 +126,7 @@ extension CurrentWeatherViewModel {
     }
 
     func clear() {
-        print("--- \(#function) ---")
+        print("--- CurrentWeatherViewModel \(#function) called ---")
         startIndex = 0
         currentWeather.removeAll()
         iconCache.removeAllObjects()
