@@ -89,12 +89,12 @@ extension CityListViewController {
         
         let orderMenu: UIMenu = UIMenu(title: "In Order", options: [.singleSelection, .displayInline], children: [acsendingOrder, descendingOrder])
         
-    
+        
         let sortingMenu: UIMenu = UIMenu(title: "Sort", options: [], children: [sortingStandardMenu, orderMenu])
         
         let sortingButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.up.arrow.down"), style: .plain, target: self, action: nil)
         sortingButton.menu = sortingMenu
-    
+        
         navigationItem.setRightBarButton(sortingButton, animated: false)
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
@@ -192,16 +192,25 @@ extension CityListViewController {
         tableView.tableFooterView = tableViewFooter
         tableViewFooter.isHidden = true
     }
-
+    
     // MARK: - View Model Setup
     
     func setupViewModel() {
-        if viewModel == nil {
-            viewModel = CurrentWeatherViewModel()
+        viewModel = CurrentWeatherViewModel()
+        
+        guard let viewModel = viewModel else {
+            return
         }
         
-        viewModel?.delegate = self
-        viewModel?.fetchCurrentWeatherData()
+        viewModel.delegate = self
+        viewModel.readJSONData()
+        
+        guard !viewModel.isReadingJSONFailed else {
+            showFetchingFailureAlert()
+            return
+        }
+        
+        viewModel.fetchCurrentWeatherData()
     }
-
+    
 }

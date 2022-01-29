@@ -33,7 +33,7 @@ final class CurrentWeatherViewModel {
     var startIndex: Int = 0 {
         didSet {
             print("--- startIndex: \(startIndex) ---")
-            if startIndex >= availableCityList.count {
+            if startIndex != 0, startIndex >= availableCityList.count {
                 delegate?.allWeatherDataFetched()
             }
         }
@@ -46,6 +46,8 @@ final class CurrentWeatherViewModel {
         }
     }
     
+    var isReadingJSONFailed: Bool = false
+    
     var availableCityListCount: Int {
         availableCityList.count
     }
@@ -53,7 +55,7 @@ final class CurrentWeatherViewModel {
     // MARK: - Initialization
     
     init() {
-        readJSONData()
+        //        readJSONData()
     }
     
     // MARK: - Deinitialization
@@ -72,6 +74,8 @@ final class CurrentWeatherViewModel {
     func readJSONData() {
         guard let filePath = Bundle.main.path(forResource: "supporting-city-list", ofType: "json"),
               let fileData = FileManager.default.contents(atPath: filePath) else {
+                  isReadingJSONFailed = true
+                  
                   if delegate != nil {
                       delegate?.fetchFailed(error: .decoding)
                   }
@@ -80,6 +84,8 @@ final class CurrentWeatherViewModel {
               }
         
         guard let json: SupportingCityList = try? JSONDecoder().decode(SupportingCityList.self, from: fileData) else {
+            isReadingJSONFailed = true
+            
             if delegate != nil {
                 delegate?.fetchFailed(error: .decoding)
             }
@@ -91,6 +97,8 @@ final class CurrentWeatherViewModel {
         
         // 도시 이름 기준 사전순 정렬
         availableCityList = json.data.sorted(by: { $0.name < $1.name })
+        
+        isReadingJSONFailed = false
     }
     
 }
@@ -101,7 +109,14 @@ extension CurrentWeatherViewModel {
     
     func fetchCurrentWeatherData() {
         print("--- CurrentWeatherViewModel \(#function) called: \(startIndex) ---")
-        guard !isFetchInProgress else { return }
+        guard !isReadingJSONFailed else {
+            delegate?.fetchFailed(error: .decoding)
+            return
+        }
+        
+        guard !isFetchInProgress else {
+            return
+        }
         
         isFetchInProgress = true
         
