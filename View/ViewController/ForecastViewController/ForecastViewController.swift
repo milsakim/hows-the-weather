@@ -9,39 +9,29 @@ import UIKit
 
 class ForecastViewController: UIViewController {
 
-    @IBOutlet weak var lineGraphView: WeatherGraphView!
+    @IBOutlet weak var lineGraphView: WeatherForecastGraphView!
     
     var viewModel: ForecastViewModel?
     var cityID: Int?
+    
+    // MARK: - Deinitialization
+    
+    deinit {
+        viewModel = nil
+        print("--- ForecastViewController deinit ---")
+    }
+    
+    // MARK: - View Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()
     }
     
+    // MARK: - Common Initialization
+    
     private func commonInit() {
-        setupViewModel()
-    }
-    
-}
-
-extension ForecastViewController: ViewModelDelegate {
-    
-    func fetchStarted() {
-        print(#function)
-    }
-    
-    func fetchCompleted(for indexPaths: [IndexPath]?) {
-        print(#function)
-        lineGraphView.data = viewModel?.graphPointEntryData
-    }
-    
-    func allSupportedCitiesAreFetched() {
-        print(#function)
-    }
-    
-    func fetchFailed(error: APIResponseError) {
-        print("fetch failed")
+        setUpViewModel()
     }
     
 }

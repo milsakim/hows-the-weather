@@ -10,19 +10,42 @@ import UIKit
 extension CityListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cityIDs.count
+//        print("--- \(#function) called ---")
+        return cityList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        print("--- \(#function) called ---")
         guard let cell: CityListTableViewCell = tableView.dequeueReusableCell(withIdentifier: CityListTableViewCell.reuseID, for: indexPath) as? CityListTableViewCell else {
             fatalError("Fail to cast cell")
         }
-
+        
+        var cityName: String = cityList[indexPath.row].kr_name
+        
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            cityName = cityList[indexPath.row].name
+        default:
+            cityName = cityList[indexPath.row].kr_name
+        }
+        
+        let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
+        
+        var unitSymbol: String = "℃"
+        switch MeasurementUnit(rawValue: unit) {
+        case .fahrenheit:
+            unitSymbol = "℉"
+        default:
+            unitSymbol = "℃"
+        }
+        
         if let viewModel = viewModel {
+            let id: String = String(cityList[indexPath.row].id)
+            
             // 해당 도시의 날씨 정보가 fetch 되어있는 경우
-            if let currentWeather = viewModel.currentWeather[String(viewModel.supportingCities[indexPath.row].id)] {
-                cell.cityLabel.text = currentWeather.name
-                cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) ℃ / \(currentWeather.main.humidity) %"
+            if let currentWeather = viewModel.currentWeather[id] {
+                cell.cityLabel.text = cityName
+                cell.tempAndHumidityLabel.text = "\(currentWeather.main.temp) \(unitSymbol) / \(currentWeather.main.humidity) %"
                 
                 if let icon = viewModel.iconCache.object(forKey: currentWeather.weather[0].icon as NSString) {
                     cell.weatherIconView.image = icon
@@ -47,13 +70,13 @@ extension CityListViewController: UITableViewDataSource {
                 }
             }
             else {
-                cell.cityLabel.text = viewModel.supportingCities[indexPath.row].name
-                cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
+                cell.cityLabel.text = cityName
+                cell.tempAndHumidityLabel.text = "-- \(unitSymbol) / -- %"
             }
         }
         else {
             cell.cityLabel.text = "---"
-            cell.tempAndHumidityLabel.text = "-- ℃ / -- %"
+            cell.tempAndHumidityLabel.text = "-- \(unitSymbol) / -- %"
         }
         
         return cell

@@ -7,6 +7,12 @@
 
 import Foundation
 
+
+protocol ForecastViewModelDelegate: AnyObject {
+    func fetchCompleted()
+    func fetchFailed(error: APIResponseError)
+}
+
 struct ForeCastData {
     let date: Int
     let minTemperature: Double
@@ -22,11 +28,11 @@ final class ForecastViewModel {
     private let cityID: Int
     private var foreCastData: [ForeCastData] = []
     
-    var graphPointEntryData: [PointEntry] {
-        foreCastData.compactMap { PointEntry(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, label: String($0.date)) }
+    var graphPointEntryData: [GraphPointData] {
+        foreCastData.compactMap { GraphPointData(minTempValue: $0.minTemperature, maxTempValue: $0.maxTemperature, humidityValue: $0.humidity, timeStamp: $0.date) }
     }
     
-    weak var delegate: ViewModelDelegate?
+    weak var delegate: ForecastViewModelDelegate?
     
     // MARK: - Initializer
     
@@ -42,7 +48,9 @@ final class ForecastViewModel {
     }
     
     func fetchForecastData() {
-        client.fetchForecastData(city: cityID) { result in
+        let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
+        
+        client.fetchForecastData(city: cityID, unit: unit) { result in
             switch result {
             case .failure(let error):
                 self.delegate?.fetchFailed(error: error)
@@ -52,7 +60,7 @@ final class ForecastViewModel {
                 }
                 
                 DispatchQueue.main.async {
-                    self.delegate?.fetchCompleted(for: nil)
+                    self.delegate?.fetchCompleted()
                 }
             }
         }

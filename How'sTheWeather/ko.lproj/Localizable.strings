@@ -1,0 +1,44 @@
+/* 
+  Localizable.strings
+  How'sTheWeather
+
+  Created by HyeJee Kim on 2022/01/29.
+  
+*/
+
+// MARK: - CityListViewController
+
+"Today's Weather" = "오늘의 날씨";
+
+"Sort" = "정렬";
+"City Name" = "도시 이름";
+"Temperature" = "기온";
+"Distance" = "거리";
+"Ascending" = "오름차순";
+"Descending" = "내림차순";
+
+"Prefrences" = "설정";
+"Celsius" = "섭씨";
+"Fahrenheit" = "화씨";
+
+// MARK: - DetailedWeatherViewController
+
+"Feels like" = "체감온도";
+"Max" = "최고";
+"Min" = "최저";
+
+"Today's Details" = "오늘 날씨 상세";
+"Humidity" = "습도";
+"Pressure" = "압력";
+"Wind" = "풍속";
+
+"Forecast" = "미래날씨";
+
+// MARK: - Alert Controller
+
+"Loading Weather Data" = "날씨 정보를 받아오는 중입니다";
+"Please try in few seconds" = "잠시 후에 다시 시도해주세요";
+
+"Loading Weather Data Failed" = "날씨 정보를 가져올 수 없습니다";
+"Please restart application" = "재시도 또는 앱을 재실행 해주세요";
+"Retry" = "재시도";

@@ -19,14 +19,33 @@ extension DetailedWeatherViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "ForecastViewController", bundle: .main)
-        guard let forecastViewController: ForecastViewController = storyboard.instantiateViewController(withIdentifier: "ForecastViewController") as? ForecastViewController else {
-            print("Fail to cast ForecastViewController")
+        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+        
+        guard let navigationController = navigationController else {
             return
         }
-        forecastViewController.cityID = city?.id
-        navigationController?.pushViewController(forecastViewController, animated: true)
-        tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+        
+        guard let city = city else {
+            print("--- city is nil ---")
+            return
+        }
+        
+        let storyboard: UIStoryboard = UIStoryboard(name: "ForecastViewController", bundle: .main)
+        guard let forecastViewController: ForecastViewController = storyboard.instantiateViewController(withIdentifier: "ForecastViewController") as? ForecastViewController else {
+            print("--- Fail to cast ForecastViewController ---")
+            return
+        }
+        
+        switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
+        case .english:
+            forecastViewController.title = "\(city.name) \(LocalizationKey.forecast.localized)"
+        default:
+            forecastViewController.title = "\(city.kr_name) \(LocalizationKey.forecast.localized)"
+        }
+        
+        forecastViewController.cityID = city.id
+        
+        navigationController.pushViewController(forecastViewController, animated: true)
     }
     
 }

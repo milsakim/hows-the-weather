@@ -13,18 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        initialSetting()
         
-        // CityListViewController에서 보여줄 도시 목록 정렬 기준 initial setting
-        /*
-        if UserDefaults.standard.object(forKey: UserDefaultsKey.sortingCriterion.rawValue) == nil {
-            UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
-        }
-        if UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending.rawValue) == nil {
-            UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
-        }
-        */
-        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion.rawValue)
-        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending.rawValue)
         return true
     }
 
@@ -43,5 +33,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+extension AppDelegate {
+    
+    func initialSetting() {
+        UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion)
+        UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending)
+        
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.language) == nil {
+            UserDefaults.standard.set(Language.korean.rawValue, forKey: UserDefaultsKey.language)
+        }
+        
+        if UserDefaults.standard.object(forKey: UserDefaultsKey.unit) == nil {
+            UserDefaults.standard.set(MeasurementUnit.celsius.rawValue, forKey: UserDefaultsKey.unit)
+        }
+    }
+    
 }
 

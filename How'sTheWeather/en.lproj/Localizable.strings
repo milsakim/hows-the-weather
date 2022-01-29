@@ -1,0 +1,44 @@
+/* 
+  Localizable.strings
+  How'sTheWeather
+
+  Created by HyeJee Kim on 2022/01/29.
+  
+*/
+
+// MARK: - CityListViewController
+
+"Today's Weather" = "Today's Weather";
+
+"Sort" = "Sort";
+"City Name" = "City Name";
+"Temperature" = "Temperature";
+"Distance" = "Distance";
+"Ascending" = "Ascending";
+"Descending" = "Descending";
+
+"Prefrences" = "Prefrences";
+"Celsius" = "Celsius";
+"Fahrenheit" = "Fahrenheit";
+
+// MARK: - DetailedWeatherViewController
+
+"Feels like" = "Feels like";
+"Max" = "Max";
+"Min" = "Min";
+
+"Today's Details" = "Today's Details";
+"Humidity" = "Humidity";
+"Pressure" = "Pressure";
+"Wind" = "Wind";
+
+"Forecast" = "Forecast";
+
+// MARK: - Alert Controller
+
+"Loading Weather Data" = "Loading Weather Data";
+"Please try in few seconds" = "Please try in few seconds";
+
+"Loading Weather Data Failed" = "Loading Weather Data Failed";
+"Please restart application" = "Please restart application";
+"Retry" = "Retry";

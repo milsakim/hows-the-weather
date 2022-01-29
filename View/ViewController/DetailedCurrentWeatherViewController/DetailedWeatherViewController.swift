@@ -20,16 +20,18 @@ class DetailedWeatherViewController: UIViewController {
     // MARK: - Deinitializer
     
     deinit {
-        iconImage = nil
+        print("--- DetailedWeatherViewController deinit ---")
     }
 
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         commonInit()
     }
     
     private func commonInit() {
-        setupTableView()
+        setUpNavigation()
+        setUpTableView()
     }
 
 }

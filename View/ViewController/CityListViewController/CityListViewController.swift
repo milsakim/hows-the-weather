@@ -12,16 +12,23 @@ class CityListViewController: UIViewController {
     // MARK: - Property
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet var tableViewFooter: UIView!
     @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
     
-    var viewModel: CurrentWeatherViewModel?
-
-    var cityIDs: [String] = []
+    @IBOutlet var tableViewFooter: UIView!
     
-    // MARK: - Deinit
+    private let cellHeight: CGFloat = 87.0
+    
+    var viewModel: CurrentWeatherViewModel?
+    var cityList: [City] = []
+    var isContentSmaller: Bool {
+        cellHeight * CGFloat(tableView.numberOfRows(inSection: 0)) < tableView.frame.height
+    }
+    
+    // MARK: - Deinitialization
     
     deinit {
+        viewModel = nil
+        cityList.removeAll()
         print("--- CityListViewController deinit ---")
     }
     
@@ -32,69 +39,39 @@ class CityListViewController: UIViewController {
         commonInit()
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        print(#function)
-        
-        coordinator.animate(alongsideTransition: nil) { transitionCoordinator in
-            if self.tableView.contentSize.height < self.tableView.frame.size.height {
-                print("--- content is smaller ---")
-                self.tableViewFooter.isHidden = false
-                self.loadingIndicator.startAnimating()
-                self.viewModel?.fetchCurrentWeathers()
-            }
-        }
-    }
-    
-    private func commonInit() {
-        title = "Today's Weather"
-        setupNavigation()
-        setupTableView()
-        setupViewModel()
-    }
-    
-}
-
-extension CityListViewController: CurrentWeatherViewModelDelegate {
-    
-    func fetchStarted() {
-        // 정렬 버튼 비활성화 시키기
-        navigationItem.rightBarButtonItem?.isEnabled = false
-    }
-    
-    func fetchCompleted(for indexPaths: [IndexPath]?, data: [String]?) {
-        print("--- \(#function) ---")
-        print("--- \(viewModel?.currentWeather.count) ---")
-        
-        tableViewFooter.isHidden = true
-        loadingIndicator.stopAnimating()
-        
-        if let indexPaths = indexPaths, let newData: [String] = data {
-            DispatchQueue.main.async {
-                self.tableView.beginUpdates()
-                self.cityIDs += newData
-                self.tableView.insertRows(at: indexPaths, with: .none)
-                self.tableView.endUpdates()
-            }
-        }
-        
-        if tableView.contentSize.height < tableView.frame.size.height {
-            print("--- content is smaller ---")
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isContentSmaller {
+            print("--- \(#function): content is smaller ---")
             tableViewFooter.isHidden = false
             loadingIndicator.startAnimating()
-            viewModel?.fetchCurrentWeathers()
+            viewModel?.fetchCurrentWeatherData()
         }
     }
     
-    func allSupportedCitiesAreFetched() {
-        print("--- \(#function): \(viewModel?.currentWeather.count)")
+    // MARK: - Responding to Environment Change
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print("--- \(#function) ---")
         
-        // 정렬 버튼 활성화 시키기
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        coordinator.animate(alongsideTransition: nil) { transitionCoordinator in
+            if self.isContentSmaller {
+                print("--- \(#function): content is smaller ---")
+                self.tableViewFooter.isHidden = false
+                self.loadingIndicator.startAnimating()
+                self.viewModel?.fetchCurrentWeatherData()
+            }
+        }
     }
     
-    func fetchFailed(error: APIResponseError) {
-        print("fetch failed")
+    // MARK: - Common Initialization
+    
+    private func commonInit() {
+        title = LocalizationKey.cityListViewControllerTitle.localized
+        setUpNavigation()
+        setupTableView()
+        setupViewModel()
     }
     
 }
