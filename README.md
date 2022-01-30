@@ -7,3 +7,5 @@
 
 ## 요구사항 분석서
 https://charming-lute-af6.notion.site/Requirement-Analysis-1af4c6c44dc944c6be5d45afaac9184e
+
+![Frame 1](https://user-images.githubusercontent.com/46441723/151684523-6d1899cc-60e4-47e2-acec-43c1dc1a5099.png)
