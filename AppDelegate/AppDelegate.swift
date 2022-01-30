@@ -40,11 +40,7 @@ extension AppDelegate {
     func initialSetting() {
         UserDefaults.standard.set(SortingCriterion.name.rawValue, forKey: UserDefaultsKey.sortingCriterion)
         UserDefaults.standard.set(true, forKey: UserDefaultsKey.isAscending)
-        
-        if UserDefaults.standard.object(forKey: UserDefaultsKey.language) == nil {
-            UserDefaults.standard.set(Language.korean.rawValue, forKey: UserDefaultsKey.language)
-        }
-        
+
         if UserDefaults.standard.object(forKey: UserDefaultsKey.unit) == nil {
             UserDefaults.standard.set(MeasurementUnit.celsius.rawValue, forKey: UserDefaultsKey.unit)
         }
