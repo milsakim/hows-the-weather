@@ -320,6 +320,16 @@ extension WeatherForecastGraphView {
         let gap: CGFloat = 4.0
         let backgroundColor: CGColor? = UIColor(named: "graph-label-background-color")?.cgColor ?? UIColor.lightGray.cgColor.copy(alpha: 0.5)
         
+        let unit: String = UserDefaults.standard.object(forKey: UserDefaultsKey.unit) as? String ?? MeasurementUnit.celsius.rawValue
+        
+        var unitSymbol: String = "℃"
+        switch MeasurementUnit(rawValue: unit) {
+        case .fahrenheit:
+            unitSymbol = "℉"
+        default:
+            unitSymbol = "℃"
+        }
+        
         for dataIndex in 0..<data.count {
             // humidity label
             let humidityString: String = "\(data[dataIndex].humidityValue)%"
@@ -341,7 +351,7 @@ extension WeatherForecastGraphView {
             humidityGraphLayer.addSublayer(humidityLabelLayer)
             
             // min temp label
-            let minTempString: String = "\(data[dataIndex].minTempValue)℃"
+            let minTempString: String = "\(data[dataIndex].minTempValue)\(unitSymbol)"
             let minTempStringWidth: CGFloat = (minTempString as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize)]).width
             let minTempLabelLayerWidth: CGFloat = minTempStringWidth + widthPadding
             let minTempLabelLayer: CATextLayer = CATextLayer()
@@ -360,7 +370,7 @@ extension WeatherForecastGraphView {
             minTempGraphLayer.addSublayer(minTempLabelLayer)
             
             // max temp label
-            let maxTempString: String = "\(data[dataIndex].maxTempValue)℃"
+            let maxTempString: String = "\(data[dataIndex].maxTempValue)\(unitSymbol)"
             let maxTempStringWidth: CGFloat = (maxTempString as NSString).size(withAttributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize)]).width
             let maxTempLabelLayerWidth: CGFloat = maxTempStringWidth + widthPadding
             let maxTempLabelLayer: CATextLayer = CATextLayer()
