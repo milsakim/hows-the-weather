@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 protocol CurrentWeatherViewModelDelegate: AnyObject {
     
@@ -17,7 +18,7 @@ protocol CurrentWeatherViewModelDelegate: AnyObject {
     
 }
 
-final class CurrentWeatherViewModel {
+final class CurrentWeatherViewModel: NSObject {
     
     // MARK: - Property
     
@@ -29,6 +30,8 @@ final class CurrentWeatherViewModel {
     
     var currentWeather: [String: CurrentWeatherResponse] = [:]
     var iconCache: NSCache<NSString, UIImage> = NSCache()
+    
+    private var locationManager: CLLocationManager?
     
     var startIndex: Int = 0 {
         didSet {
@@ -54,8 +57,10 @@ final class CurrentWeatherViewModel {
     
     // MARK: - Initialization
     
-    init() {
-        //        readJSONData()
+    override init() {
+        locationManager = CLLocationManager()
+        super.init()
+        locationManager?.delegate = self
     }
     
     // MARK: - Deinitialization
@@ -65,6 +70,7 @@ final class CurrentWeatherViewModel {
         availableCityList.removeAll()
         currentWeather.removeAll()
         iconCache.removeAllObjects()
+        locationManager = nil
         
         print("--- CurrentWeatherViewModel deinit ---")
     }
@@ -176,7 +182,6 @@ extension CurrentWeatherViewModel {
         let sortingCriterion: SortingCriterion = SortingCriterion(rawValue: criterionString) ?? .name
         let isAcending: Bool = UserDefaults.standard.object(forKey: UserDefaultsKey.isAscending) as? Bool ?? true
         
-        
         switch sortingCriterion {
         case .name:
             switch PreferredLocalization(rawValue: Bundle.main.preferredLocalizations[0]) {
@@ -203,13 +208,42 @@ extension CurrentWeatherViewModel {
                 delegate.cityList.sort { currentWeather[String($0.id)]!.main.temp > currentWeather[String($1.id)]!.main.temp }
             }
         case .distance:
+            print("here!!")
+            guard let locationManager = locationManager else {
+                return
+            }
+            
+            if !CLLocationManager.locationServicesEnabled() {
+                
+            }
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestLocation()
+            guard let currentLocation: CLLocation = locationManager.location else {
+                print("fail")
+                return
+            }
+            
             if isAcending {
                 // 거리 오름차순 정렬
+                delegate.cityList.sort { currentLocation.distance(from: CLLocation(latitude: $0.coord.lat, longitude: $0.coord.lon)) < currentLocation.distance(from: CLLocation(latitude: $1.coord.lat, longitude: $01.coord.lon)) }
             }
             else {
                 // 거리 내림차순 정렬
+                delegate.cityList.sort { currentLocation.distance(from: CLLocation(latitude: $0.coord.lat, longitude: $0.coord.lon)) > currentLocation.distance(from: CLLocation(latitude: $1.coord.lat, longitude: $01.coord.lon)) }
             }
         }
+    }
+    
+}
+
+extension CurrentWeatherViewModel: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("\(#function): \(error.localizedDescription)")
     }
     
 }

@@ -56,7 +56,7 @@ extension CityListViewController {
             self.tableView.reloadData()
         }
         
-        let sortByDistance: UIAction = UIAction(title: LocalizationKey.distance.localized, attributes: .disabled, state: sortByDistanceActionState) { action in
+        let sortByDistance: UIAction = UIAction(title: LocalizationKey.distance.localized, state: sortByDistanceActionState) { action in
             UserDefaults.standard.set(SortingCriterion.distance.rawValue, forKey: UserDefaultsKey.sortingCriterion)
             self.viewModel?.sortSupportingCityList()
             self.tableView.reloadData()
